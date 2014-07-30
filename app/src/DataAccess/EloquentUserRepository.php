@@ -1,5 +1,7 @@
 <?php
 
+namespace Karma\DataAccess;
+
 class EloquentUserRepository implements UserRepository
 {
     public function find($id)
