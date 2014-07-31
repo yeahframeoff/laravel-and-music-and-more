@@ -15,8 +15,8 @@ class CreateCredentialsTable extends Migration {
 		Schema::create('credentials', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');
-            $table->integer('social_id');
+			$table->integer('user_id')->unsigned();
+            $table->integer('social_id')->unsigned();
             $table->string('external_id');
             $table->string('token');
             $table->timestamps();
