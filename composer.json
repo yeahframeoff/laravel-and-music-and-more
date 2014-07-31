@@ -18,12 +18,8 @@
 			"app/models",
 			"app/database/migrations",
 			"app/database/seeds",
-<<<<<<< HEAD
-			"app/tests/TestCase.php",
-            "app/src"
-=======
-			"app/tests/TestCase.php"
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
+                        "app/tests/TestCase.php",
+                        "app/src"
 		]
 	},
 	"scripts": {
