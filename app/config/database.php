@@ -26,7 +26,11 @@ return array(
 	|
 	*/
 
+<<<<<<< HEAD
 	'default' => 'pgsql',
+=======
+	'default' => 'mysql',
+>>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
 
 	/*
 	|--------------------------------------------------------------------------
@@ -66,8 +70,13 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
+<<<<<<< HEAD
 			'database' => 'db_main',
 			'username' => 'dba',
+=======
+			'database' => 'forge',
+			'username' => 'forge',
+>>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
 			'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
