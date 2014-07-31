@@ -1,0 +1,48 @@
+<?php
+
+    use Facebook\FacebookRequest;
+    use Facebook\GraphUser;
+    use Facebook\FacebookRequestException;
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the Closure to execute when that URI is requested.
+|
+*/
+
+Route::get('/', function()
+{
+    return View::make('layouts.start');
+});
+Route::get('page', function()
+{
+    return View::make('footer');
+});
+Route::get('page/{name}/{age}', function($name, $age)
+{
+    return "Hello $name with age $age";
+})->where('name','[a-z]+')
+  ->where('age','[0-9]{2,3}');
+  
+Route::get('fb', 'FacebookController@index');
+Route::get('successfb', 'FacebookController@success');
+Route::get('prosto', function()
+{
+    return "Hello";
+});
+
+//Route::get('successfb', 'FacebookController@success');
+//{
+//    session_start();
+//    $id = '1446675095605125';
+//        $secret = '3d70f6d6e1f6f6f7e813b96cf4b28210';
+//        \Facebook\FacebookSession::setDefaultApplication($id, $secret);
+//        $helper = new Facebook\FacebookRedirectLoginHelper('http://localhost/my_projects/bitly/bitly_laravel/public/fb');
+//
+//        echo "<a href='".$helper->getLoginUrl()."'>Login with Facebook</a>";
+
+//});

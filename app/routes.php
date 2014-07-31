@@ -1,5 +1,8 @@
 <?php
 
+    use Facebook\FacebookRequest;
+    use Facebook\GraphUser;
+    use Facebook\FacebookRequestException;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,4 +13,12 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
+Route::get('/', function()
+{
+    return View::make('layouts.start');
+});
+Route::get('fb', 'FacebookController@index');
+Route::get('successfb', 'FacebookController@success');
+
 
