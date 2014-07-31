@@ -6,11 +6,10 @@ class FacebookController extends BaseController
     public $name;
     public function index()
     {
-        $this->name = 'Roman';
         $id = '1446675095605125';
-        $secret = '3d70f6d6e1f6f6f7e813b96cf4b28210';
+        $secret = 'e98bafaf60c6c78104df3de28339acdb';
         \Facebook\FacebookSession::setDefaultApplication($id, $secret);
-        $helper = new Facebook\FacebookRedirectLoginHelper('http://localhost/my_projects/bitly/bitly_laravel/public/fb');
+        $helper = new Facebook\FacebookRedirectLoginHelper('http://localhost/my_projects/laravel-and-music-and-more/public/fb');
         try {
             $session = $helper->getSessionFromRedirect();
         } catch(Exception $e) {

@@ -16,7 +16,7 @@
 
 Route::get('/', function()
 {
-    return View::make('layouts.start');
+    return View::make('main');
 });
 Route::get('fb', 'FacebookController@index');
 Route::get('successfb', 'FacebookController@success');
