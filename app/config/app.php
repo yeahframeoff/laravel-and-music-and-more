@@ -78,11 +78,8 @@ return array(
 	|
 	*/
 
-<<<<<<< HEAD
-	'key' => 'CLYhDHN6XnQyHOiVDdzVsgB90XPtcYC0',
-=======
+
 	'key' => '4Jqt1FgG2ZiQqgB2TqT0fY5sG4F1NHaF',
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -125,13 +122,10 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-<<<<<<< HEAD
-        
-        /* Custom providers here */
-        
-        'Karma\Providers\DataAccessProvider',
-=======
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
+
+	        /* Custom providers here */
+
+        	'Karma\Providers\DataAccessProvider',
 
 	),
 
