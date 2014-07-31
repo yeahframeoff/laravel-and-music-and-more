@@ -15,7 +15,6 @@ class OdnoklassnikiAuth implements AuthInterface
 
     public static function auth()
     {
-
     }
 
     public static function getAuthLink(){
@@ -26,8 +25,8 @@ class OdnoklassnikiAuth implements AuthInterface
 
     public static function success()
     {
-
         $result = false;
+
         if (Input::has('code')) {
 
             $response = Curl::post('http://api.odnoklassniki.ru/oauth/token.do', 
@@ -40,7 +39,6 @@ class OdnoklassnikiAuth implements AuthInterface
                                    ))[0];
             $content = $response->getContent();
             $response = json_decode($content, true);
-            //dd($response);
 
             if (isset($response['access_token'])) {
                 //md5('application_key=' . $AUTH['application_key'] . 'method=users.getCurrentUser' . md5($auth['access_token'] . $AUTH['client_secret'])));
@@ -62,10 +60,9 @@ class OdnoklassnikiAuth implements AuthInterface
 
                 if (isset($userInfo['uid'])) {
                     $odnoklassnikiId = $userInfo['uid'];
-                    //$credential = Karma\Entities\Credential::find(1);
                     //dd($credential);
-                    
-                    
+
+
                     $credential = Karma\Entities\Credential::firstOrNew(array(
                         'social_id' => self::SOCIAL_ID,
                         'external_id' => $odnoklassnikiId,
@@ -79,42 +76,41 @@ class OdnoklassnikiAuth implements AuthInterface
                     $credential->save();
                     //dd($credential);
                     Session::put('user_id', $credential->user_id);
-                    $result = true;
                 }
             }
         }
         return $result;
     }
 
-    public static function getUserId()
-    {
-        //dd(Session::get('user_id'));
-        return Session::get('user_id');
+        public static function getUserId()
+        {
+            //dd(Session::get('user_id'));
+            return Session::get('user_id');
+        }
+
+        public static function logout()
+        {
+            Session::forget('user_id');
+        }
+
+        private static function refreshToken($id)
+        {
+            $refreshToken = Credential::where(array(
+                'user_id' => $id,
+                'social_id' => self::SOCIAL_ID        
+            ))->first()->token;
+
+            $response = Curl::post('http://api.odnoklassniki.ru/oauth/token.do', 
+                                   array(
+                                       'refresh_token' => $refreshToken,
+                                       'grant_type' => 'refresh_token',
+                                       'client_id' => self::APP_ID,
+                                       'client_secret' => self::PRIVATE_KEY
+                                   ))[0];
+            $content = $response->getContent();
+            $response = json_decode($content, true);
+            dd($response);
+        }
     }
-    
-    public static function logout()
-    {
-        Session::forget('user_id');
-    }
-    
-    private static function refreshToken($id)
-    {
-        $refreshToken = Credential::where(array(
-            'user_id' => $id,
-            'social_id' => self::SOCIAL_ID        
-        ))->first()->token;
-        
-        $response = Curl::post('http://api.odnoklassniki.ru/oauth/token.do', 
-                               array(
-                                   'refresh_token' => $refreshToken,
-                                   'grant_type' => 'refresh_token',
-                                   'client_id' => self::APP_ID,
-                                   'client_secret' => self::PRIVATE_KEY
-                               ))[0];
-        $content = $response->getContent();
-        $response = json_decode($content, true);
-        dd($response);
-    }
-}
 
 ?>
