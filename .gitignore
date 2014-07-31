@@ -11,8 +11,6 @@ startup.sh
 .settings
 <<<<<<< HEAD
 .htacces
-=======
 .htaccess
->>>>>>> master
-/app/config/app.php
-/app/config/database.php
+app/config/app.php
+app/config/database.php
