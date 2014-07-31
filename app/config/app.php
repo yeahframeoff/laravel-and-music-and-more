@@ -122,13 +122,10 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-<<<<<<< HEAD
-        
-        /* Custom providers here */
-        
-        'Karma\Providers\DataAccessProvider',
-=======
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
+
+	        /* Custom providers here */
+
+        	'Karma\Providers\DataAccessProvider',
 
 	),
 
