@@ -18,3 +18,4 @@ Route::get('/', function()
 
 Route::get('auth', "AuthController@index");
 Route::get('successAuth', "AuthController@success");
+

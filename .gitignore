@@ -9,6 +9,10 @@ composer.lock
 Thumbs.db
 startup.sh
 .settings
+<<<<<<< HEAD
 .htacces
+=======
+.htaccess
+>>>>>>> master
 /app/config/app.php
 /app/config/database.php

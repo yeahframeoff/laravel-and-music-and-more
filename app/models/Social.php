@@ -9,6 +9,6 @@ namespace Karma\Entities;
 class Social extends Entity
 {
     protected $fillable = array('id', 'name');
- 	protected $timestamps = false;
-    
+    protected $timestamps = false;
+
 }
