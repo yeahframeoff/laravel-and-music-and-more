@@ -1,18 +1,14 @@
 /bootstrap/compiled.php
 /vendor
-<<<<<<< HEAD
-=======
 /.idea
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
 composer.phar
 composer.lock
 .env.*.php
 .env.php
 .DS_Store
 Thumbs.db
-<<<<<<< HEAD
-=======
 startup.sh
 .settings
 .htacces
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
+/app/config/app.php
+/app/config/database.php

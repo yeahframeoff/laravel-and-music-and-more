@@ -1,5 +1,6 @@
 <?php
 
+use Karma\Entities;
 use Jyggen\Curl\Curl;
 
 class OdnoklassnikiAuth implements AuthInterface
@@ -8,7 +9,7 @@ class OdnoklassnikiAuth implements AuthInterface
     const PUBLIC_KEY = 'CBALOCGCEBABABABA';
     const PRIVATE_KEY = '93D9DB4E54B94F8A8F76DDFD';
     const AUTH_LINK = 'http://www.odnoklassniki.ru/oauth/authorize';
-    const SUCCES_REDIRECT = '';
+    const SUCCES_REDIRECT = Config::get('app.url') . '/successAuth';
 
     public static function auth()
     {
@@ -17,19 +18,20 @@ class OdnoklassnikiAuth implements AuthInterface
 
     public static function getAuthLink(){
         $full_link = self::AUTH_LINK . '?client_id=' .  self::APP_ID
-            . '&response_type=code&redirect_uri=http://target-green.codio.io:3000/successAuth';
+            . '&response_type=code&redirect_uri=' . self::SUCCES_REDIRECT;
         return $full_link;
     }
 
     public static function success()
     {
-
+        
+        $result = false;
         if (Input::has('code')) {
 
             $response = Curl::post('http://api.odnoklassniki.ru/oauth/token.do', 
                                    array(
                                        'code' => Input::get('code'),
-                                       'redirect_uri' => 'http://target-green.codio.io:3000/successAuth',
+                                       'redirect_uri' => self::SUCCES_REDIRECT,
                                        'grant_type' => 'authorization_code',
                                        'client_id' => self::APP_ID,
                                        'client_secret' => self::PRIVATE_KEY

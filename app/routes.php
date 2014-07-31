@@ -16,5 +16,5 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::get('ok', "OkController@index");
-Route::get('successAuth', "OkController@success");
+Route::get('auth', "AuthController@index");
+Route::get('successAuth', "AuthController@success");

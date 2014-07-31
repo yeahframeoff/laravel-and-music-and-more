@@ -5,28 +5,28 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSocialsTable extends Migration {
 
-	/**
+    /**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		Schema::create('socials', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->string('name', 10);
-		});
-	}
+    public function up()
+    {
+        Schema::create('socials', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('name', 10);
+        });
+    }
 
-	/**
+    /**
 	 * Reverse the migrations.
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		Schema::drop('socials');
-	}
+    public function down()
+    {
+        Schema::drop('socials');
+    }
 
 }

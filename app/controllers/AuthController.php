@@ -1,6 +1,6 @@
 <?php
 
-class OkController extends BaseController
+class AuthController extends BaseController
 {
 
     public function index()

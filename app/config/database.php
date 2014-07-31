@@ -26,11 +26,7 @@ return array(
 	|
 	*/
 
-<<<<<<< HEAD
-	'default' => 'pgsql',
-=======
 	'default' => 'mysql',
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
 
 	/*
 	|--------------------------------------------------------------------------
@@ -59,8 +55,8 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'forge',
-			'username'  => 'forge',
+			'database'  => 'karma',
+			'username'  => 'root',
 			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
@@ -70,13 +66,8 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
-<<<<<<< HEAD
-			'database' => 'db_main',
-			'username' => 'dba',
-=======
 			'database' => 'forge',
 			'username' => 'forge',
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
 			'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
