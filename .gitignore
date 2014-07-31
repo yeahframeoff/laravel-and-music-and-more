@@ -11,3 +11,4 @@ startup.sh
 .settings
 .htaccess
 /app/config/app.php
+/app/config/database.php
