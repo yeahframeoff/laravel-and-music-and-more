@@ -19,6 +19,7 @@ class CreateCredentialsTable extends Migration {
             $table->integer('social_id');
             $table->string('external_id');
             $table->string('token');
+            $table->timestamps();
             
             $table->foreign('user_id')
       			  ->references('id')->on('users')
