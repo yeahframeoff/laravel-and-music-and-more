@@ -17,4 +17,3 @@ if ($uri !== '/' and file_exists($requested))
 }
 
 require_once $paths['public'].'/index.php';
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
