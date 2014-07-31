@@ -17,17 +17,25 @@ class VkController extends Controller {
 
     const HTTP_API = 'https://api.vk.com/method/';
     
-    private function method($method)
+    private $user;
+    
+    public function __construct (UserRepository $user)
     {
-        return self::HTTP_API.$method;
+        $this->user = $user !== null ? $user : App::make('UserRepository');
     }
-
+    
     public function index()
     {
-        if (Input::has('code') && !Session::has('access_token'))
+        if ((Input::has('code') || Session::has('code')) && !Session::has('access_token'))
         {
             $redirect_url = URL::route('vkindex');
-            $code = Input::get('code');
+            if (Input::has('code'))
+            {
+                $code = Input::get('code');
+                Session::put('code', $code);
+            }
+            else // Session::has('code') == true
+                $code = Session::get('code', $code);
             $url = 'https://oauth.vk.com/access_token';
             $urlData = [
                 'client_id' => self::APP_ID,
@@ -35,7 +43,7 @@ class VkController extends Controller {
                 'code' => $code,
                 'redirect_uri' => $redirect_url,
             ];
-
+ 
             $response = Curl::post($url, $urlData)[0];
             $response = $response->getContent();
             $response = json_decode($response, true);
@@ -62,9 +70,7 @@ class VkController extends Controller {
                 'v'             => self::V_API,
             ];
 
-            return Redirect::to(
-                $this->generateGetRequest($url, $urlData)
-            );
+            return View::make('vk.auth'. ['url' => $this->generateGetRequest($url, $urlData)]);
         }
         else
         {
@@ -102,6 +108,11 @@ class VkController extends Controller {
         return Redirect::to('https://vk.com/audios'.Session::get('user_id'));
     }
     
+    private function method($method)
+    {
+        return self::HTTP_API.$method;
+    }
+
     private function doo($method, array $params, $json = true)
     {
         $url = $this->method($method);
