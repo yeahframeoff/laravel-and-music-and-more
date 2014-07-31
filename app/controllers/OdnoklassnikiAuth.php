@@ -9,11 +9,11 @@ class OdnoklassnikiAuth implements AuthInterface
     const PUBLIC_KEY = 'CBALOCGCEBABABABA';
     const PRIVATE_KEY = '93D9DB4E54B94F8A8F76DDFD';
     const AUTH_LINK = 'http://www.odnoklassniki.ru/oauth/authorize';
-    const SUCCES_REDIRECT = Config::get('app.url') . '/successAuth';
+    const SUCCES_REDIRECT = 'http://target-green.codio.io:3000/successAuth';
 
     public static function auth()
     {
-        
+
     }
 
     public static function getAuthLink(){
@@ -24,7 +24,7 @@ class OdnoklassnikiAuth implements AuthInterface
 
     public static function success()
     {
-        
+
         $result = false;
         if (Input::has('code')) {
 
@@ -56,11 +56,13 @@ class OdnoklassnikiAuth implements AuthInterface
                 dd($userInfo);
 
                 if (isset($userInfo['uid'])) {
-                    $this->userInfo = $userInfo;
+                    $OdnoklassnikiId = $userInfo['uid'];
+                    //$credential = Credential::firstOrNew(array(''))
                     $result = true;
                 }
             }
         }
+        return $result;
     }
 }
 

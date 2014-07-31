@@ -10,5 +10,5 @@ class User extends Entity implements UserInterface {
     {
         return $this->hasMany('Credential');
     }    
-	
+
 }
