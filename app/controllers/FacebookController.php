@@ -1,56 +1,81 @@
 <?php
 
 session_start();
+
+use \Facebook\FacebookSession;
+use \Facebook\FacebookRedirectLoginHelper;
+use \Facebook\FacebookRequest;
+use \Facebook\GraphUser;
+use \Facebook\GraphLocation;
+
+use \Facebook\FacebookAuthorizationException;
+use \Facebook\FacebookRequestException
+
+
 class FacebookController extends BaseController
 {
     public $name;
+    
+    const APP_ID = '1446675095605125';
+    const SECRET = 'e98bafaf60c6c78104df3de28339acdb';
+    
     public function index()
     {
-        $id = '1446675095605125';
-        $secret = 'e98bafaf60c6c78104df3de28339acdb';
-        \Facebook\FacebookSession::setDefaultApplication($id, $secret);
-        $helper = new Facebook\FacebookRedirectLoginHelper('http://localhost/my_projects/laravel-and-music-and-more/public/fb');
-        try {
+        FacebookSession::setDefaultApplication(self::APP_ID, self::SECRET);
+        $helper = new FacebookRedirectLoginHelper(URL::to('fb'));
+        $mainResponse = '';
+        
+        try
+        {
             $session = $helper->getSessionFromRedirect();
-        } catch(Exception $e) {
-            echo $e->getMessage();
         }
-        if(isset($_SESSION['token'])) {
-            $session = new \Facebook\FacebookSession($_SESSION['token']);
-            try {
-                $session->validate($id, $secret);
-            } catch (\Facebook\FacebookAuthorizationException $ex) {
-//                $session = '';
-                session_destroy();
+        catch(Exception $e)
+        {
+            $mainResponse .= $e->getMessage();
+        }
+        
+        if (Session::has('token'))
+        {
+            $session = new FacebookSession(Session::get('token'));
+            try
+            {
+                $session->validate(self::APP_ID, self::SECRET);
+            }
+            catch (FacebookAuthorizationException $ex)
+            {
+                Session::remove('token');
             }
         }
+        
         if(isset($session)) {
-            $_SESSION['token'] = $session->getToken();
-            echo "Login successful<br>";
-            try {
-                $request = new Facebook\FacebookRequest($session, 'GET', '/me');
+            Session::put('token', $session->getToken());
+            $mainResponse .= "Login successful<br>";
+            try
+            {
+                $request = new FacebookRequest($session, 'GET', '/me');
                 $response = $request->execute();
-                $graph = $response->getGraphObject(Facebook\GraphUser::className());
-                $graph_location = $response->getGraphObject(Facebook\GraphLocation::className());
-                echo "Hi " . $graph->getName();
-                echo "<br>";
-                echo "Id " . $graph->getId(); 
-                echo "<br>";
-                echo "Link " . $graph->getLink(); 
+                $graph = $response->getGraphObject(GraphUser::className());
+                $graph_location = $response->getGraphObject(GraphLocation::className())
+                $mainResponse .= sprintf (
+                    "Hi %s<br>" .
+                    "Id %s<br>" .
+                    "Link %s",
+                    $graph->getName(), $graph->getId(), $graph->getLink()); 
 //                echo "<br>Hi " . $graph->getLocation(); 
 //                echo "Hi " . $graph->get; 
 //                print_r($_SESSION);
-            } catch(\Facebook\FacebookRequestException $e) {
-                echo "Exception occured, code: " . $e->getCode();
-                echo " with message: " . $e->getMessage();
             }
-        } else {
-            echo "<a href='".$helper->getLoginUrl()."'>Login with Facebook</a>";
+            catch(FacebookRequestException $e)
+            {
+                $mainResponse .= "Exception occured, code: " . $e->getCode();
+                $mainResponse .= " with message: " . $e->getMessage();
+            }
         }
-    }
-    public function success()
-    {
         
+        else
+            $mainResponse .= "<a href='".$helper->getLoginUrl()."'>Login with Facebook</a>";
+        
+        return $mainResponse;
     }
     
 }
