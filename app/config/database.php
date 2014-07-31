@@ -67,14 +67,9 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
-<<<<<<< HEAD
-			'database' => 'db_main',
+            'database' => 'db_main',
 			'username' => 'dba',
-=======
-			'database' => 'forge',
-			'username' => 'forge',
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
-			'password' => '',
+            'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
