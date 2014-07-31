@@ -11,10 +11,10 @@
 |
 */
 
-<<<<<<< HEAD
-=======
 Route::get('/', function()
 {
 	return View::make('hello');
 });
->>>>>>> a19cfd3e6badb349112e0ebb9913bb04421d60fc
+
+Route::get('ok', "OkController@index");
+Route::get('successAuth', "OkController@success");
