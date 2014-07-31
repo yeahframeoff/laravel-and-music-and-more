@@ -17,4 +17,3 @@ Route::get('/', function()
 });
 
 Route::get('ok', "OkController@index");
-Route::get('success', "OkController@success");
