@@ -30,9 +30,9 @@ class VkController extends Controller {
                 'redirect_uri' => urlencode($redirect_url),
             ];
 
-            $response = Curl::post($url, $urlData);
+            $response = Curl::get($url, $urlData)[0];
             $response = $response->getContent();
-            $response = json_decode($response);
+            $response = json_decode($response, true);
             if (isset($response['access_token']))
             {
                 Session::put('access_token', $response['access_token']);
@@ -70,7 +70,7 @@ class VkController extends Controller {
                 'access_token' => Session::get('access_token')
             ];
 
-            $response = Curl::post($url, $urlData);
+            $response = Curl::get($url, $urlData)[0];
             return $response->getContent();
         }
     }
@@ -82,4 +82,5 @@ class VkController extends Controller {
             $paramsList[] = "$key=$value";
         return $url.'?'.implode('&', $paramsList);
     }
+
 }
