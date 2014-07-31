@@ -17,3 +17,6 @@ Route::get('/', function()
 });
 
 Route::get('vk', ['as' => 'vkindex', 'uses' => 'VkController@index']);
+
+Route::get('vk/edit/{song_id}/{new_artist}', 'VkController@editSound')
+    ->where(['song_id' => '[0-9]+']);
