@@ -78,6 +78,7 @@ return array(
 	|
 	*/
 
+
 	'key' => '4Jqt1FgG2ZiQqgB2TqT0fY5sG4F1NHaF',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
@@ -121,6 +122,10 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
+
+	        /* Custom providers here */
+
+        	'Karma\Providers\DataAccessProvider',
 
 	),
 
