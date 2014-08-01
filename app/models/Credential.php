@@ -15,7 +15,7 @@ class Credential extends \Eloquent
         return $this->belongsTo('User');
     }
     
-    public function user()
+    public function social()
     {
         return $this->belongsTo('Social');
     }

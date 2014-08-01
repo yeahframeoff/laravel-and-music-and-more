@@ -1,14 +1,14 @@
 <?php
 
-/*
- * To change this template use Tools | Templates.
- */
+namespace VkAuth;
 
-/**
- * Description of newPHPClass
- *
- * @author yeahframeoff
- */
+use \Input;
+use \Session;
+use \URL;
+use Jyggen\Curl\Curl;
+use Karma\Entities\Credential;
+use Karma\Entities\Social;
+
 class VkAuth implements AuthInterface
 {
     const APP_ID = '4484087';
@@ -37,30 +37,31 @@ class VkAuth implements AuthInterface
             Session::put(self::KEY_CODE, $code);
         }
             
-        elseif (Session::has(self::KEY_CODE))
-            $code = Session::get(self::KEY_CODE);
-        elseif (Session::has(self::KEY_EXT_USERID))
-        {
-            $uid = Session::has(self::KEY_EXT_USERID);
-            $cr = Credential::first([
-                'external_id' => $uid,
-                'social_id'   => $this->getVkSocialId(),
-            ]);
-            if ($cr === null)
-                $code = null;
-            else
-                $code = $user->credentials()->token;
-        }
+//         elseif (Session::has(self::KEY_CODE))
+//             $code = Session::get(self::KEY_CODE);
+//         elseif (Session::has(self::KEY_EXT_USERID))
+//         {
+//             $uid = Session::has(self::KEY_EXT_USERID);
+//             $cr = Credential::first([
+//                 'external_id' => $uid,
+//                 'social_id'   => $this->getVkSocialId(),
+//             ]);
+//             if ($cr === null)
+//                 $code = null;
+//             else
+//                 $code = $user->credentials()->token;
+//         }
         
         // TODO: make decisions about cookies
         else
             $code = null;
             
-        returnn $code;
+        return $code;
     }
     
     public function accessTokenRequest($code)
     {
+        $redirect_url = URL::route('vkIndex');
         $url = 'https://oauth.vk.com/access_token';
         $urlData = [
             'client_id'     => self::APP_ID,
@@ -81,7 +82,7 @@ class VkAuth implements AuthInterface
     
     public function hasCode()
     {
-        return Session::has(self::KEY_CODE) && Session::has(self::KEY_EXT_USERID);
+        return Input::has('code')/* && Input::has(self::KEY_EXT_USERID)*/;
     }
     
     public function logIn($response)
@@ -114,7 +115,7 @@ class VkAuth implements AuthInterface
     
     public function getAuthorizationUrl()
     {
-        $redirect_url = URL::route('vkindex');
+        $redirect_url = URL::route('vkIndex');
         $url = 'https://oauth.vk.com/authorize';
         $urlData = [
             'client_id'     => self::APP_ID,
@@ -146,12 +147,12 @@ class VkAuth implements AuthInterface
     
     public function getUserId()
     {
-        retun Session::get(self::KEY_EXT_USERID);
+        return Session::get(self::KEY_EXT_USERID);
     }
     
     public function getToken()
     {
-        retun Session::get(self::KEY_TOKEN);
+        return Session::get(self::KEY_TOKEN);
     }
     
     private function generateGetRequest($url, $params)

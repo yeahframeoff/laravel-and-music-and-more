@@ -1,6 +1,5 @@
 <?php
 
-use Jyggen\Curl\Curl;
 use VkAuth\AuthInterface;
 
 /**
@@ -21,27 +20,27 @@ class VkAuthController extends Controller
     
     public function getToken()
     {
-        $code = $this->auth->getCode();
-        $response = $this->auth->accessTokenRequest($code);
-        if (isset($response['error']))
-            return $this->auth->resolveError($response['error']);
         
-        $this->auth->logIn();
-        return Redirect::route('vkIndex');
     }
     
     public function index()
     {
-        if (!$this->auth->isAuth())
+        if($this->auth->hasCode())
         {
-            $url = $this->auth->getAuthorizeUrl();
-            return View::make('vk.auth')->where('vk_url', $url);
+            $code = $this->auth->getCode();
+            $response = $this->auth->accessTokenRequest($code);
+            if (isset($response['error']))
+                return $this->auth->resolveError($response/*['error']*/);
+
+            $this->auth->logIn($response);
+            return Redirect::route('vkIndex');
         }
         
-        elseif($this->hasCode())
+        if (!$this->auth->isAuth())
         {
-            return Redirect::route('vkGetToken');
-        }
+            $url = $this->auth->getAuthorizationUrl();
+            return View::make('vk.auth')->with('vk_url', $url);
+        }        
         
         $token = $this->auth->getToken();
         if ($token === null)

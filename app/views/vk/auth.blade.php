@@ -35,7 +35,7 @@
 </head>
 <body>
 	<div class="welcome">
-		<a href="{{ $url }}" title="VK.com"><img src="http://st0.vk.me/images/hatf_vk.gif?1"></a>
+		<a href="{{ $vk_url }}" title="VK.com"><img src="{{ URL::asset('public/VK_logo.png') }}"></a>
 		<h1>Sign in via VK.com</h1>
 	</div>
 </body>

@@ -1,12 +1,14 @@
 <?php
 
+namespace VkAuth;
+
 interface AuthInterface
 {    
     public function getCode();
     
     public function isAuth();
     
-    public function logIn();
+    public function logIn($response);
     
     public function logOut();
     
