@@ -16,7 +16,6 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::get('vk', ['as' => 'vkindex', 'uses' => 'VkController@index']);
+Route::get('vk', ['as' => 'vkIndex', 'uses' => 'VkAuthController@index']);
 
-Route::get('vk/edit/{song_id}/{new_artist}', 'VkController@editSound')
-    ->where(['song_id' => '[0-9]+']);
+Route::get('vk/get-token', ['as' => 'vkGetToken', 'uses' => 'VkAuthController@getToken']))
