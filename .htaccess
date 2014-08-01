@@ -11,5 +11,7 @@
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{HTTP_HOST} ^capital-random.codio.io:3000/ [NC]
+	RewriteCond %{SERVER_PORT} ^3000$
     RewriteRule ^ index.php [L]
 </IfModule>
