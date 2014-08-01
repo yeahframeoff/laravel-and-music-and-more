@@ -7,7 +7,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 
 namespace Karma\Entities;
 
-class User extends Entity implements UserInterface {
+class User extends Eloquent implements UserInterface {
 
     use UserTrait;
 

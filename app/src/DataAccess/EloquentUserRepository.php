@@ -4,6 +4,13 @@ namespace Karma\DataAccess;
 
 class EloquentUserRepository implements UserRepository
 {
+    use ValidationTrait;
+    
+	static function init()
+    {
+        //init validation rules here
+    }
+    
     public function find($id)
     {
         return User::find($id);
@@ -19,3 +26,5 @@ class EloquentUserRepository implements UserRepository
         return new User;
     }
 }
+
+EloquentUserRepository::init();

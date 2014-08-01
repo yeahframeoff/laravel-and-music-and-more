@@ -6,7 +6,7 @@ namespace Karma\Entities;
  * This class represents resource which could be used to log in.
  **/
 
-class Social extends Entity
+class Social extends Eloquent
 {
     protected $fillable = array('id', 'name');
     protected $timestamps = false;
