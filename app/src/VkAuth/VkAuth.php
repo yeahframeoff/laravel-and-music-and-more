@@ -20,13 +20,14 @@ class VkAuth implements AuthInterface
     const KEY_CODE   = 'vk_code';
     const KEY_TOKEN  = 'vk_access_token';
     const KEY_USERID = 'user_id';
+    const KEY_EXT_USERID = 'external_user_id';
     
-    private $userRepository;
+    //private $userRepository;
     
-    public function __construct(UserRepository $repository)
-    {
-        $this->userRepository = $repository;
-    }
+    //public function __construct(UserRepository $repository)
+    //{
+    //    $this->userRepository = $repository;
+    //}
     
     public function getCode()
     {
@@ -38,11 +39,17 @@ class VkAuth implements AuthInterface
             
         elseif (Session::has(self::KEY_CODE))
             $code = Session::get(self::KEY_CODE);
-        elseif (Session::has('user_id'))
+        elseif (Session::has(self::KEY_EXT_USERID))
         {
-            $uid = Session::has('user_id');
-            $user = $this->userRepository->find($uid);
-            $code = $user->credentials()->token;
+            $uid = Session::has(self::KEY_EXT_USERID);
+            $cr = Credential::first([
+                'external_id' => $uid,
+                'social_id'   => $this->getVkSocialId(),
+            ]);
+            if ($cr === null)
+                $code = null;
+            else
+                $code = $user->credentials()->token;
         }
         
         // TODO: make decisions about cookies
@@ -69,13 +76,40 @@ class VkAuth implements AuthInterface
     
     public function isAuth()
     {
-        
+        return Session::has(self::KEY_USERID) && Session::has(self::KEY_TOKEN);
     }
     
-    public function logIn()
+    public function hasCode()
     {
-//         Session::put('access_token', $response['access_token']);
-//             Session::put('vk_user_id', $response['user_id']);
+        return Session::has(self::KEY_CODE) && Session::has(self::KEY_EXT_USERID);
+    }
+    
+    public function logIn($response)
+    {
+        $token   = $response['access_token'];
+        $user_id = $response['user_id'];
+        Session::put(self::KEY_TOKEN, $token);
+        Session::put(self::KEY_EXT_USERID, $user_id);
+        $cr = Credential::firstOrNew([
+            'external_id' => $user_id,
+            'social_id'   => $this->getVkSocialId(),
+        ]);
+        if (!isset($cr->user_id))
+            $cr->user = new User;
+        $cr->token = Session::get(self::KEY_CODE);
+        $cr->push();
+        Session::put(self::KEY_USERID, $cr->user_id);
+    }
+    
+    private function getVkSocialId()
+    {
+        $social = Social::findOrCreate(['name' => 'vk']);
+        return $social->id;
+    }
+    
+    public function resolveError($error)
+    {
+        return 'Error occured: '.json_encode($error);
     }
     
     public function getAuthorizationUrl()
@@ -92,6 +126,14 @@ class VkAuth implements AuthInterface
 
         return $this->generateGetRequest($url, $urlData);
     }
+    
+    public function logOut()
+    {
+        Session::forget(self::KEY_CODE);
+        Session::forget(self::KEY_TOKEN);
+        Session::forget(self::KEY_USERID);
+        Session::forget(self::KEY_EXT_USERID);
+    }
 
     public function doo($method, array $params, $json = true)
     {
@@ -104,12 +146,12 @@ class VkAuth implements AuthInterface
     
     public function getUserId()
     {
-        
+        retun Session::get(self::KEY_EXT_USERID);
     }
     
     public function getToken()
     {
-        
+        retun Session::get(self::KEY_TOKEN);
     }
     
     private function generateGetRequest($url, $params)

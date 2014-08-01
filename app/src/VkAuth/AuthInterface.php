@@ -6,6 +6,10 @@ interface AuthInterface
     
     public function isAuth();
     
+    public function logIn();
+    
+    public function logOut();
+    
     public function accessTokenRequest($code);
     
     public function getAuthorizationUrl();

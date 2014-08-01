@@ -1,6 +1,7 @@
 <?php
 
 use Jyggen\Curl\Curl;
+use VkAuth\AuthInterface;
 
 /**
  * Created by PhpStorm.
@@ -22,13 +23,11 @@ class VkAuthController extends Controller
     {
         $code = $this->auth->getCode();
         $response = $this->auth->accessTokenRequest($code);
-        if (!isset($response['error']))
-        {
-            $this->auth->logIn();
-            return Redirect::route('vkindex');
-        }
-        else
+        if (isset($response['error']))
             return $this->auth->resolveError($response['error']);
+        
+        $this->auth->logIn();
+        return Redirect::route('vkIndex');
     }
     
     public function index()
@@ -38,36 +37,40 @@ class VkAuthController extends Controller
             $url = $this->auth->getAuthorizeUrl();
             return View::make('vk.auth')->where('vk_url', $url);
         }
-        else
+        
+        elseif($this->hasCode())
         {
-            $token = $this->auth->getToken();
-            if ($token === null)
-                return Redirect::route('vkGetToken');
-            
-            $user_id = $this->auth->getUserId();
-            $response = $this->api( 'users.get', [
-                'user_ids' => $user_id,
-                'fields'   => implode(',', [
-                    'city',
-                    'country',
-                    'photo_400_orig',
-                    'timezone',
-                    'occupation'
-                ]),
-                'access_token' => $token,
-                'lang'         => 'en',
-                
-            ]);
-            
-            if (isset($result['error']))
-            {
-                Session::forget('access_token');
-                Session::forget('user_id');
-                return Redirect::route('vkindex');
-            }
-            
-            return $result;
+            return Redirect::route('vkGetToken');
         }
+        
+        $token = $this->auth->getToken();
+        if ($token === null)
+            return Redirect::route('vkGetToken');
+
+        $user_id = $this->auth->getUserId();
+        $response = $this->api( 'users.get', [
+            'user_ids' => $user_id,
+            'fields'   => implode(',', [
+                'city',
+                'country',
+                'photo_400_orig',
+                'timezone',
+                'occupation'
+            ]),
+            'access_token' => $token,
+            'lang'         => 'en',
+        ]);
+
+        if (isset($result['error']))
+            return $this->auth->resolveError($response['error']);
+        
+        return View::make('vk.view')->with('user_data', $result[0]);
+    }
+    
+    public function logOut()
+    {
+        $this->auth->logOut();
+        return Redirect::route('vkIndex');
     }
     
     private function api($method, array $params, $json = true)

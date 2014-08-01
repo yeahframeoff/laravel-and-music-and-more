@@ -9,6 +9,6 @@ class User extends \Eloquent{
     public function credentials()
     {
         return $this->hasMany('Credential');
-    }    
+    }
 
 }

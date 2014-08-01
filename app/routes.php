@@ -11,6 +11,8 @@
 |
 */
 
+App::bind('VkAuth\AuthInterface', 'VkAuth\VkAuth')
+
 Route::get('/', function()
 {
 	return View::make('hello');
@@ -19,3 +21,5 @@ Route::get('/', function()
 Route::get('vk', ['as' => 'vkIndex', 'uses' => 'VkAuthController@index']);
 
 Route::get('vk/get-token', ['as' => 'vkGetToken', 'uses' => 'VkAuthController@getToken']))
+    
+Route::get('vk/log-out', ['as' => 'vkLogOut', 'uses' => 'VkAuthController@logOut']))
