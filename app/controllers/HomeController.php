@@ -7,10 +7,10 @@ class HomeController extends BaseController
     
     public function __construct()
     {
-        $this->layout = View::make("layouts.main");
+        $this->layout = "layouts.main";
     }
     
-    public function showIndex()
+    public function index()
     {
         $this->layout->content = View::make("index");
     }

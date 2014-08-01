@@ -1,5 +1,9 @@
 <?php
 
+namespace Karma\Controllers;
+
+use Illuminate\Routing\Controller;
+
 class BaseController extends Controller 
 {
     protected $layout;
