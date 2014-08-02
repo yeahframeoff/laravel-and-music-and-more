@@ -8,7 +8,7 @@
 
 		body {
 			margin:0;
-			font-family:'Lato', sans-serif;
+			font-family:'Lato', Segoe UI Semibold, sans-serif;
 			text-align:center;
 			color: #999;
 		}

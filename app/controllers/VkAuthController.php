@@ -52,18 +52,17 @@ class VkAuthController extends Controller
             'fields'   => implode(',', [
                 'city',
                 'country',
-                'photo_400_orig',
-                'timezone',
-                'occupation'
+                'photo_200',
             ]),
             'access_token' => $token,
-            'lang'         => 'en',
-        ]);
+            //'lang'         => 'en',
+        ], true);
 
-        if (isset($result['error']))
+        if (isset($response['error']))
             return $this->auth->resolveError($response['error']);
         
-        return View::make('vk.view')->with('user_data', $result[0]);
+        return View::make('vk.view')->with('user_data', $response['response'][0]);
+        //return View::make('vk.view')->with('user_data', $response);
     }
     
     public function logOut()

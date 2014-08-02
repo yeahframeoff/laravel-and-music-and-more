@@ -12,11 +12,11 @@ class Credential extends \Eloquent
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('User', 'user_id');
     }
     
     public function social()
     {
-        return $this->belongsTo('Social');
+        return $this->belongsTo('Social', 'social_id');
     }
 }

@@ -8,6 +8,7 @@ use \URL;
 use Jyggen\Curl\Curl;
 use Karma\Entities\Credential;
 use Karma\Entities\Social;
+use Karma\Entities\User;
 
 class VkAuth implements AuthInterface
 {
@@ -96,7 +97,11 @@ class VkAuth implements AuthInterface
             'social_id'   => $this->getVkSocialId(),
         ]);
         if (!isset($cr->user_id))
-            $cr->user = new User;
+        {
+            $user = User::create([]);
+            $cr->user_id = $user->id;
+        }
+            
         $cr->token = Session::get(self::KEY_CODE);
         $cr->push();
         Session::put(self::KEY_USERID, $cr->user_id);
@@ -104,7 +109,7 @@ class VkAuth implements AuthInterface
     
     private function getVkSocialId()
     {
-        $social = Social::findOrCreate(['name' => 'vk']);
+        $social = Social::firstOrCreate(['name' => 'vk']);
         return $social->id;
     }
     
@@ -139,6 +144,7 @@ class VkAuth implements AuthInterface
     public function doo($method, array $params, $json = true)
     {
         $url = $this->method($method);
+        $params = array_add($params, 'v', SELF::V_API);
         $response = Curl::post($url, $params)[0];
         $response = $response->getContent();
         if ($json) $response = json_decode($response, true);
