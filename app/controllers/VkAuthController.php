@@ -53,6 +53,7 @@ class VkAuthController extends Controller
                 'city',
                 'country',
                 'photo_200',
+                'photo_max_orig',
             ]),
             'access_token' => $token,
             //'lang'         => 'en',

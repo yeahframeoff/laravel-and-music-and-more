@@ -40,7 +40,13 @@
         <h1>You've been successfully authorized via VK!</h1>
 	    <h1>
             <a href="https://vk.com/id{{ $user_data['id'] or $user_data['uid']}}" title="Watch on VK.com" target="blank">
-                <img src="{{ $user_data['photo_200'] }}" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)">
+                <?php
+                $imgUrl = isset($user_data['photo_200']) ?
+                    $user_data['photo_200'] :
+                    isset ($user_data['photo_max_orig']) ?
+                        $user_data['photo_max_orig'] : '';
+                ?>
+                <img src="{{ $imgUrl }}" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)">
             </a>    
         </h1>
         <h1>User #{{ $user_data['id'] or $user_data['uid']}}</h1>
