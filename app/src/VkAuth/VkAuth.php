@@ -124,7 +124,7 @@ class VkAuth implements AuthInterface
         $url = 'https://oauth.vk.com/authorize';
         $urlData = [
             'client_id'     => self::APP_ID,
-            'scope'         => implode(',', ['audio', 'email']),
+            'scope'         => implode(',', ['audio']),
             'redirect_uri'  => urlencode($redirect_url),
             'response_type' => 'code',
             'v'             => self::V_API,
