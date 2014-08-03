@@ -10,7 +10,7 @@ class OdnoklassnikiAuth implements AuthInterface
     const PUBLIC_KEY = 'CBALOCGCEBABABABA';
     const PRIVATE_KEY = '93D9DB4E54B94F8A8F76DDFD';
     const AUTH_LINK = 'http://www.odnoklassniki.ru/oauth/authorize';
-    const SUCCES_REDIRECT = 'http://target-green.codio.io:3000/successAuth';
+    const SUCCES_REDIRECT = 'http://target-green.codio.io:3000/successAuthOK';
     const SOCIAL_ID = 2;
 
     public static function auth()
@@ -29,21 +29,25 @@ class OdnoklassnikiAuth implements AuthInterface
 
         if (Input::has('code')) {
 
-            $response = Curl::post('http://api.odnoklassniki.ru/oauth/token.do', 
-                                   array(
-                                       'code' => Input::get('code'),
-                                       'redirect_uri' => self::SUCCES_REDIRECT,
-                                       'grant_type' => 'authorization_code',
-                                       'client_id' => self::APP_ID,
-                                       'client_secret' => self::PRIVATE_KEY
-                                   ))[0];
+            $requestData = array(
+                'code' => Input::get('code'),
+                'client_id' => self::APP_ID,
+                'client_secret' => self::PRIVATE_KEY,
+                'redirect_uri' => self::SUCCES_REDIRECT,
+                'grant_type' => 'authorization_code'
+            );
+            $response = Curl::post('http://api.odnoklassniki.ru/oauth/token.do', $requestData)[0];
             $content = $response->getContent();
             $response = json_decode($content, true);
+            var_dump($response['access_token']);
 
             if (isset($response['access_token'])) {
                 //md5('application_key=' . $AUTH['application_key'] . 'method=users.getCurrentUser' . md5($auth['access_token'] . $AUTH['client_secret'])));
                 $sign = md5("application_key=" . self::PUBLIC_KEY . "method=users.getCurrentUser"
-                            . md5($response['access_token'] . self::PRIVATE_KEY));
+                            . md5('4.ipa285k00314r273r543k6asrvk8244' . self::PRIVATE_KEY));
+                
+                dd($sign);
+                
                 $refreshToken = $response['refresh_token'];
 
                 $params = array(
@@ -56,7 +60,7 @@ class OdnoklassnikiAuth implements AuthInterface
                 $response = Curl::post('http://api.odnoklassniki.ru/fb.do', $params)[0];
                 $userInfo = $response->getContent();
                 $userInfo = json_decode($userInfo, true);
-                //dd($userInfo);
+                dd($userInfo);
 
                 if (isset($userInfo['uid'])) {
                     $odnoklassnikiId = $userInfo['uid'];
