@@ -2,6 +2,8 @@
 
 namespace Karma\API;
 
+use \User;
+
 class VkontakteAPI extends API implements InterfaceAPI
 {
     
@@ -22,6 +24,29 @@ class VkontakteAPI extends API implements InterfaceAPI
 
         $result = $this->APImethod($params);
         return $result['uid'];
+    }
+    
+    public function getUserInfo()
+    {
+        $userId = \Session::get('user_id');
+        $credential = \Karma\Entities\Credential::whereRaw(
+            'user_id = ? and social_id = 1', array($userId)
+        )->first();
+                
+        $params = array(
+            'user_ids' => $credential->external_id,
+            'fields' => implode(',', array(
+                'city',
+                'country',
+                'photo_max_orig'
+            )),
+            'access_token' => $this->getToken()
+        );
+        
+        $result = $this->APImethod($params, 'users.get')['response'][0];
+        $result['photo'] = $result['photo_max_orig'];
+        $result['id'] = $result['uid'];
+        return $result;
     }
     
     protected function getToken()

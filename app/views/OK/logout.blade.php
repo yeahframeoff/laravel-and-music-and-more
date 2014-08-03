@@ -1,1 +1,0 @@
-{{ HTML::linkAction("AuthController@logout", "logout") }}

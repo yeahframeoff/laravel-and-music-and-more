@@ -34,26 +34,23 @@
 	</style>
 </head>
 <body>
-    {{-- $user_data --}}
+    {{-- dd($userInfo) --}}
     
     <div class="welcome">
-        <h1>You've been successfully authorized via VK!</h1>
+        <h1>You've been successfully authorized!</h1>
 	    <h1>
-            <a href="https://vk.com/id{{ $user_data['id'] or $user_data['uid']}}" title="Watch on VK.com" target="blank">
+            <a href="https://vk.com/id{{ $userInfo['id']}}" title="Watch on VK.com" target="blank">
                 <?php
-                $imgUrl = isset($user_data['photo_200']) ?
-                    $user_data['photo_200'] :
-                    isset ($user_data['photo_max_orig']) ?
-                        $user_data['photo_max_orig'] : '';
+                    $imgUrl = $userInfo['photo'];
                 ?>
                 <img src="{{ $imgUrl }}" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)">
             </a>    
         </h1>
-        <h1>User #{{ $user_data['id'] or $user_data['uid']}}</h1>
-        <h1>{{ $user_data['first_name'] .' '.$user_data['last_name'] }}</h1>
-        <h1>{{ $user_data['city']['title'] or ''}}, {{ $user_data['country']['title'] or ''}}</h1>
+        <h1>User #{{ $userInfo['id'] or $userInfo['uid']}}</h1>
+        <h1>{{ $userInfo['first_name'] .' '.$userInfo['last_name'] }}</h1>
+        <h1>{{ $userInfo['city'] or ''}}, {{ $userInfo['country'] or ''}}</h1>
         <div>
-            <a href="{{ URL::route('vkLogOut') }}" title="Log Out">
+            <a href="{{ URL::route('logoutAuth') }}" title="Log Out">
                 <img src="{{ URL::asset('public/forward.png') }}">
             </a>    
         </div>

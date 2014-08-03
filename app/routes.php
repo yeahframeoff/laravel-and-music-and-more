@@ -15,4 +15,4 @@ Route::get('auth',['as' => 'authIndex', 'uses' => 'AuthController@index']);
 Route::get('successAuthOK', ['as' => 'successAuthOK', 'uses' => 'AuthController@successOK']);
 Route::get('successAuthVK', ['as' => 'successAuthVK', 'uses' => 'AuthController@successVK']);
 Route::get('successAuthFB', ['as' => 'successAuthFB', 'uses' => 'AuthController@successFB']);
-Route::get('logoutAuth', "AuthController@logout");
+Route::get('logoutAuth', ['as' => 'logoutAuth', 'uses' => 'AuthController@logout']);

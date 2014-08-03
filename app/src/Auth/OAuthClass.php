@@ -69,6 +69,7 @@ abstract class OAuth implements OAuthInterface{
     {
         \Session::forget('user_id');
         \Session::forget('accessToken');
+        \Session::forget('auth');
     }
 
     public function getLastError()

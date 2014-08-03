@@ -9,13 +9,20 @@ class AuthController extends BaseController
     public function index()
     {
         if(\Karma\Auth\OAuth::getUserId() == false){
-            return View::make('OK.main')
+            return View::make('auth.main')
                 ->with('full_link', \Karma\Auth\OdnoklassnikiOAuth::getAuthLink())
                 ->with('full_VK', \Karma\Auth\VkontakteOAuth::getAuthLink())
                 ->with('full_FB', \Karma\Auth\FacebookOAuth::getAuthLink());
         }
         else{
-            return View::make('OK.logout');
+            
+            //dd(\Session::get('auth'));
+            if(\Session::get('auth') == 'OK')
+                App::bind('Karma\API\InterfaceAPI', 'Karma\API\OdnoklassnikiAPI');
+            else
+                App::bind('Karma\API\InterfaceAPI', 'Karma\API\VkontakteAPI');
+            $API = App::make('Karma\API\InterfaceAPI');
+            return View::make('auth.view')->with('userInfo', $API->getUserInfo());
         }
     }
 
@@ -25,6 +32,7 @@ class AuthController extends BaseController
 
         $OAuth = App::make('\Karma\Auth\OdnoklassnikiOAuth');
         $OAuth->auth();
+        \Session::put('auth', 'OK');
         
         return Redirect::route('authIndex');
     }
@@ -36,6 +44,8 @@ class AuthController extends BaseController
 
         $OAuth = App::make('\Karma\Auth\VkontakteOAuth');
         $OAuth->auth();
+        \Session::put('auth', 'VK');
+        
         return Redirect::route('authIndex');
     }
     
