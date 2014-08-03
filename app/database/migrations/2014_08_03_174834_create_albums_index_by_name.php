@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChatsTable extends Migration {
+class CreateAlbumsIndexByName extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,9 @@ class CreateChatsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('chats', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->text('description')->nullable();
-		});
+		Schema::table('albums', function(Blueprint $table) {
+           $table->index('name'); 
+        });
 	}
 
 	/**
@@ -26,7 +24,9 @@ class CreateChatsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('chats');
+		Schema::table('albums', function(Blueprint $table) {
+           $table->dropIndex('albums_name_index'); 
+        });
 	}
 
 }

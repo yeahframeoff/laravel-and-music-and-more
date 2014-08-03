@@ -42,9 +42,4 @@ class User extends Eloquent implements UserInterface {
     {
         return $this->hasManyThrough('Friend', 'User');
     }
-    
-    public function preferredGenres()
-    {
-                               
-    }
 }

@@ -18,6 +18,7 @@ class CreateChatMessagesTable extends Migration {
             $table->integer('chat_id')->unsigned();
 			$table->integer('from_user_id')->unsigned();
             $table->text('message');
+            $table->timestamps();
             
             $table->foreign('from_user_id')
                   ->references('id')
