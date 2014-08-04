@@ -31,7 +31,11 @@ abstract class OAuth implements OAuthInterface{
 
             $response = Curl::post($url, $requestData)[0];
             $response = $response->getContent();
-            $response = json_decode($response, true);
+            $responseTmp = json_decode($response, true);
+            if ($responseTmp == NULL){
+                parse_str($response, $responseTmp);
+            }
+            $response = $responseTmp;
             
             if(isset($response['access_token'])){
                 \Session::put('accessToken', $response['access_token']);

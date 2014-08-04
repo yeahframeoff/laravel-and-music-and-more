@@ -9,10 +9,11 @@ class FacebookOAuth extends OAuth
     {
         $this->dataArray = array(
             'APIUrl' => 'https://graph.facebook.com/oauth/access_token',
-            'client_id' => '855041994513449',
-            'client_secret' => '506585f3c1004d81bb1c2a64631abbc2',
-            'social_id' => 0,
+            'client_id' => '1446675095605125',
+            'client_secret' => 'e98bafaf60c6c78104df3de28339acdb',
+            'social_id' => 1,
             'redirect' => 'successAuthFB',
+            'token_key' => 'access_token'
         );
         $this->interfaceAPI = $interfaceAPI;
     }

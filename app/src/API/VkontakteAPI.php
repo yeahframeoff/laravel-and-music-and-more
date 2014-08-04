@@ -30,7 +30,7 @@ class VkontakteAPI extends API implements InterfaceAPI
     {
         $userId = \Session::get('user_id');
         $credential = \Karma\Entities\Credential::whereRaw(
-            'user_id = ? and social_id = 1', array($userId)
+            'user_id = ? and social_id = 2', array($userId)
         )->first();
                 
         $params = array(

@@ -12,7 +12,7 @@ class OdnoklassnikiOAuth extends OAuth
             'client_id' => \Config::get('app.OKAppId'),
             'client_secret' => \Config::get('app.OKClientSecret'),
             'token_key' => 'refresh_token',
-            'social_id' => 2,
+            'social_id' => 3,
             'redirect' => 'successAuthOK',
             'grant_type' => 'authorization_code'
         );

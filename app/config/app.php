@@ -132,7 +132,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
        	'Karma\Providers\DataAccessProvider',
-	),
+ 	),
 
 	/*
 	|--------------------------------------------------------------------------

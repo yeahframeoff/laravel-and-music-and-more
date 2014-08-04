@@ -11,7 +11,7 @@ class VkontakteOAuth extends OAuth
             'APIUrl' => 'https://oauth.vk.com/access_token',
             'client_id' => \Config::get('app.VKClientId'),
             'client_secret' => \Config::get('app.VKClientSecret'),
-            'social_id' => 1,
+            'social_id' => 2,
             'redirect' =>'successAuthVK',
             'token_key' => 'access_token',
             'key_user_id' => 'user_id'
