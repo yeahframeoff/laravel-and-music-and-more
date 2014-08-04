@@ -9,7 +9,7 @@ class OdnoklassnikiOAuth extends OAuth
     {
         $this->dataArray = array(
             'APIUrl' => 'http://api.odnoklassniki.ru/oauth/token.do',
-            'client_id' => \Config::get('app.OKClientId'),
+            'client_id' => \Config::get('app.OKAppId'),
             'client_secret' => \Config::get('app.OKClientSecret'),
             'token_key' => 'refresh_token',
             'social_id' => 2,
