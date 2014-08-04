@@ -17,8 +17,38 @@ class AuthController extends BaseController
                 ->with('full_FB', \Karma\Auth\FacebookOAuth::getAuthLink());
         }
         else{
+            
+            /*
+             * TODO: REFACTORING
+             */
+            
+            $links = array(
+                'OK' => \Karma\Auth\OdnoklassnikiOAuth::getAuthLink(),
+                'VK' => \Karma\Auth\VkontakteOAuth::getAuthLink(),
+                'FB' => \Karma\Auth\FacebookOAuth::getAuthLink()
+            );
+            
+            $socials = array(
+                '1' => 'FB',
+                '2' => 'VK',
+                '3' => 'OK'
+            );
+            
+            /*
+             * TODO: add this part to model/repo
+             */
+            
+            $credentials = \Karma\Entities\Credential::where('user_id', '=', \Session::get('user_id'))->get();
+            foreach($credentials as $credential){
+                $socTmp = $socials[$credential->social_id];
+                $socials[$credential->social_id] = array(true, $socTmp);
+            }
+            
             $API = App::make('Karma\API\InterfaceAPI');
-            return View::make('auth.view')->with('userInfo', $API->getUserInfo());
+            return View::make('auth.view')
+                ->with('userInfo', $API->getUserInfo())
+                ->with('socials', $socials)
+                ->with('links', $links);
         }
     }
 
