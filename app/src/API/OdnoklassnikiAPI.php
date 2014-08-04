@@ -8,12 +8,13 @@ class OdnoklassnikiAPI extends API implements InterfaceAPI
     public function __construct()
     {
         $this->apiLink = 'http://api.odnoklassniki.ru/fb.do';
-        $this->applicationKey = 'CBALOCGCEBABABABA';
-        $this->privateKey = '93D9DB4E54B94F8A8F76DDFD';
+        $this->applicationKey = \Config::get('app.OKClientId');
+        $this->privateKey = \Config::get('app.OKClientSecret');
     }
     
     public function getUserId($fullInfo = false)
     {        
+                
         $sign = md5("application_key=" . $this->applicationKey . "method=users.getCurrentUser"
                     . md5($this->getToken() . $this->privateKey));
         

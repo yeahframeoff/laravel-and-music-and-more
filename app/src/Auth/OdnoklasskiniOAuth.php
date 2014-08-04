@@ -9,8 +9,8 @@ class OdnoklassnikiOAuth extends OAuth
     {
         $this->dataArray = array(
             'APIUrl' => 'http://api.odnoklassniki.ru/oauth/token.do',
-            'client_id' => '1096935936',
-            'client_secret' => '93D9DB4E54B94F8A8F76DDFD',
+            'client_id' => \Config::get('app.OKClientId'),
+            'client_secret' => \Config::get('app.OKClientSecret'),
             'token_key' => 'refresh_token',
             'social_id' => 2,
             'redirect' => 'successAuthOK',
@@ -21,8 +21,10 @@ class OdnoklassnikiOAuth extends OAuth
 
     public static function getAuthLink()
     {
+        $appId = \Config::get('app.OKAppId');
+        
         $full_link = 'http://www.odnoklassniki.ru/oauth/authorize?'
-            . 'client_id=1096935936&response_type=code'
+            . "client_id={$appId}&response_type=code"
             . '&redirect_uri=http://target-green.codio.io:3000/successAuthOK';
         return $full_link;
     }

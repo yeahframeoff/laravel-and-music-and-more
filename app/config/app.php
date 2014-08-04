@@ -2,6 +2,16 @@
 
 return array(
 
+    /*
+     * OAuth data
+     */
+    
+    'VKClientId' => '4484087',
+    'VKClientSecret' => 'Q8sHnIlcnvF13GK2ptEx',
+    'OKClientId' => 'CBALOCGCEBABABABA',
+    'OKClientSecret' => '93D9DB4E54B94F8A8F76DDFD',
+    'OKAppId' => '1096935936',
+    
 	/*
 	|--------------------------------------------------------------------------
 	| Application Debug Mode

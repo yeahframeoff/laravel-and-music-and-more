@@ -9,8 +9,8 @@ class VkontakteOAuth extends OAuth
     {
         $this->dataArray = array(
             'APIUrl' => 'https://oauth.vk.com/access_token',
-            'client_id' => '4484087',
-            'client_secret' => 'Q8sHnIlcnvF13GK2ptEx',
+            'client_id' => \Config::get('app.VKClientId'),
+            'client_secret' => \Config::get('app.VKClientSecret'),
             'social_id' => 1,
             'redirect' =>'successAuthVK',
             'token_key' => 'access_token',
@@ -21,7 +21,9 @@ class VkontakteOAuth extends OAuth
 
     public static function getAuthLink()
     {
-        $fullLink = 'https://oauth.vk.com/authorize?client_id=4484087&scope=audio'
+        $cliendId = \Config::get('app.VKClientId');
+        
+        $fullLink = "https://oauth.vk.com/authorize?client_id={$cliendId}&scope=audio"
             . '&response_type=code&v=5.23'
             . '&redirect_uri=http://target-green.codio.io:3000/successAuthVK';
         return $fullLink;

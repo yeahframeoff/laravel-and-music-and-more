@@ -11,8 +11,8 @@ class VkontakteAPI extends API implements InterfaceAPI
     {
         $this->apiLink = 'https://api.vk.com/method/';
         $this->accessToken = $this->getToken();
-        $this->applicationKey = '4484087';
-        $this->privateKey = 'Q8sHnIlcnvF13GK2ptEx';
+        $this->applicationKey = \Config::get('app.VKClientId');
+        $this->privateKey = \Config::get('app.VKClientSecret');
     }
     
     public function getUserId()
