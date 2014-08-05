@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAlbumsToGenresTable extends Migration {
+class CreateAlbumTracksTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,19 +12,19 @@ class CreateAlbumsToGenresTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('albums_to_genres', function(Blueprint $table)
+		Schema::create('album_tracks', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('album_id')->unsigned();
-            $table->integer('genre_id')->unsigned();
+            $table->integer('track_id')->unsigned();
             
             $table->foreign('album_id')
                   ->references('id')
                   ->on('albums');
             
-            $table->foreign('genre_id')
+            $table->foreign('track_id')
                   ->references('id')
-                  ->on('genres');
+                  ->on('tracks');
 		});
 	}
 
@@ -35,13 +35,12 @@ class CreateAlbumsToGenresTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('albums_to_genres', function(Blueprint $table)
-        {
-        	$table->dropForeign('albums_to_genres_album_id_foreign');    
-            $table->dropForeign('albums_to_genres_genre_id_foreign');
+        Schema::table('album_tracks', function(Blueprint $table) {
+            $table->dropForeign('album_tracks_album_id_foreign');
+            $table->dropForeign('album_tracks_track_id_foreign');
         });
         
-		Schema::drop('albums_to_genres');
+		Schema::drop('albums_to_tracks');
 	}
 
 }
