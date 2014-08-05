@@ -34,24 +34,13 @@
         </style>
     </head>
     <body>
-        {{-- dd($userInfo) --}}
-
-        @foreach($socials as $key => $value)
-            @if(is_array($value))
-                {{ $value[1] }} -- connected({{ HTML::linkAction('AuthController@loadProfile', 'Load profile', array('socialId' => $key))}})<br/>
-            @else
-                {{ $value}} -- unconnected({{ HTML::link($links[$value], 'Connect') }})<br/>
-            @endif
-        @endforeach
         
         <div class="welcome">
-            <h1>You've been successfully authorized!</h1>
+            <h1>User profile(id = {{ $user->id }})</h1>
             <h1>
-                <img src="{{ $userInfo['photo'] }}" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)">
+                <img src="{{ $user->photo }}" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)">
             </h1>
-        <h1>User #{{ $userInfo['id'] or $userInfo['uid']}}</h1>
-        <h1>{{ $userInfo['first_name'] .' '.$userInfo['last_name'] }}</h1>
-        <h1>{{ $userInfo['city'] or ''}}, {{ $userInfo['country'] or ''}}</h1>
+        <h1>{{ $user->first_name .' '.$user->last_name }}</h1>
         <div>
             <a href="{{ URL::route('logoutAuth') }}" title="Log Out">
                 <img src="{{ URL::asset('public/forward.png') }}">

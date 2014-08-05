@@ -14,6 +14,7 @@ abstract class OAuth implements OAuthInterface{
 
     public function auth()
     {
+        
         $result = false;
         if (\Input::has('code')) {
             $code = \Input::get('code');
@@ -37,6 +38,7 @@ abstract class OAuth implements OAuthInterface{
             }
             $response = $responseTmp;
             
+            
             if(isset($response['access_token'])){
                 \Session::put('accessToken', $response['access_token']);
                 
@@ -58,7 +60,8 @@ abstract class OAuth implements OAuthInterface{
                     $user->save();
                     $credential->user_id = $user->id;
                 }
-                $credential->token = $response[$this->dataArray['token_key']];
+                //$credential->token = $response[$this->dataArray['token_key']];
+                $credential->token = $response['access_token'];
                 $credential->save();
                 \Session::put('user_id', $credential->user_id);
             }

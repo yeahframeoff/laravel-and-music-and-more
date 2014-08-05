@@ -14,8 +14,7 @@ class FacebookAPI extends API implements InterfaceAPI
     }
 
     public function getUserId()
-    {        
-
+    {
         $result = $this->APImethodGet(array(), "debug_token?input_token="
                                       . $this->getToken()
                                       . '&access_token=' . $this->accessToken);
@@ -38,7 +37,20 @@ class FacebookAPI extends API implements InterfaceAPI
 
     protected function getToken()
     {
-        return \Session::get('accessToken');
+        $result;
+        if(\Session::has('user_id')){
+            $userId = \Session::get('user_id');
+            $credential = \Karma\Entities\Credential::whereRaw(
+                'user_id = ? and social_id = 1', array($userId)
+            )->first();
+            if($credential != NULL)
+                $result = $credential->token;
+            else
+                $result = \Session::get('accessToken');
+        }
+        else
+            $result = \Session::get('accessToken');
+        return $result;
     }
 
     private function getUserAvatar()

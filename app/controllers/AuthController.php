@@ -71,7 +71,7 @@ class AuthController extends BaseController
         $OAuth = App::make('\Karma\Auth\VkontakteOAuth');
         $OAuth->auth();
         \Session::put('auth', 'VK');
-        
+                
         return Redirect::route('authIndex');
     }
     
@@ -86,16 +86,39 @@ class AuthController extends BaseController
         return Redirect::route('authIndex');
     }
     
+    public function loadProfile($socialId)
+    {
+        
+        /*
+         * TODO: in separate method
+         */
+        
+        switch($socialId){
+            case '1':
+                $API = App::make('\Karma\API\FacebookAPI');
+                break;
+            case '2':
+                $API = App::make('\Karma\API\VkontakteAPI');
+                break;
+            case '3':
+                $API = App::make('\Karma\API\OdnoklassnikiAPI');
+                break;
+        }
+        $profile = $API->getUserInfo();
+        $user = \Karma\Entities\User::find(\Session::get('user_id'));
+        $user->first_name = $profile['first_name'];
+        $user->last_name = $profile['last_name'];
+        $user->photo = $profile['photo'];
+        $user->save();
+        return View::make('auth.profile')->with('user', $user);
+    }
+    
     public function logout()
     {
         \Karma\Auth\OAuth::logout();
         return Redirect::route('authIndex');
     }
 
-    public function info()
-    {
-        echo phpinfo();
-    }
 
 }
 ?>

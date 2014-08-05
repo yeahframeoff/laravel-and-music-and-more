@@ -10,7 +10,6 @@ class VkontakteAPI extends API implements InterfaceAPI
     public function __construct()
     {
         $this->apiLink = 'https://api.vk.com/method/';
-        $this->accessToken = $this->getToken();
         $this->applicationKey = \Config::get('app.VKClientId');
         $this->privateKey = \Config::get('app.VKClientSecret');
     }
@@ -18,7 +17,7 @@ class VkontakteAPI extends API implements InterfaceAPI
     public function getUserId()
     {
         $params = array(
-            'access_token' => $this->accessToken,
+            'access_token' => $this->getToken(),
             'user_ids'
         );
 
@@ -51,7 +50,20 @@ class VkontakteAPI extends API implements InterfaceAPI
     
     protected function getToken()
     {
-        return \Session::get('accessToken');
+        $result;
+        if(\Session::has('user_id')){
+            $userId = \Session::get('user_id');
+            $credential = \Karma\Entities\Credential::whereRaw(
+                'user_id = ? and social_id = 2', array($userId)
+            )->first();
+            if($credential != NULL)
+                $result = $credential->token;
+            else
+                $result = \Session::get('accessToken');
+        }
+        else
+            $result = \Session::get('accessToken');
+        return $result;
     }
 }
 
