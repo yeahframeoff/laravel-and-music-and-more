@@ -11,7 +11,7 @@ class Social extends Eloquent
     protected $fillable = array('id', 'name');
     protected $timestamps = false;
     
-    public static function byName($name) {
-        return self::where('name', '=', $name);
+    public static function scopeByName($name) {
+        return self::where('name', $name);
     }
 }
