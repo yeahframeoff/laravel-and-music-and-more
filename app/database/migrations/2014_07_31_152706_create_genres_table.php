@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration {
+class CreateGenresTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,11 @@ class CreateUsersTable extends Migration {
 	 */
 	public function up()
 	{
-	    Schema::create('users', function(Blueprint $table)
+		Schema::create('genres', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->timestamps();
+            $table->integer('parent_id')->unsigned();//used to group genres (i.e. alternative rock and punk rock will have rock as parent);
+			$table->string('name', 63);
 		});
 	}
 
@@ -26,8 +27,7 @@ class CreateUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('genres');
 	}
 
 }
-	

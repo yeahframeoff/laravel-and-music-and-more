@@ -1,6 +1,7 @@
 /bootstrap/compiled.php
 /vendor
 /.idea
+.codio
 composer.phar
 composer.lock
 .env.*.php
