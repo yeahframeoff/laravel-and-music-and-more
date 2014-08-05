@@ -19,4 +19,14 @@ class Credential extends Eloquent
     {
         return $this->hasOne('Social');
     }
+    
+    public static function scopeBySocialAndId($id, $social)
+    {
+        return self::where('id', '=', $id)->where('name', '=', $social)->first();
+    }
+    
+    public static function scopeByToken($token)
+    {
+        return self::where('token', '=', $token)->first();
+    }
 }
