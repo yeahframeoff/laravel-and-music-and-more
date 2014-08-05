@@ -24,8 +24,8 @@ class CreateArtistsIndexByName extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('artists', function(Blueprint $table) {
-           $table->dropIndex('artists_name_index'); 
+	    Schema::table('artists', function(Blueprint $table) {
+            $table->dropIndex('artists_name_index'); 
         });
 	}
 

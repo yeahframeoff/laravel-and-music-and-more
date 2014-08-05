@@ -41,7 +41,7 @@ class CreateFriendsTable extends Migration {
             $table->dropForeign('friends_friend_id_foreign');
         });
         
-		Schema::drop('friends');
+	    Schema::drop('friends');
 	}
 
 }

@@ -41,7 +41,7 @@ class CreatePlaylistTracksTable extends Migration {
             $table->dropForeign('playlist_tracks_imported_track_id_foreign');
         });
         
-		Schema::drop('playlist_tracks');
+	    Schema::drop('playlist_tracks');
 	}
 
 }

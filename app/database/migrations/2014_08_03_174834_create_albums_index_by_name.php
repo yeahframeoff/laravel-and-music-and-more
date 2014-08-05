@@ -24,8 +24,8 @@ class CreateAlbumsIndexByName extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('albums', function(Blueprint $table) {
-           $table->dropIndex('albums_name_index'); 
+	    Schema::table('albums', function(Blueprint $table) {
+            $table->dropIndex('albums_name_index'); 
         });
 	}
 

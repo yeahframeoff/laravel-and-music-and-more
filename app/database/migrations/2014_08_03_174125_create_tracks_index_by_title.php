@@ -24,7 +24,7 @@ class CreateTracksIndexByTitle extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('tracks', function(Blueprint $table) {
+	    Schema::table('tracks', function(Blueprint $table) {
            $table->dropIndex('tracks_title_index'); 
         });
 	}

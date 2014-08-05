@@ -36,7 +36,7 @@ class CreatePlaylistsTable extends Migration {
         	$table->dropForeign('playlists_user_id_foreign');    
         });
         
-		Schema::drop('playlists');
+	    Schema::drop('playlists');
 	}
 
 }

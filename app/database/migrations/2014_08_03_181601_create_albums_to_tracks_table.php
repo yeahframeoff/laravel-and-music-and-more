@@ -36,7 +36,7 @@ class CreateAlbumsToTracksTable extends Migration {
 	public function down()
 	{
         Schema::table('albums_to_tracks', function(Blueprint $table) {
-        	$table->dropForeign('albums_to_tracks_album_id_foreign');
+            $table->dropForeign('albums_to_tracks_album_id_foreign');
             $table->dropForeign('albums_to_tracks_track_id_foreign');
         });
         

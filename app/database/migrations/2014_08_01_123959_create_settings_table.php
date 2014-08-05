@@ -36,7 +36,7 @@ class CreateSettingsTable extends Migration {
            $table->dropForeign('settings_user_id_foreign'); 
         });
         
-		Schema::drop('settings');
+	    Schema::drop('settings');
 	}
 
 }

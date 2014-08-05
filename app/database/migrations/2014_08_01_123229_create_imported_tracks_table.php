@@ -12,7 +12,7 @@ class CreateImportedTracksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('imported_tracks', function(Blueprint $table)
+	    Schema::create('imported_tracks', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('track_id')->unsigned();
