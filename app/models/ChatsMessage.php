@@ -5,7 +5,7 @@ namespace Karma\Entities;
 class ChatsMessage extends Eloquent
 {
     protected $table = 'chat_messages';
-    protected $fillable = array('id', 'chat_id', 'from_user_id', 'message', 'created_at', 'updated_at');
+    protected $fillable = array('id', 'chat_id', 'from_user_id', 'message');
     
     public function chat()
     {
