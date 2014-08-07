@@ -125,7 +125,7 @@ return array(
 
 	        /* Custom providers here */
 
-        	'Karma\Providers\DataAccessProvider',
+//        	'Karma\Providers\DataAccessProvider',
 
 	),
 
