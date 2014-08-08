@@ -37,4 +37,9 @@ class User extends Eloquent implements UserInterface {
     {
         return $this->hasManyThrough('Friend', 'User');
     }
+    
+    public function socials()
+    {
+        return $this->credentials()->lists('external_id', 'social_id');
+    }
 }
