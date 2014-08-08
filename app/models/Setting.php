@@ -5,7 +5,7 @@ namespace Karma\Entities;
 class Setting extends \Eloquent
 {
 	protected $fillable = array('id', 'user_id', 'key', 'value');
-    protected $timestamps = false;
+    public $timestamps = false;
     
     public function user()
     {
