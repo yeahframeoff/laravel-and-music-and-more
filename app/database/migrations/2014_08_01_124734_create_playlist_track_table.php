@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePlaylistTracksTable extends Migration {
+class CreatePlaylistTrackTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreatePlaylistTracksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('playlist_tracks', function(Blueprint $table)
+		Schema::create('playlist_track', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('playlist_id')->unsigned();
@@ -36,12 +36,12 @@ class CreatePlaylistTracksTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('playlist_tracks', function(Blueprint $table) {
-        	$table->dropForeign('playlist_tracks_playlist_id_foreign');
-            $table->dropForeign('playlist_tracks_imported_track_id_foreign');
+        Schema::table('playlist_track', function(Blueprint $table) {
+        	$table->dropForeign('playlist_track_playlist_id_foreign');
+            $table->dropForeign('playlist_track_imported_track_id_foreign');
         });
         
-	    Schema::drop('playlist_tracks');
+	    Schema::drop('playlist_track');
 	}
 
 }

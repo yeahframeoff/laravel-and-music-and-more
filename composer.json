@@ -5,7 +5,11 @@
     "license": "MIT",
     "require": {
         "laravel/framework": "4.2.*",
-        "jyggen/curl": "4.0.*@dev"
+        "jyggen/curl": "4.0.*@dev",
+        "guzzle/guzzle": "3.9.*@dev",
+        "rmccue/requests": "dev-master",
+        "mikealmond/musicbrainz": "0.2.*@dev",
+        "dandelionmood/lastfm": "dev-master"
     },
     "autoload": {
         "classmap": [

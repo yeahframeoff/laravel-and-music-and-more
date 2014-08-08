@@ -14,11 +14,11 @@ class Album extends \Eloquent
     
     public function genres()
     {
-        return $this->hasManyThrough('AlbumsGenre', 'Genre')
+        return $this->belongsToMany('Genre');
     }
     
     public function tracks()
     {
-        return $this->hasManyThrough('AlbumsTrack', 'Track');
+        return $this->belongsToMany('Track');
     }
 }

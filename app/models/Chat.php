@@ -9,11 +9,11 @@ class Chat extends \Eloquent
     
     public function participants()
     {
-        return $this->hasManyThrough('ChatsUser', 'User');
+        return $this->belongsToMany('User');
     }
     
     public function messages()
     {
-        return $this->belongsToMany('ChatsMessage');
+        return $this->hasMany('ChatMessage');
     }
 }

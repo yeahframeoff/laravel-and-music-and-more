@@ -20,7 +20,7 @@ class User extends \Eloquent implements UserInterface {
     
     public function tracks()
     {
-        return $this->hasMany('UserTrack');
+        return $this->belongsToMany('ImportedTrack', 'imported_track_user');
     }
     
     public function settings()
@@ -30,16 +30,21 @@ class User extends \Eloquent implements UserInterface {
 	
     public function chats()
     {
-        return $this->hasManyThrough('ChatUsers', 'Chat');
+        return $this->belongsToMany('Chat');
     }
     
     public function friends()
     {
-        return $this->hasManyThrough('Friend', 'User');
+        return self::whereIn('id', DB::table('friends')->where('user_id', $this->id)->lists('friend_id'));
     }
     
     public function socials()
     {
         return $this->credentials()->lists('external_id', 'social_id');
+    }
+    
+    public function addFriend($id)
+    {
+        DB::table('friends')->insert(array('user_id' => $this->id, 'friend_id' => $id));
     }
 }
