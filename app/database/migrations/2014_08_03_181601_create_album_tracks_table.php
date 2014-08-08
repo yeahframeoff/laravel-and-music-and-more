@@ -40,7 +40,7 @@ class CreateAlbumTracksTable extends Migration {
             $table->dropForeign('album_tracks_track_id_foreign');
         });
         
-		Schema::drop('albums_to_tracks');
+		Schema::drop('albums_tracks');
 	}
 
 }

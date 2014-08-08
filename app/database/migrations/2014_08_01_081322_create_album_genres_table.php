@@ -41,7 +41,7 @@ class CreateAlbumGenresTable extends Migration {
             $table->dropForeign('album_genres_genre_id_foreign');
         });
         
-		Schema::drop('albums_to_genres');
+		Schema::drop('albums_genres');
 	}
 
 }
