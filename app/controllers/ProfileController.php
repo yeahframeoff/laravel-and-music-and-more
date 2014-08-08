@@ -3,7 +3,7 @@ use \Karma\Auth;
 use \Karma\API;
 use \Karma\Entities\Credential;
 
-class AuthController extends BaseController
+class ProfileController extends BaseController
 {
 
     public function index()

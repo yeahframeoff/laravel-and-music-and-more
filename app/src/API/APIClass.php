@@ -6,11 +6,29 @@ use \Jyggen\Curl\Curl;
 
 abstract class API 
 {
+    const FB = 1;
+    const VK = 2;
+    const OK = 3;
     
     protected $apiLink;
     protected $accessToken;
     protected $applicationKey;
     protected $privateKey;
+    
+    public static function getAPI($socialId){
+        switch($socialId){
+            case self::FB:
+                $API = \App::make('\Karma\API\FacebookAPI');
+                break;
+            case self::VK:
+                $API = \App::make('\Karma\API\VkontakteAPI');
+                break;
+            case self::OK:
+                $API = \App::make('\Karma\API\OdnoklassnikiAPI');
+                break;
+        }
+        return $API;
+    }
     
     protected function APImethod($params, $addToUrl = '')
     {
@@ -37,7 +55,7 @@ abstract class API
     
     private function checkError($response)
     {
-        if(isset($response['error']))
+        if(isset($response['error']) || isset($response['error_msg']))
             dd($response);
         else
             return $response;
