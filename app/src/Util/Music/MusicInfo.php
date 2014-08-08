@@ -35,15 +35,20 @@ class MusicInfo
             $_track = Track::where('artist_id', $_artist->id)
                            ->where('title', $title);
             
-            
+            if($_track->exists())
+            {
+                
+            }
+            else
+            {
+                
+            }            
         }
         else
         {
             
         }
         
-        $album = 
-        $artist = 
         $result['album'] = self::getAlbumInfo($album);
         $result['artist'] = self::getArtistInfo($artist);
         $result['lyrics'] = self::getLyrics(array($artist, $title));        
