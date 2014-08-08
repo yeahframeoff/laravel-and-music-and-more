@@ -12,7 +12,7 @@ class Credential extends Eloquent
 
     public function user()
     {
-        return $this->hasOne('User');
+        return $this->belongsTo('User', 'user_id');
     }
     
     public function social()

@@ -2,6 +2,16 @@
 
 return array(
 
+    /*
+     * OAuth data
+     */
+    
+    'VKClientId' => '4484087',
+    'VKClientSecret' => 'Q8sHnIlcnvF13GK2ptEx',
+    'OKClientId' => 'CBALOCGCEBABABABA',
+    'OKClientSecret' => '93D9DB4E54B94F8A8F76DDFD',
+    'OKAppId' => '1096935936',
+    
 	/*
 	|--------------------------------------------------------------------------
 	| Application Debug Mode
@@ -26,7 +36,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => '127.0.0.1',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,8 +88,7 @@ return array(
 	|
 	*/
 
-
-	'key' => '4Jqt1FgG2ZiQqgB2TqT0fY5sG4F1NHaF',
+	'key' => 'CLYhDHN6XnQyHOiVDdzVsgB90XPtcYC0',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -122,7 +131,7 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-	),
+ 	),
 
 	/*
 	|--------------------------------------------------------------------------

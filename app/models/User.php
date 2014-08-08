@@ -42,4 +42,6 @@ class User extends Eloquent implements UserInterface {
     {
         return $this->credentials()->lists('external_id', 'social_id');
     }
+    }
+
 }
