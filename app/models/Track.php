@@ -2,7 +2,7 @@
 
 namespace Karma\Entities;
 
-class Track extends Eloquent
+class Track extends \Eloquent
 {
     protected $fillable = array('id', 'artist_id', 'genre_id', 'title', 'lyrics');
     protected $timestamps = false;

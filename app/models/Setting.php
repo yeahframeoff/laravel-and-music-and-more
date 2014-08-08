@@ -2,7 +2,7 @@
 
 namespace Karma\Entities;
 
-class Setting extends Eloquent
+class Setting extends \Eloquent
 {
 	protected $fillable = array('id', 'user_id', 'key', 'value');
     protected $timestamps = false;

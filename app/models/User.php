@@ -2,7 +2,7 @@
 
 namespace Karma\Entities;
 
-class User extends Eloquent implements UserInterface {
+class User extends \Eloquent implements UserInterface {
 
     use UserTrait;
 
