@@ -11,5 +11,5 @@ Thumbs.db
 startup.sh
 .settings
 .htaccess
-app/config/app.php
-app/config/database.php
+/app/config/app.php
+/app/config/database.php
