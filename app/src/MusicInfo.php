@@ -108,7 +108,7 @@ class MusicInfo
     
     /**
      * @param string $album
-     * @return array
+     * @return object
      */
     public static function getAlbumInfo(string $album)
     {
@@ -121,7 +121,7 @@ class MusicInfo
     
     /**
      * @param string $artist
-     * @return array
+     * @return object
      */
     public static function getArtistInfo($artist)
     {

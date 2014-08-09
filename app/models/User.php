@@ -103,7 +103,7 @@ class User extends \Eloquent implements UserInterface {
     public function confirmFriend($id)
     {
         DB::table('friends')->where('user_id', $id)
-        				    ->where('friend_id', $this->id)
+                            ->where('friend_id', $this->id)
                             ->update(array('confirmed', true));
         
         DB::table('friends')->insert(array('user_id' => $this->id,
