@@ -16,12 +16,7 @@ class CreateArtistsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
-            $table->integer('genre_id')->unsigned();
             $table->text('bio');
-            
-            $table->foreign('genre_id')
-      			  ->references('id')
-                  ->on('genres');
 		});
 	}
 
@@ -32,11 +27,6 @@ class CreateArtistsTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('artists', function(Blueprint $table)
-        {
-        	$table->dropForeign('artists_genre_id_foreign');
-        });
-        
 		Schema::drop('artists');
 	}
 

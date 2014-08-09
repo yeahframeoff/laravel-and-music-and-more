@@ -4,13 +4,8 @@ namespace Karma\Entities;
 
 class Artist extends \Eloquent
 {
-    protected $fillable = array('id', 'name', 'genre_id', 'bio');
+    protected $fillable = array('id', 'name', 'bio');
     public $timestamps = false;
-    
-    public function genre()
-    {
-        return $this->hasOne('Genre');
-    }
     
     public function albums()
     {
