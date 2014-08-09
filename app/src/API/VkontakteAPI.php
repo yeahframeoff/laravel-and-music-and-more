@@ -32,8 +32,10 @@ class VkontakteAPI extends API implements InterfaceAPI
             'user_id = ? and social_id = 2', array($userId)
         )->first();
                 
+        $uid = \Session::get('external_id') or $credential->external_id;
+        
         $params = array(
-            'user_ids' => $credential->external_id,
+            'user_ids' => $uid,
             'fields' => implode(',', array(
                 'city',
                 'country',
@@ -42,9 +44,12 @@ class VkontakteAPI extends API implements InterfaceAPI
             'access_token' => $this->getToken()
         );
         
-        $result = $this->APImethod($params, 'users.get')['response'][0];
-        $result['photo'] = $result['photo_max_orig'];
-        $result['id'] = $result['uid'];
+        $info = $this->APImethod($params, 'users.get')['response'][0];
+        $result = array(
+            'photo' => $info['photo_max_orig'],
+            'first_name' => $info['first_name'],
+            'last_name' => $info['last_name']
+        );
         return $result;
     }
     
@@ -57,7 +62,7 @@ class VkontakteAPI extends API implements InterfaceAPI
                 'user_id = ? and social_id = 2', array($userId)
             )->first();
             if($credential != NULL)
-                $result = $credential->token;
+                $result = $credential->access_token;
             else
                 $result = \Session::get('accessToken');
         }

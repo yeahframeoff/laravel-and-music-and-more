@@ -15,6 +15,7 @@ class FacebookAPI extends API implements InterfaceAPI
 
     public function getUserId()
     {
+        
         $result = $this->APImethodGet(array(), "debug_token?input_token="
                                       . $this->getToken()
                                       . '&access_token=' . $this->accessToken);
@@ -28,10 +29,10 @@ class FacebookAPI extends API implements InterfaceAPI
             'access_token' => $this->getToken()
         );
 
-        //var_dump($params);
-
-        $result = $this->APImethodGet($params, 'me');
+        $info = $this->APImethodGet($params, 'me');
         $result['photo'] = $this->getUserAvatar();
+        $result['first_name'] = $info['first_name'];
+        $result['last_name'] = $info['last_name'];
         return $result;
     }
 
@@ -44,7 +45,7 @@ class FacebookAPI extends API implements InterfaceAPI
                 'user_id = ? and social_id = 1', array($userId)
             )->first();
             if($credential != NULL)
-                $result = $credential->token;
+                $result = $credential->access_token;
             else
                 $result = \Session::get('accessToken');
         }

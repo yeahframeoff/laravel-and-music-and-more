@@ -20,7 +20,7 @@ class CreateCredentialsTable extends Migration {
             $table->string('external_id');
             $table->string('access_token');
             $table->string('refresh_token');
-            $table->timestamp('expiration');
+            $table->timestamp('expiration')->nullable();
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')

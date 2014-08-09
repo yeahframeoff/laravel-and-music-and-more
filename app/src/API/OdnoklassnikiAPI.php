@@ -36,10 +36,7 @@ class OdnoklassnikiAPI extends API implements InterfaceAPI
     {
         $userData = $this->getUserId(true);
         $userInfo = array(
-            'id' => $userData['uid'],
             'photo' => $userData['pic_1'],
-            'city' => $userData['location']['city'],
-            'country' => $userData['location']['country'],
             'first_name' => $userData['first_name'],
             'last_name' => $userData['last_name']
         );
@@ -55,7 +52,7 @@ class OdnoklassnikiAPI extends API implements InterfaceAPI
                 'user_id = ? and social_id = 3', array($userId)
             )->first();
             if($credential != NULL)
-                $result = $credential->token;
+                $result = $credential->access_token;
             else
                 $result = \Session::get('accessToken');
         }

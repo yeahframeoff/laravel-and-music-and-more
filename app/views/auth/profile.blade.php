@@ -37,6 +37,8 @@
         
         <div class="welcome">
             <h1>User profile(id = {{ $user->id }})</h1>
+            {{ HTML::linkAction('Karma\Controllers\ProfileController@addFriend', 'Add to friend', array('id' => $user->id))}})
+            {{ HTML::linkAction('Karma\Controllers\ProfileController@getAllFriends', 'All friends', array('id' => $user->id))}})
             <h1>
                 <img src="{{ $user->photo }}" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)">
             </h1>

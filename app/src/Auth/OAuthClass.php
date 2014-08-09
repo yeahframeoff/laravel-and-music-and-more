@@ -53,15 +53,22 @@ abstract class OAuth implements OAuthInterface{
                     'external_id' => $uid,
                 ));
                 if(!isset($credential->id)){
-                    if(\Session::has('user_id'))
+                    if(\Session::has('user_id')){
                         $user = \Karma\Entities\User::find(\Session::get('user_id'));
-                    else
+                    }
+                    else {
                         $user = new \Karma\Entities\User;
+                    }
+                    \Session::flash('external_id', $uid);
+                    $userInfo = $this->interfaceAPI->getUserInfo();
+                    foreach($userInfo as $key => $value){
+                        $user->$key = $value;
+                    }
                     $user->save();
                     $credential->user_id = $user->id;
                 }
-                //$credential->token = $response[$this->dataArray['token_key']];
-                $credential->token = $response['access_token'];
+                $credential->refresh_token = $response[$this->dataArray['token_key']];
+                $credential->access_token = $response['access_token'];
                 $credential->save();
                 \Session::put('user_id', $credential->user_id);
             }

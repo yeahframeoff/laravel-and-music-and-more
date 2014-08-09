@@ -2,7 +2,7 @@
 
 namespace Karma\Entities;
 
-class Playlist extends Eloquent
+class Playlist extends \Eloquent
 {
 	protected $fillable = array('id', 'user_id', 'name');
     

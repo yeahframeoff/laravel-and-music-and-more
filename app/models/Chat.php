@@ -2,7 +2,7 @@
 
 namespace Karma\Entities;
 
-class Chat extends Eloquent
+class Chat extends \Eloquent
 {
 	protected $fillable = array('id', 'description');
     protected $timestamps = false;

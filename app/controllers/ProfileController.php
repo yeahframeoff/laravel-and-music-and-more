@@ -1,110 +1,72 @@
 <?php
+
+namespace Karma\Controllers;
+
 use \Karma\Auth;
 use \Karma\API;
-use \Karma\Entities\Credential;
+use \Karma\Entities\User;
+use \View;
+use \Session;
+use \Redirect;
+use \DB;
 
 class ProfileController extends BaseController
 {
 
-    public function index()
+    public function show(User $user)
     {
-        \App::register('Karma\API\APIServiceProvider');
-
-        if(\Karma\Auth\OAuth::getUserId() == false){
-            return View::make('auth.main')
-                ->with('full_link', \Karma\Auth\OdnoklassnikiOAuth::getAuthLink())
-                ->with('full_VK', \Karma\Auth\VkontakteOAuth::getAuthLink())
-                ->with('full_FB', \Karma\Auth\FacebookOAuth::getAuthLink());
-        }
-        else{
-
-            /*
-             * TODO: REFACTORING
-             */
-
-            $links = array(
-                'OK' => \Karma\Auth\OdnoklassnikiOAuth::getAuthLink(),
-                'VK' => \Karma\Auth\VkontakteOAuth::getAuthLink(),
-                'FB' => \Karma\Auth\FacebookOAuth::getAuthLink()
-            );
-
-            $socials = array(
-                '1' => 'FB',
-                '2' => 'VK',
-                '3' => 'OK'
-            );
-
-            /*
-             * TODO: add this part to model/repo
-             */
-
-            $credentials = \Karma\Entities\Credential::where('user_id', '=', \Session::get('user_id'))->get();
-            foreach($credentials as $credential){
-                $socTmp = $socials[$credential->social_id];
-                $socials[$credential->social_id] = array(true, $socTmp);
-            }
-
-            $API = App::make('Karma\API\InterfaceAPI');
-            return View::make('auth.view')
-                ->with('userInfo', $API->getUserInfo())
-                ->with('socials', $socials)
-                ->with('links', $links);
-        }
-    }
-
-    public function successOK()
-    {
-        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\OdnoklassnikiAPI');
-
-        $OAuth = App::make('\Karma\Auth\OdnoklassnikiOAuth');
-        $OAuth->auth();
-        \Session::put('auth', 'OK');
-
-        return Redirect::route('authIndex');
-    }
-
-    public function successVK()
-    {
-
-        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\VkontakteAPI');
-
-        $OAuth = App::make('\Karma\Auth\VkontakteOAuth');
-        $OAuth->auth();
-        \Session::put('auth', 'VK');
-
-        return Redirect::route('authIndex');
-    }
-
-    public function successFB()
-    {
-        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\FacebookAPI');
-
-        $OAuth = App::make('Karma\Auth\FacebookOAuth');
-        $OAuth->auth();
-        \Session::put('auth', 'FB');
-
-        return Redirect::route('authIndex');
-    }
-
-    public function loadProfile($socialId)
-    {
-
-        $API = \Karma\API\API::getAPI($socialId);
-        $profile = $API->getUserInfo();
-        $user = \Karma\Entities\User::find(\Session::get('user_id'));
-        $user->first_name = $profile['first_name'];
-        $user->last_name = $profile['last_name'];
-        $user->photo = $profile['photo'];
-        $user->save();
         return View::make('auth.profile')->with('user', $user);
     }
 
-    public function logout()
+    public function addFriend(User $user)
     {
-        \Karma\Auth\OAuth::logout();
-        return Redirect::route('authIndex');
+        DB::table('friends')->insert(array(
+            'user_id' => Session::get('user_id'),
+            'friend_id' => $user->id,
+            'confirmed' => false
+        ));
+        return Redirect::action('profile',
+                                array(Session::get('user_id')));
     }
 
+    public function deleteFriend(User $user)
+    {
+        DB::table('friends')
+            ->where('user_id', $user->id)
+            ->where('friend_id', Session::get('user_id'))
+            ->delete();
+        DB::table('friends')
+            ->where('user_id', Session::get('user_id'))
+            ->where('friend_id', $user->id)
+            ->delete();
+        return Redirect::action('profile',
+                                array(Session::get('user_id')));
+    }
+
+    public function getAllFriends(User $user)
+    {
+        $requests = $user->friendshipRequests();
+        $friends = $user->friends();
+        return View::make('auth.friends')
+            ->with('friends', $friends)
+            ->with('requests', $requests);
+    }
+
+    public function confirmFriend(User $user)
+    {
+        DB::table('friends')
+            ->where('user_id', $user->id)
+            ->where('friend_id', Session::get('user_id'))
+            ->where('confirmed', false)
+            ->update(array('confirmed' => true));
+        DB::table('friends')->insert(array(
+            'user_id' => Session::get('user_id'),
+            'friend_id' => $user->id,
+            'confirmed' => true
+        ));
+        return Redirect::action('profile',
+                                array(Session::get('user_id')));
+    }
 
 }
 ?>

@@ -2,7 +2,7 @@
 
 namespace Karma\Entities;
 
-class Artist extends Eloquent
+class Artist extends \Eloquent
 {
     protected $fillable = array('id', 'name', 'genre_id', 'bio');
     protected $timestamps = false;

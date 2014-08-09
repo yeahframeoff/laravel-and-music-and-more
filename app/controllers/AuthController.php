@@ -1,7 +1,13 @@
 <?php
+
+namespace Karma\Controllers;
+
 use \Karma\Auth;
 use \Karma\API;
 use \Karma\Entities\Credential;
+use \View;
+use \App;
+use \Redirect;
 
 class AuthController extends BaseController
 {
