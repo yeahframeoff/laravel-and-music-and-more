@@ -60,14 +60,24 @@ class User extends \Eloquent implements UserInterface {
                                    ->lists('friend_id');
     }
     
+    public function sendRequest($id)
+    {
+        DB::table('friends')->insert(array('user_id' => $this->id,
+                                           'friend_id' => $id,
+                                           'confirmed' => false));
+    }
+    
+    public function removeRequest($id)
+    {
+    	DB::table('friends')->where('user_id', $this->id)
+                            ->where('friend_id', $id)
+                            ->where('confirmed', false)
+                            ->delete();
+    }
+    
     public function socials()
     {
         return $this->credentials()->lists('external_id', 'social_id');
-    }
-    
-    public function addFriend($id)
-    {
-        DB::table('friends')->insert(array('user_id' => $this->id, 'friend_id' => $id));
     }
     
     public function isFriend($id)
@@ -76,5 +86,28 @@ class User extends \Eloquent implements UserInterface {
                                    ->where('friend_id', $id)
                                    ->where('confirmed', true)
                                    ->exists();
+    }
+    
+    public function deleteFriend($id)
+    {
+        DB::table('friends')->where('confirmed', true)
+                            ->where(function($query) {
+                                $query->where('user_id', $this->id)
+                                      ->where('friend_id', $id)
+                                      ->orWhere('user_id', $id)
+                                      ->where('friend_id', $this->id);
+                            })
+                            ->delete();
+    }
+    
+    public function confirmFriend($id)
+    {
+        DB::table('friends')->where('user_id', $id)
+        				    ->where('friend_id', $this->id)
+                            ->update(array('confirmed', true));
+        
+        DB::table('friends')->insert(array('user_id' => $this->id,
+                                           'friend_id' => $id,
+                                           'confirmed' => true));
     }
 }
