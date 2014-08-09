@@ -94,8 +94,10 @@ class User extends \Eloquent implements UserInterface {
                             ->where(function($query) {
                                 $query->where('user_id', $this->id)
                                       ->where('friend_id', $id)
-                                      ->orWhere('user_id', $id)
-                                      ->where('friend_id', $this->id);
+                                      ->orWhere(function($query) {
+                                          $query->where('user_id', $id)
+                                                ->where('friend_id', $this->id);    
+                                      });
                             })
                             ->delete();
     }
