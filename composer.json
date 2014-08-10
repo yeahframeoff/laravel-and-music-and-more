@@ -6,7 +6,7 @@
     "require": {
         "laravel/framework": "4.2.*",
         "jyggen/curl": "4.0.*@dev",
-        "phpunit/phpunit": "4.0.*"
+        "phpunit/phpunit": "4.0.*",
         "guzzle/guzzle": "3.9.*@dev",
         "rmccue/requests": "dev-master",
         "dandelionmood/lastfm": "dev-master"

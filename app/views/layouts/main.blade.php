@@ -19,7 +19,7 @@
 		@include('navbar')		
 		
         <div class="container" id="content">
-            {{ $content }}
+            @yield('content')
         </div>
 	</body>
 </html>

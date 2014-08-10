@@ -1,16 +1,18 @@
+@extends('layouts.main')
+@section('content')
 <div id="logo" class="text-center">karma</div>
 
 <div id="socials" class="text-center">
     <span class="social shadow">
-        <a href="{{ URL::to('/login/fb') }}">{{ HTML::image('public/images/FB_logo_big.png', 'Facebook', array('title' => 'Войти через Facebook')) }}</a>
+        <a href="{{ URL::to($links['FB']) }}">{{ HTML::image('public/images/FB_logo_big.png', 'Facebook', array('title' => 'Войти через Facebook')) }}</a>
     </span>
     
     <span class="social shadow">
-        <a href="{{ URL::to('/login/vk') }}">{{ HTML::image('public/images/VK_logo_big.png', 'Vkontakte', array('title' => 'Войти через Vkontakte')) }}</a>
+        <a href="{{ URL::to($links['VK']) }}">{{ HTML::image('public/images/VK_logo_big.png', 'Vkontakte', array('title' => 'Войти через Vkontakte')) }}</a>
     </span>
     
     <span class="social shadow">
-        <a href="{{ URL::to('/login/ok') }}">{{ HTML::image('public/images/OK_logo_big.png', 'Одноклассники', array('title' => 'Войти через Одноклассники')) }}</a>
+        <a href="{{ URL::to($links['OK']) }}">{{ HTML::image('public/images/OK_logo_big.png', 'Одноклассники', array('title' => 'Войти через Одноклассники')) }}</a>
     </span>
 </div>
 
@@ -24,3 +26,4 @@
 вашим друзьям, так что они будут слышать то, что будете ставить Вы!
     </p>
 </div>
+@stop

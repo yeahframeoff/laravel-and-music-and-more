@@ -30,6 +30,4 @@ Route::group(array('before' => 'auth'), function()
 Route::model('user', 'Karma\Entities\User');
 
 
-Route::get("/", function() {
-    return View::make('layouts.main')->with('content', View::make('index'));
-});
+Route::get("/", ['as' => 'home', 'uses' => 'Karma\Controllers\MainController@index']);

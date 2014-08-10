@@ -24,15 +24,15 @@ class AuthController extends BaseController
         }
         else{
 
-            /*
-             * TODO: REFACTORING
-             */
-
+            
             $links = array(
                 'OK' => \Karma\Auth\OdnoklassnikiOAuth::getAuthLink(),
                 'VK' => \Karma\Auth\VkontakteOAuth::getAuthLink(),
                 'FB' => \Karma\Auth\FacebookOAuth::getAuthLink()
             );
+            /*
+             * TODO: REFACTORING
+             */
 
             $socials = array(
                 '1' => 'FB',
