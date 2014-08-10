@@ -1,0 +1,80 @@
+@font-face {
+	font-family: OLogo;
+	src: url('../fonts/Beech.ttf');
+}
+
+#logo {
+    margin-top: 60px;
+	font-family: OLogo;
+	font-size: 192px;
+}
+
+#about-brief {
+	font-size: 22px;
+}
+
+#content {
+	width: 75%;
+}
+
+#socials {
+	margin-bottom: 60px;
+}
+
+.social {
+	display: inline-block;
+	margin-left: 60px;
+	margin-right: 60px;
+	margin-bottom: 50px;
+    
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+/*
+#vk-li:after {
+    content: url('../images/VK_logo_small.png');
+}
+
+#ok-li:after {
+    content: url('../images/OK_logo_small.png');
+}
+
+#fb-li:after {
+    content: url('../images/FB_logo_small.png');
+}
+*/
+
+.dropdown-list ul li a
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.shadow
+{
+  	position:relative;       
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.shadow:before, .shadow:after
+{
+	content: "";
+    position: absolute; 
+    z-index:-1;
+    
+    -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3);
+       -moz-box-shadow:0 0 20px rgba(0,0,0,0.3);
+            box-shadow:0 0 20px rgba(0,0,0,0.3);
+    
+    top: 25%;
+    bottom: 0;
+    left: 10px;
+    right: px;
+    
+    -moz-border-radius:150px / 10px;
+         border-radius:150px / 10px;
+}

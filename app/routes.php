@@ -11,4 +11,6 @@
 |
 */
 
-Route::get("/", function() { return 'hello'; });
+Route::get("/", function() {
+    return View::make('layouts.main')->with('content', View::make('index'));
+});
