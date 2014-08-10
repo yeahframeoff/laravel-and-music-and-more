@@ -2,16 +2,24 @@
 <html>
 	<head>
 		<title>Karma</title>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <meta lang="ru">
+        @section('stylesheets')
+            {{ HTML::style('public/css/own.css') }}
+            {{ HTML::style('public/css/bootstrap.css') }}
+        @show
+        
+        @section('scripts')
+        	{{ HTML::script('http://code.jquery.com/jquery-2.1.1.js') }}
+        	{{ HTML::script('public/js/bootstrap.js') }}
+        @show
 	</head>
 	
 	<body>
-		<div id="nav">
-			<div class="nav-elem">О нас</div>
-			<div class="nav-elem">Правообладателям</div>
-		</div>
+		@include('navbar')		
 		
-		{{ $content }}
+        <div class="container" id="content">
+            {{ $content }}
+        </div>
 	</body>
 </html>

@@ -3,7 +3,6 @@
 namespace Karma\Entities;
 
 use \DB;
-
 class User extends \Eloquent{
 
     protected $fillable = array('id', 'first_name', 'second_name', 'photo');
@@ -20,7 +19,7 @@ class User extends \Eloquent{
 
     public function tracks()
     {
-        return $this->hasMany('UserTrack');
+        return $this->belongsToMany('ImportedTrack', 'imported_track_user');
     }
 
     public function settings()
@@ -30,7 +29,7 @@ class User extends \Eloquent{
 
     public function chats()
     {
-        return $this->hasManyThrough('ChatUsers', 'Chat');
+        return $this->belongsToMany('Chat');
     }
 
     public function socials()
@@ -70,6 +69,7 @@ class User extends \Eloquent{
             return self::whereIn('id', $list)->get();
         else
             return array();
+
     }
     
     public function sendRequest($id)
@@ -113,6 +113,4 @@ class User extends \Eloquent{
                                            'friend_id' => $id,
                                            'confirmed' => true));
     }
-    
-
 }

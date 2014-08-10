@@ -28,3 +28,8 @@ Route::group(array('before' => 'auth'), function()
     Route::get('profile/deleteFriend/{user}', 'Karma\Controllers\ProfileController@deleteFriend');
 });
 Route::model('user', 'Karma\Entities\User');
+
+
+Route::get("/", function() {
+    return View::make('layouts.main')->with('content', View::make('index'));
+});

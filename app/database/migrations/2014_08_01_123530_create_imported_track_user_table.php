@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserTracksTable extends Migration {
+class CreateImportedTrackUserTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateUserTracksTable extends Migration {
 	 */
 	public function up()
 	{
-	    Schema::create('user_tracks', function(Blueprint $table)
+	    Schema::create('imported_track_user', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
@@ -35,12 +35,12 @@ class CreateUserTracksTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('user_tracks', function(Blueprint $table) {
-        	$table->dropForeign('user_tracks_user_id_foreign');
-            $table->dropForeign('user_tracks_imported_track_id_foreign');
+        Schema::table('imported_track_user', function(Blueprint $table) {
+        	$table->dropForeign('imported_track_user_user_id_foreign');
+            $table->dropForeign('imported_track_user_imported_track_id_foreign');
         });
         
-	    Schema::drop('user_tracks');
+	    Schema::drop('imported_track_user');
 	}
 
 }

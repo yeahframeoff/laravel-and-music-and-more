@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChatUsersTable extends Migration {
+class CreateChatUserTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateChatUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('chat_users', function(Blueprint $table)
+		Schema::create('chat_user', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('chat_id')->unsigned();
@@ -35,12 +35,12 @@ class CreateChatUsersTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('chat_users', function(Blueprint $table) {
-        	$table->dropForeign('chat_users_user_id_foreign');
-            $table->dropForeign('chat_users_chat_id_foreign');
+        Schema::table('chat_user', function(Blueprint $table) {
+        	$table->dropForeign('chat_user_user_id_foreign');
+            $table->dropForeign('chat_user_chat_id_foreign');
         });
         
-		Schema::drop('chat_users');
+		Schema::drop('chat_user');
 	}
 
 }

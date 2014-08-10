@@ -8,7 +8,7 @@ class Playlist extends \Eloquent
     
     public function tracks()
     {
-        return $this->hasManyThrough('PlaylistsTrack', 'ImportedTrack');
+        return $this->belongsToMany('ImportedTrack', 'playlist_track');
     }
     
     public function user()

@@ -15,7 +15,6 @@ class CreateGenresTable extends Migration {
 		Schema::create('genres', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->integer('parent_id')->unsigned();//used to group genres (i.e. alternative rock and punk rock will have rock as parent);
 			$table->string('name', 63);
 		});
 	}

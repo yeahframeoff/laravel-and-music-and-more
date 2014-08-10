@@ -5,15 +5,15 @@ namespace Karma\Entities;
 class Chat extends \Eloquent
 {
 	protected $fillable = array('id', 'description');
-    protected $timestamps = false;
+    public $timestamps = false;
     
     public function participants()
     {
-        return $this->hasManyThrough('ChatsUser', 'User');
+        return $this->belongsToMany('User');
     }
     
     public function messages()
     {
-        return $this->belongsToMany('ChatsMessage');
+        return $this->hasMany('ChatMessage');
     }
 }
