@@ -33,12 +33,10 @@ class User extends \Eloquent{
         return $this->hasManyThrough('ChatUsers', 'Chat');
     }
 
-    /*
-    public function friends()
+    public function socials()
     {
-        return $this->belongsToMany('Karma\Entities\User', 'friends', 'user_id', 'friend_id');
+        return $this->credentials()->lists('external_id', 'social_id');
     }
-    */
 
     public function friends()
     {
@@ -73,10 +71,48 @@ class User extends \Eloquent{
         else
             return array();
     }
-
-    public function socials()
+    
+    public function sendRequest($id)
     {
-        return $this->credentials()->lists('external_id', 'social_id');
+        DB::table('friends')->insert(array('user_id' => $this->id,
+                                           'friend_id' => $id,
+                                           'confirmed' => false));
     }
+    public function removeRequest($id)
+    {
+        DB::table('friends')->where('user_id', $this->id)
+            ->where('friend_id', $id)
+            ->where('confirmed', false)
+            ->delete();
+    }
+
+    public function isFriend($id)
+    {
+        return DB::table('friends')->where('user_id', $this->id)
+            ->where('friend_id', $id)
+            ->where('confirmed', true)
+            ->exists();
+    }
+    public function deleteFriend($id)
+    {
+        DB::table('friends')->where('confirmed', true)
+            ->where(function($query) use($id) {
+                $query->where('user_id', $this->id)
+                    ->where('friend_id', $id)
+                    ->orWhere('user_id', $id)
+                    ->where('friend_id', $this->id);
+            })
+            ->delete();
+    }
+    public function confirmFriend($id)
+    {
+        DB::table('friends')->where('user_id', $id)
+            ->where('friend_id', $this->id)
+            ->update(array('confirmed' => true));
+        DB::table('friends')->insert(array('user_id' => $this->id,
+                                           'friend_id' => $id,
+                                           'confirmed' => true));
+    }
+    
 
 }

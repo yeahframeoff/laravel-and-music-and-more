@@ -20,25 +20,16 @@ class ProfileController extends BaseController
 
     public function addFriend(User $user)
     {
-        DB::table('friends')->insert(array(
-            'user_id' => Session::get('user_id'),
-            'friend_id' => $user->id,
-            'confirmed' => false
-        ));
+        $currentUser = User::find(Session::get('user_id'));
+        $currentUser->sendRequest($user->id);
         return Redirect::action('profile',
                                 array(Session::get('user_id')));
     }
 
     public function deleteFriend(User $user)
     {
-        DB::table('friends')
-            ->where('user_id', $user->id)
-            ->where('friend_id', Session::get('user_id'))
-            ->delete();
-        DB::table('friends')
-            ->where('user_id', Session::get('user_id'))
-            ->where('friend_id', $user->id)
-            ->delete();
+        $currentUser = User::find(Session::get('user_id'));
+        $currentUser->deleteFriend($user->id);
         return Redirect::action('profile',
                                 array(Session::get('user_id')));
     }
@@ -54,16 +45,8 @@ class ProfileController extends BaseController
 
     public function confirmFriend(User $user)
     {
-        DB::table('friends')
-            ->where('user_id', $user->id)
-            ->where('friend_id', Session::get('user_id'))
-            ->where('confirmed', false)
-            ->update(array('confirmed' => true));
-        DB::table('friends')->insert(array(
-            'user_id' => Session::get('user_id'),
-            'friend_id' => $user->id,
-            'confirmed' => true
-        ));
+        $currentUser = User::find(Session::get('user_id'));
+        $currentUser->confirmFriend($user->id);
         return Redirect::action('profile',
                                 array(Session::get('user_id')));
     }
