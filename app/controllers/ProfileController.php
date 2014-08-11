@@ -12,10 +12,9 @@ use \DB;
 
 class ProfileController extends BaseController
 {
-
     public function show(User $user)
     {
-        return View::make('auth.profile')->with('user', $user);
+        return View::make('profile')->with('user', $user);
     }
 
     public function addFriend(User $user)
@@ -50,6 +49,4 @@ class ProfileController extends BaseController
         return Redirect::action('profile',
                                 array(Session::get('user_id')));
     }
-
 }
-?>

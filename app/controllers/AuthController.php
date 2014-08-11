@@ -11,91 +11,65 @@ use \Redirect;
 
 class AuthController extends BaseController
 {
-
-    public function index()
+    //             $API = App::make('Karma\API\InterfaceAPI');, $API->getUserInfo()
+    protected $providers;
+    protected $links;
+    
+    public function __construct()
     {
-        \App::register('Karma\API\APIServiceProvider');
-
-        if(\Karma\Auth\OAuth::getUserId() == false){
-            return View::make('auth.main')
-                ->with('full_link', \Karma\Auth\OdnoklassnikiOAuth::getAuthLink())
-                ->with('full_VK', \Karma\Auth\VkontakteOAuth::getAuthLink())
-                ->with('full_FB', \Karma\Auth\FacebookOAuth::getAuthLink());
+    	$this->providers['ok'] = 'Odnoklassniki';
+        $this->providers['vk'] = 'Vkontakte';
+        $this->providers['fb'] = 'Facebook';
+        
+        $this->links = array(
+            'ok' => \Karma\Auth\OdnoklassnikiOAuth::getAuthLink(),
+            'vk' => \Karma\Auth\VkontakteOAuth::getAuthLink(),
+            'fb' => \Karma\Auth\FacebookOAuth::getAuthLink()
+        );
+    }
+    
+    public static function logged()
+    {
+        return \Karma\Auth\OAuth::getUserId() != false;
+    }
+    
+    public function login($provider)
+    {
+        if(!isset($this->providers[$provider]))
+        {
+            return App::abort(404);
         }
-        else{
-
-            
-            $links = array(
-                'OK' => \Karma\Auth\OdnoklassnikiOAuth::getAuthLink(),
-                'VK' => \Karma\Auth\VkontakteOAuth::getAuthLink(),
-                'FB' => \Karma\Auth\FacebookOAuth::getAuthLink()
-            );
-            /*
-             * TODO: REFACTORING
-             */
-
-            $socials = array(
-                '1' => 'FB',
-                '2' => 'VK',
-                '3' => 'OK'
-            );
-
-            /*
-             * TODO: add this part to model/repo
-             */
-
-            $credentials = \Karma\Entities\Credential::where('user_id', '=', \Session::get('user_id'))->get();
-            foreach($credentials as $credential){
-                $socTmp = $socials[$credential->social_id];
-                $socials[$credential->social_id] = array(true, $socTmp);
-            }
-
-            $API = App::make('Karma\API\InterfaceAPI');
-            return View::make('auth.view')
-                ->with('userInfo', $API->getUserInfo())
-                ->with('socials', $socials)
-                ->with('links', $links);
+        
+        return Redirect::to($this->links[$provider]);
+    }
+    
+    public function callback($provider)
+    {
+        if(!isset($this->providers[$provider]))
+        {
+            return App::abort(404);    
         }
-    }
-
-    public function successOK()
-    {
-        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\OdnoklassnikiAPI');
-
-        $OAuth = App::make('\Karma\Auth\OdnoklassnikiOAuth');
+        
+        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\\' . $this->providers[$provider] . 'API');
+    
+        $OAuth = App::make('Karma\Auth\\' . $this->providers[$provider] . 'OAuth');
         $OAuth->auth();
-        \Session::put('auth', 'OK');
-
-        return Redirect::route('authIndex');
+        
+        \Session::put('auth', $provider);
+    
+        return Redirect::route('import');        
     }
-
-    public function successVK()
+    
+    public function logout()
+    {
+        \Karma\Auth\OAuth::logout();
+        return Redirect::route('home');
+    }
+    
+    public function loadProfile($social)
     {
 
-        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\VkontakteAPI');
-
-        $OAuth = App::make('\Karma\Auth\VkontakteOAuth');
-        $OAuth->auth();
-        \Session::put('auth', 'VK');
-
-        return Redirect::route('authIndex');
-    }
-
-    public function successFB()
-    {
-        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\FacebookAPI');
-
-        $OAuth = App::make('Karma\Auth\FacebookOAuth');
-        $OAuth->auth();
-        \Session::put('auth', 'FB');
-
-        return Redirect::route('authIndex');
-    }
-
-    public function loadProfile($socialId)
-    {
-
-        $API = \Karma\API\API::getAPI($socialId);
+        $API = \Karma\API\API::getAPI($social);
         $profile = $API->getUserInfo();
         $user = \Karma\Entities\User::find(\Session::get('user_id'));
         $user->first_name = $profile['first_name'];
@@ -104,13 +78,4 @@ class AuthController extends BaseController
         $user->save();
         return View::make('auth.profile')->with('user', $user);
     }
-
-    public function logout()
-    {
-        \Karma\Auth\OAuth::logout();
-        return Redirect::route('authIndex');
-    }
-
-
 }
-?>

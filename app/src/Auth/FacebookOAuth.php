@@ -4,17 +4,17 @@ namespace Karma\Auth;
 
 class FacebookOAuth extends OAuth
 {
-
     public function __construct(\Karma\API\InterfaceAPI $interfaceAPI)
     {
         $this->dataArray = array(
             'APIUrl' => 'https://graph.facebook.com/oauth/access_token',
             'client_id' => '1446675095605125',
             'client_secret' => 'e98bafaf60c6c78104df3de28339acdb',
-            'social_id' => 1,
-            'redirect' => 'successAuthFB',
+            'social_id' => Social::byName('fb')->id,
+            'redirect' => 'login/fb/callback',
             'token_key' => 'access_token'
         );
+        
         $this->interfaceAPI = $interfaceAPI;
     }
 
@@ -22,10 +22,9 @@ class FacebookOAuth extends OAuth
     {
         $full_link = 'https://www.facebook.com/dialog/oauth?'
             . 'client_id=1446675095605125'
-            . '&redirect_uri=http://target-green.codio.io:3000/successAuthFB';
+            . '&redirect_uri='
+            . \URL::to('login/fb/callback');
+        
         return $full_link;
     }
-
 }
-
-?>

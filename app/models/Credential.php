@@ -25,9 +25,9 @@ class Credential extends \Eloquent
         return strtotime($this->expiration) > time();
     }
     
-    public static function scopeBySocialAndId($id, $social)
+    public static function scopeBySocialAndId($social, $id)
     {
-        return self::where('id', $id)->where('name', $social)->first();
+        return self::where('user_id', $id)->where('social_id', Social::byName($social))->first();
     }
     
     public static function scopeByToken($token)

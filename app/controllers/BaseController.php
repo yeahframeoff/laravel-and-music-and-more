@@ -8,6 +8,11 @@ class BaseController extends Controller
 {
     protected $layout;
 
+    public function __construct()
+    {
+        $this->layout = "layouts.main";
+    }
+    
 	/**
 	 * Setup the layout used by the controller.
 	 *
@@ -17,7 +22,7 @@ class BaseController extends Controller
 	{
 		if (!is_null($this->layout))
 		{
-			$this->layout = View::make($this->layout);
+			$this->layout = \View::make($this->layout);
 		}
 	}
 

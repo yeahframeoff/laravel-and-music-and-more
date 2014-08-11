@@ -1,24 +1,21 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
+/** Models */
+Route::model('user', 'Karma\Entities\User');
 
-Route::get('auth',['as' => 'authIndex', 'uses' => 'Karma\Controllers\AuthController@index']);
-Route::get('successAuthOK', ['as' => 'successAuthOK', 'uses' => 'Karma\Controllers\AuthController@successOK']);
-Route::get('successAuthVK', ['as' => 'successAuthVK', 'uses' => 'Karma\Controllers\AuthController@successVK']);
-Route::get('successAuthFB', ['as' => 'successAuthFB', 'uses' => 'Karma\Controllers\AuthController@successFB']);
-Route::get('logoutAuth', ['as' => 'logoutAuth', 'uses' => 'Karma\Controllers\AuthController@logout']);
-Route::get('user/{socialId}', 'Karma\Controllers\AuthController@loadProfile');
+/** Auth stuff */
+Route::get('login/{provider}', array('as' => 'auth.login', 
+                                     'uses' => 'Karma\Controllers\AuthController@login'));
 
+Route::get('login/{provider}/callback', array('as' => 'auth.callback', 
+                                              'uses' => 'Karma\Controllers\AuthController@callback'));
 
+Route::get('logout', array('as' => 'auth.logout', 
+                           'uses' => 'Karma\Controllers\AuthController@logout'));
+
+Route::get('user/{social}', 'Karma\Controllers\AuthController@loadProfile');
+
+/** Profile routes */
 Route::group(array('before' => 'auth'), function()
 {
     Route::get('profile/{user}', ['as' => 'profile', 'uses' => 'Karma\Controllers\ProfileController@show']);
@@ -26,8 +23,12 @@ Route::group(array('before' => 'auth'), function()
     Route::get('profile/{user}/friends', 'Karma\Controllers\ProfileController@getAllFriends');
     Route::get('profile/confirmFriend/{user}', 'Karma\Controllers\ProfileController@confirmFriend');
     Route::get('profile/deleteFriend/{user}', 'Karma\Controllers\ProfileController@deleteFriend');
+    
+    Route::get('import', 'Karma\Controllers\ImportController@index');
 });
-Route::model('user', 'Karma\Entities\User');
 
-
+/** Homepage */
 Route::get("/", ['as' => 'home', 'uses' => 'Karma\Controllers\MainController@index']);
+Route::get("about", 'Karma\Controllers\MainController@about');
+Route::get("rights", 'Karma\Controllers\MainController@rights');
+

@@ -14,17 +14,16 @@ class FacebookAPI extends API implements InterfaceAPI
     }
 
     public function getUserId()
-    {
-        
+    {        
         $result = $this->APImethodGet(array(), "debug_token?input_token="
                                       . $this->getToken()
                                       . '&access_token=' . $this->accessToken);
+        
         return $result['data']['user_id'];
     }
 
     public function getUserInfo()
     {
-
         $params = array(
             'access_token' => $this->getToken()
         );
@@ -33,17 +32,18 @@ class FacebookAPI extends API implements InterfaceAPI
         $result['photo'] = $this->getUserAvatar();
         $result['first_name'] = $info['first_name'];
         $result['last_name'] = $info['last_name'];
+        
         return $result;
     }
 
     protected function getToken()
     {
         $result;
+        
         if(\Session::has('user_id')){
             $userId = \Session::get('user_id');
-            $credential = \Karma\Entities\Credential::whereRaw(
-                'user_id = ? and social_id = 1', array($userId)
-            )->first();
+            $credential = \Karma\Entities\Credential::bySocialAndId('fb', $userId);
+            
             if($credential != NULL)
                 $result = $credential->access_token;
             else
@@ -51,6 +51,7 @@ class FacebookAPI extends API implements InterfaceAPI
         }
         else
             $result = \Session::get('accessToken');
+        
         return $result;
     }
 
@@ -63,6 +64,7 @@ class FacebookAPI extends API implements InterfaceAPI
         );
 
         $result = $this->APImethodGet($params, 'me/picture');
+        
         return $result['data']['url'];
     }
     

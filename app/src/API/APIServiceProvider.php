@@ -10,18 +10,15 @@ class APIServiceProvider extends ServiceProvider {
     {
         switch(\Session::get('auth'))
         {
-            case 'VK':
+            case 'vk':
                 \App::bind('Karma\API\InterfaceAPI', 'Karma\API\VkontakteAPI');
                 break;
-            case 'OK':
+            case 'ok':
                 \App::bind('Karma\API\InterfaceAPI', 'Karma\API\OdnoklassnikiAPI');
                 break;
-            case 'FB':
+            case 'fb':
                 \App::bind('Karma\API\InterfaceAPI', 'Karma\API\FacebookAPI');
                 break;
         }
     }
-
 }
-
-?>

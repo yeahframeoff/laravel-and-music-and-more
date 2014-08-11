@@ -6,27 +6,25 @@ use \Jyggen\Curl\Curl;
 
 abstract class API 
 {
-    const FB = 1;
-    const VK = 2;
-    const OK = 3;
-    
     protected $apiLink;
     protected $accessToken;
     protected $applicationKey;
     protected $privateKey;
     
-    public static function getAPI($socialId){
-        switch($socialId){
-            case self::FB:
+    public static function getAPI($social){
+        switch($social)
+        {
+            case 'fb':
                 $API = \App::make('\Karma\API\FacebookAPI');
                 break;
-            case self::VK:
+            case 'vk':
                 $API = \App::make('\Karma\API\VkontakteAPI');
                 break;
-            case self::OK:
+            case 'ok':
                 $API = \App::make('\Karma\API\OdnoklassnikiAPI');
                 break;
         }
+        
         return $API;
     }
     
@@ -36,20 +34,25 @@ abstract class API
         $response = Curl::post($url, $params)[0];
         $response = $response->getContent();
         $response = json_decode($response, true);
+        
         return $this->checkError($response);
     }
         
     protected function APImethodGet($params, $addToUrl = '')
     {
         $url = $this->apiLink . $addToUrl;
-        if (!empty($params)){
+        
+        if (!empty($params))
+        {
             foreach($params as $key => $value)
                 $paramsList[] = "$key=$value";
             $url = $url . '?' . implode('&', $paramsList);
         }
+        
         $response = Curl::get($url, $params)[0];
         $response = $response->getContent();
         $response = json_decode($response, true);
+        
         return $this->checkError($response);
     }
     
@@ -61,7 +64,5 @@ abstract class API
             return $response;
     }
         
-    protected abstract function getToken();
-    
+    protected abstract function getToken();   
 }
-?>

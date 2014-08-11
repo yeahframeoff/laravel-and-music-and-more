@@ -7,15 +7,17 @@ use \View;
 class MainController extends BaseController
 {
     public function index()
+    {        
+        return View::make('index');
+    }
+    
+    public function about()
     {
-        $links = array(
-            'OK' => \Karma\Auth\OdnoklassnikiOAuth::getAuthLink(),
-            'VK' => \Karma\Auth\VkontakteOAuth::getAuthLink(),
-            'FB' => \Karma\Auth\FacebookOAuth::getAuthLink()
-        );
-        return View::make('index')
-            ->with('links', $links);
+        return View::make('about');
+    }
+    
+    public function rights()
+    {
+        return View::make('rights');
     }
 }
-
-?>

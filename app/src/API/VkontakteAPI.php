@@ -5,8 +5,7 @@ namespace Karma\API;
 use \User;
 
 class VkontakteAPI extends API implements InterfaceAPI
-{
-    
+{    
     public function __construct()
     {
         $this->apiLink = 'https://api.vk.com/method/';
@@ -22,16 +21,15 @@ class VkontakteAPI extends API implements InterfaceAPI
         );
 
         $result = $this->APImethod($params);
+        
         return $result['uid'];
     }
     
     public function getUserInfo()
     {
         $userId = \Session::get('user_id');
-        $credential = \Karma\Entities\Credential::whereRaw(
-            'user_id = ? and social_id = 2', array($userId)
-        )->first();
-                
+        $credential = \Karma\Entities\Credential::bySocialAndId('vk', $userId);
+            
         $uid = \Session::get('external_id') or $credential->external_id;
         
         $params = array(
@@ -45,22 +43,24 @@ class VkontakteAPI extends API implements InterfaceAPI
         );
         
         $info = $this->APImethod($params, 'users.get')['response'][0];
+        
         $result = array(
             'photo' => $info['photo_max_orig'],
             'first_name' => $info['first_name'],
             'last_name' => $info['last_name']
         );
+        
         return $result;
     }
     
     protected function getToken()
     {
         $result;
+        
         if(\Session::has('user_id')){
             $userId = \Session::get('user_id');
-            $credential = \Karma\Entities\Credential::whereRaw(
-                'user_id = ? and social_id = 2', array($userId)
-            )->first();
+            $credential = \Karma\Entities\Credential::bySocialAndId('vk', $userId);
+            
             if($credential != NULL)
                 $result = $credential->access_token;
             else
@@ -68,8 +68,7 @@ class VkontakteAPI extends API implements InterfaceAPI
         }
         else
             $result = \Session::get('accessToken');
+        
         return $result;
     }
 }
-
-?>

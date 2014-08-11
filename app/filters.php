@@ -35,7 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (\Karma\Auth\OAuth::getUserId() == false)
+	if (!\Karma\Auth\AuthController::logged())
 	{
 		if (Request::ajax())
 		{
@@ -43,7 +43,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::to('auth');
+			return Redirect::to('/');
 		}
 	}
 });

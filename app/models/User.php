@@ -3,8 +3,9 @@
 namespace Karma\Entities;
 
 use \DB;
-class User extends \Eloquent{
 
+class User extends \Eloquent
+{
     protected $fillable = array('id', 'first_name', 'second_name', 'photo');
 
     public function credentials()
@@ -34,14 +35,15 @@ class User extends \Eloquent{
 
     public function socials()
     {
-        return $this->credentials()->lists('external_id', 'social_id');
+        return Social::whereIn('name', $this->credentials()->lists('social_id'));
     }
 
     public function friends()
     {
         $list = DB::table('friends')->where('user_id', $this->id)
-            ->where('confirmed', true)
-            ->lists('friend_id');
+                    ->where('confirmed', true)
+                    ->lists('friend_id');
+        
         if(count($list) != 0)
             return self::whereIn('id', $list)->get();
         else

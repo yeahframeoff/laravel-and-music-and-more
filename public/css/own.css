@@ -3,6 +3,10 @@
 	src: url('../fonts/Beech.ttf');
 }
 
+body {
+    padding-top: 70px; 
+}
+
 #logo {
     margin-top: 60px;
 	font-family: OLogo;
@@ -27,9 +31,9 @@
 	margin-right: 60px;
 	margin-bottom: 50px;
     
-    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
 /*
@@ -55,9 +59,9 @@
 .shadow
 {
   	position:relative;       
-    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
 .shadow:before, .shadow:after
@@ -67,14 +71,19 @@
     z-index:-1;
     
     -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3);
-       -moz-box-shadow:0 0 20px rgba(0,0,0,0.3);
-            box-shadow:0 0 20px rgba(0,0,0,0.3);
+       -moz-box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
     
     top: 25%;
     bottom: 0;
     left: 10px;
     right: px;
     
-    -moz-border-radius:150px / 10px;
-         border-radius:150px / 10px;
+    -moz-border-radius: 150px / 10px;
+         border-radius: 150px / 10px;
+}
+
+.inactive {
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
 }

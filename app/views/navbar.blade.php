@@ -13,13 +13,13 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <li @if(Request::is('/'))class="active"@endif><a href="{{ URL::to('/') }}">Главная</a></li>
-                <li @if(Request::is('rights'))class="active"@endif><a href="{{ URL::to('/rights') }}">Правообладателям</a></li>
-                <li @if(Request::is('about'))class="active"@endif><a href="{{ URL::to('/about') }}">О нас</a></li>
+                <li @if(Request::is('rights'))class="active"@endif><a href="{{ URL::to('rights') }}">Правообладателям</a></li>
+                <li @if(Request::is('about'))class="active"@endif><a href="{{ URL::to('about') }}">О нас</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
 
-                @if(Auth::check())
+                @if(Karma\Controllers\AuthController::logged())
                 	<li class="dropdown@if(Request::is('/search/*')) active@endif">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Поиск
@@ -27,16 +27,16 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li @if(Request::is('/search/music'))class="active"@endif><a href="{{ URL::to('/search/music') }}">Музыка</a></li>
-                            <li @if(Request::is('/search/people'))class="active"@endif><a href="{{ URL::to('/search/people') }}">Люди</a></li>
-                            <li @if(Request::is('/search/groups'))class="active"@endif><a href="{{ URL::to('/search/groups') }}">Группы</a>
+                            <li @if(Request::is('/search/music'))class="active"@endif><a href="{{ URL::to('search/music') }}">Музыка</a></li>
+                            <li @if(Request::is('/search/people'))class="active"@endif><a href="{{ URL::to('search/people') }}">Люди</a></li>
+                            <li @if(Request::is('/search/groups'))class="active"@endif><a href="{{ URL::to('search/groups') }}">Группы</a>
                         </ul>
                 	</li>
-                	<li @if(Request::is('/user/friends'))class="active"@endif><a href="{{ URL::to('/user/friends') }}">Друзья</a></li>
-                	<li @if(Request::is('/user/groups'))class="active"@endif><a href="{{ URL::to('/user/groups') }}">Группы</a></li>
-                	<li @if(Request::is('/user/messages'))class="active"@endif><a href="{{ URL::to('/user/messages') }}">Диалоги</a></li>
-                	<li @if(Request::is('/user/library'))class="active"@endif><a href="{{ URL::to('/user/library') }}">Библиотека</a></li>
-                	<li @if(Request::is('/user/profile'))class="active"@endif><a href="{{ URL::to('/user/profile') }}">Профиль</a></li>
+                	<li @if(Request::is('/user/friends'))class="active"@endif><a href="{{ URL::to('friends') }}">Друзья</a></li>
+                	<li @if(Request::is('/user/groups'))class="active"@endif><a href="{{ URL::to('groups') }}">Группы</a></li>
+                	<li @if(Request::is('/user/messages'))class="active"@endif><a href="{{ URL::to('messages') }}">Диалоги</a></li>
+                	<li @if(Request::is('/user/library'))class="active"@endif><a href="{{ URL::to('library') }}">Библиотека</a></li>
+                	<li @if(Request::is('/user/profile'))class="active"@endif><a href="{{ URL::to('profile') }}">Профиль</a></li>
                     <li><a href="{{ URL::to('/user/logout') }}">Выйти</a></li>
                 @else
                 <li class="dropdown">
@@ -54,7 +54,6 @@
                 </li>
                 @endif
             </ul>
-
         </div>
     </div>
 </nav>

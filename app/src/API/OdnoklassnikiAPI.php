@@ -3,8 +3,7 @@
 namespace Karma\API;
 
 class OdnoklassnikiAPI extends API implements InterfaceAPI
-{
-    
+{    
     public function __construct()
     {
         $this->apiLink = 'http://api.odnoklassniki.ru/fb.do';
@@ -26,6 +25,7 @@ class OdnoklassnikiAPI extends API implements InterfaceAPI
         );
 
         $result = $this->APImethod($params);
+        
         if ($fullInfo)
             return $result;
         else
@@ -35,22 +35,24 @@ class OdnoklassnikiAPI extends API implements InterfaceAPI
     public function getUserInfo()
     {
         $userData = $this->getUserId(true);
+        
         $userInfo = array(
             'photo' => $userData['pic_1'],
             'first_name' => $userData['first_name'],
             'last_name' => $userData['last_name']
         );
+        
         return $userInfo;
     }
     
     protected function getToken()
     {
         $result;
+        
         if(\Session::has('user_id')){
             $userId = \Session::get('user_id');
-            $credential = \Karma\Entities\Credential::whereRaw(
-                'user_id = ? and social_id = 3', array($userId)
-            )->first();
+            $credential = \Karma\Entities\Credential::bySocialAndId('ok', $userId);
+            
             if($credential != NULL)
                 $result = $credential->access_token;
             else
@@ -58,8 +60,7 @@ class OdnoklassnikiAPI extends API implements InterfaceAPI
         }
         else
             $result = \Session::get('accessToken');
+        
         return $result;
     }
 }
-
-?>
