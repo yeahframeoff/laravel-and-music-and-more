@@ -25,7 +25,7 @@
         @if(isset($socials['ok']))
         	<a href="{{ URL::to('/import/ok') }}">{{ HTML::image('public/images/OK_logo_big.png', 'Facebook', array('title' => 'Импорт музыки из Одноклассники')) }}</a>
         @else
-        	{{ HTML::image('public/images/FB_logo_big.png', 'Одноклассники', array('title' => 'Импорт музыки из Одноклассники', 'class' => 'inactive')) }}
+        	{{ HTML::image('public/images/OK_logo_big.png', 'Одноклассники', array('title' => 'Импорт музыки из Одноклассники', 'class' => 'inactive')) }}
         @endif
     </span>
 </div>

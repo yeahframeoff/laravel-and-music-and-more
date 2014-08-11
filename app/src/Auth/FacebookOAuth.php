@@ -10,8 +10,8 @@ class FacebookOAuth extends OAuth
             'APIUrl' => 'https://graph.facebook.com/oauth/access_token',
             'client_id' => '1446675095605125',
             'client_secret' => 'e98bafaf60c6c78104df3de28339acdb',
-            'social_id' => Social::byName('fb')->id,
-            'redirect' => 'login/fb/callback',
+            'social_id' => \Karma\Entities\Social::byName('fb')->id,
+            'redirect' => 'fb',
             'token_key' => 'access_token'
         );
         

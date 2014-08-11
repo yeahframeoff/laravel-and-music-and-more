@@ -7,7 +7,8 @@ use \View;
 class MainController extends BaseController
 {
     public function index()
-    {        
+    {
+        //dd(\Session::all());
         return View::make('index');
     }
     

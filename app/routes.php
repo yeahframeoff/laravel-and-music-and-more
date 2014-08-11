@@ -7,7 +7,7 @@ Route::model('user', 'Karma\Entities\User');
 Route::get('login/{provider}', array('as' => 'auth.login', 
                                      'uses' => 'Karma\Controllers\AuthController@login'));
 
-Route::get('login/{provider}/callback', array('as' => 'auth.callback', 
+Route::get('login/{provider}/callback', array('as' => 'auth.callback',
                                               'uses' => 'Karma\Controllers\AuthController@callback'));
 
 Route::get('logout', array('as' => 'auth.logout', 
@@ -24,7 +24,8 @@ Route::group(array('before' => 'auth'), function()
     Route::get('profile/confirmFriend/{user}', 'Karma\Controllers\ProfileController@confirmFriend');
     Route::get('profile/deleteFriend/{user}', 'Karma\Controllers\ProfileController@deleteFriend');
     
-    Route::get('import', 'Karma\Controllers\ImportController@index');
+    Route::get('import', array('as' => 'import',
+                               'uses' => 'Karma\Controllers\ImportController@index'));
 });
 
 /** Homepage */

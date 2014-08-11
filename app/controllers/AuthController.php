@@ -11,13 +11,13 @@ use \Redirect;
 
 class AuthController extends BaseController
 {
-    //             $API = App::make('Karma\API\InterfaceAPI');, $API->getUserInfo()
+    // $API = App::make('Karma\API\InterfaceAPI');, $API->getUserInfo()
     protected $providers;
     protected $links;
     
     public function __construct()
     {
-    	$this->providers['ok'] = 'Odnoklassniki';
+        $this->providers['ok'] = 'Odnoklassniki';
         $this->providers['vk'] = 'Vkontakte';
         $this->providers['fb'] = 'Facebook';
         
@@ -47,17 +47,17 @@ class AuthController extends BaseController
     {
         if(!isset($this->providers[$provider]))
         {
-            return App::abort(404);    
+            return App::abort(404);
         }
         
         \App::bind('Karma\API\InterfaceAPI', 'Karma\API\\' . $this->providers[$provider] . 'API');
-    
+        
         $OAuth = App::make('Karma\Auth\\' . $this->providers[$provider] . 'OAuth');
         $OAuth->auth();
         
         \Session::put('auth', $provider);
-    
-        return Redirect::route('import');        
+        
+        return Redirect::route('import');
     }
     
     public function logout()
@@ -68,7 +68,6 @@ class AuthController extends BaseController
     
     public function loadProfile($social)
     {
-
         $API = \Karma\API\API::getAPI($social);
         $profile = $API->getUserInfo();
         $user = \Karma\Entities\User::find(\Session::get('user_id'));

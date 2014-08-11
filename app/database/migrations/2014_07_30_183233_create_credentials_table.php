@@ -17,7 +17,6 @@ class CreateCredentialsTable extends Migration {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('social_id')->unsigned();
-            $table->boolean('main');
             $table->string('external_id');
             $table->string('access_token');
             $table->string('refresh_token');

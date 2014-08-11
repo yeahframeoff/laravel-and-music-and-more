@@ -35,7 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (!\Karma\Auth\AuthController::logged())
+	if (!\Karma\Controllers\AuthController::logged())
 	{
 		if (Request::ajax())
 		{

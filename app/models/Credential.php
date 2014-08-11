@@ -25,12 +25,12 @@ class Credential extends \Eloquent
         return strtotime($this->expiration) > time();
     }
     
-    public static function scopeBySocialAndId($social, $id)
+    public static function bySocialAndId($social, $id)
     {
         return self::where('user_id', $id)->where('social_id', Social::byName($social))->first();
     }
     
-    public static function scopeByToken($token)
+    public static function byToken($token)
     {
         return self::where('access_token', $token)->first();
     }

@@ -18,7 +18,6 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-
                 @if(Karma\Controllers\AuthController::logged())
                 	<li class="dropdown@if(Request::is('/search/*')) active@endif">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -37,7 +36,7 @@
                 	<li @if(Request::is('/user/messages'))class="active"@endif><a href="{{ URL::to('messages') }}">Диалоги</a></li>
                 	<li @if(Request::is('/user/library'))class="active"@endif><a href="{{ URL::to('library') }}">Библиотека</a></li>
                 	<li @if(Request::is('/user/profile'))class="active"@endif><a href="{{ URL::to('profile') }}">Профиль</a></li>
-                    <li><a href="{{ URL::to('/user/logout') }}">Выйти</a></li>
+                    <li><a href="{{ URL::to('/logout') }}">Выйти</a></li>
                 @else
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

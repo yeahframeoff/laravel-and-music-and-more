@@ -11,8 +11,8 @@ class OdnoklassnikiOAuth extends OAuth
             'client_id' => \Config::get('app.OKAppId'),
             'client_secret' => \Config::get('app.OKClientSecret'),
             'token_key' => 'refresh_token',
-            'social_id' => Social::byName('ok')->id,
-            'redirect' => 'login/ok/callback',
+            'social_id' => \Karma\Entities\Social::byName('ok')->id,
+            'redirect' => 'ok',
             'grant_type' => 'authorization_code'
         );
         

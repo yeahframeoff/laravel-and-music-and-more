@@ -19,7 +19,7 @@ abstract class OAuth implements OAuthInterface
         if (\Input::has('code')) {
             $code = \Input::get('code');
 
-            $redirectUrl = \URL::route($this->dataArray['redirect']);
+            $redirectUrl = \URL::route('auth.callback', $this->dataArray['redirect']);
             $url = $this->dataArray['APIUrl'];
             
             $requestData = array(

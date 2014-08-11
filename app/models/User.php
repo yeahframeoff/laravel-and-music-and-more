@@ -10,7 +10,7 @@ class User extends \Eloquent
 
     public function credentials()
     {
-        return $this->hasMany('Credential');
+        return $this->hasMany('Karma\Entities\Credential');
     }    
 
     public function playlists()
