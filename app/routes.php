@@ -29,7 +29,8 @@ Route::group(array('before' => 'auth'), function()
 });
 
 /** Homepage */
-Route::get("/", ['as' => 'home', 'uses' => 'Karma\Controllers\MainController@index']);
-Route::get("about", 'Karma\Controllers\MainController@about');
-Route::get("rights", 'Karma\Controllers\MainController@rights');
+Route::get('/', ['as' => 'home', 'uses' => 'Karma\Controllers\MainController@index']);
+Route::get('about', 'Karma\Controllers\MainController@about');
+Route::get('rights', 'Karma\Controllers\MainController@rights');
 
+Route::get('/friends/{user}', ['as' => 'friends', 'uses' => 'Karma\Controllers\FriendController@index']);
