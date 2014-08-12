@@ -1,6 +1,8 @@
 @font-face {
 	font-family: OLogo;
-	src: url('../fonts/Beech.ttf');
+	src: url('../fonts/Beech.ttf') format('truetype'),
+         url('../fonts/Beech.svg') format('svg'),
+         url('../fonts/Beech.eot') format('embedded-opentype');
 }
 
 body {
