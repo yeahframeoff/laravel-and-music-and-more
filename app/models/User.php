@@ -106,6 +106,7 @@ class User extends \Eloquent
             })
             ->delete();
     }
+    
     public function confirmFriend($id)
     {
         DB::table('friends')->where('user_id', $id)
@@ -113,6 +114,17 @@ class User extends \Eloquent
             ->update(array('confirmed' => true));
         DB::table('friends')->insert(array('user_id' => $this->id,
                                            'friend_id' => $id,
+                                           'confirmed' => true));
+    }
+    
+    public function forceFriendshipTo($id)
+    {
+        DB::table('friends')->insert(array('user_id' => $this->id,
+                                           'friend_id' => $id,
+                                           'confirmed' => true));
+        
+        DB::table('friends')->insert(array('user_id' => $id,
+                                           'friend_id' => $this->id,
                                            'confirmed' => true));
     }
 }

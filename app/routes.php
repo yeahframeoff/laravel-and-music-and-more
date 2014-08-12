@@ -33,4 +33,4 @@ Route::get('/', ['as' => 'home', 'uses' => 'Karma\Controllers\MainController@ind
 Route::get('about', 'Karma\Controllers\MainController@about');
 Route::get('rights', 'Karma\Controllers\MainController@rights');
 
-Route::get('/friends/{user}', ['as' => 'friends', 'uses' => 'Karma\Controllers\FriendController@index']);
+Route::get('/friends/{user?}', ['as' => 'friends', 'uses' => 'Karma\Controllers\FriendController@index']);
