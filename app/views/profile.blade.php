@@ -1,109 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Off Canvas Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            padding-top: 70px;
-        }
-    </style>
-  </head>
-
-  <body>
-    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Karma</a>
+@extends('layouts.main')
+@section('content')
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8"><h1>{{$user->first_name . ' ' . $user->last_name}}</h1></div>
+        <div class="col-sm-8">
+            {{ HTML::linkAction('Karma\Controllers\ProfileController@addFriend', 'Add to friend', array('id' => $user->id))}}
         </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#">Profile</a></li>
-            <li><a href="#about">Some link</a></li>
-          </ul>
-        </div><!-- /.nav-collapse -->
-      </div><!-- /.container -->
-    </div><!-- /.navbar -->
+    </div>
+    <div class="row">
+        <div class="col-lg-3"><!--left col-->
 
-    <div class="container">
+            <ul class="list-group">
+                <li class="list-group-item text-muted">Profile</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Info1</strong></span> Text1</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Info2</strong></span> Text2</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Info3</strong></span> Text3</li>
+            </ul> 
+            
+            <a href="/users" class="pull-left"><img title="profile image" class="img-responsive" src={{$user->photo}}></a>
+            
+        </div><!--/col-3-->
+                
+        <div class="col-lg-3">
+            <audio preload></audio>
+            <br/>
+            <ol>
+                <li><a href="#" data-src="https://cs9-1v4.vk.me/p12/4ed504c6d852b2.mp3">karma police</a></li>
+                <li><a href="#" data-src="https://cs9-1v4.vk.me/p4/aef0de06703409.mp3?extra=08fN6XbDsUAMnJ5nR6yLAjKReYL9EHTy9zXUq5eUJwmQPgXSMjZm3qELA6PCeKE2ECQ-Jv6ez50eCOXu_k_7ShyQKtau-Q">creep</a></li>
+            </ol>
+        </div>
+        
+        <div class="col-lg-3 pull-right">
+            <h1>Friends:</h1>
 
-      <div class="row row-offcanvas row-offcanvas-right">
+            @if (isset($requests))
+                @foreach($requests as $request)
+                    {{ $request->first_name . ' ' . $request->last_name . ' (' . $request->id . ')'}}
+                    {{ HTML::linkAction('Karma\Controllers\ProfileController@confirmFriend', 'Confirm', array('id' => $request->id))}}<br/>
+                @endforeach
+            @endif
 
-        <div class="col-xs-12 col-sm-9">
-          <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-          </p>
-          <div class='row'>
-              <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Your Photo</h2>
-              </div><!--/span-->
-              <div class="col-6 col-sm-6 col-lg-4">
-                <p>Location </p>
-                <p>Name </p>
-                <p>Birthday </p>
-                <p>Preferable genre of music </p>
-              </div><!--/span-->
-          </div>
-          <h2>Your music:</h2>
-          <div class="row">
-            <div class="col-6 col-sm-6 col-lg-4">
-              <h2>Metallica</h2>
-              <p>Here might be picture </p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-              <h2>Heading</h2>
-              <p>Here might be picture </p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-              <h2>AC/DC</h2>
-              <p>Here might be picture </p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-              <h2>Heading</h2>
-              <p>Here might be picture </p>
-            </div><!--/span-->
-          </div><!--/row-->
-        </div><!--/span-->
+            @foreach($friends as $friend)
+                {{ $friend->first_name . ' ' . $friend->last_name . ' (' . $friend->id . ')'}}
+                {{ HTML::linkAction('Karma\Controllers\ProfileController@deleteFriend', 'Delete', array('id' => $friend->id))}}<br/>
+            @endforeach
 
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-          <div class="list-group">
-            <a href="#" class="list-group-item"> Profile</a>
-            <a href="#" class="list-group-item">Playlists</a>
-            <a href="#" class="list-group-item">Friends</a>
-            <a href="#" class="list-group-item">Your music</a>
-          </div>
-        </div><!--/span-->
-      </div><!--/row-->
-
-      <hr>
-
-      <footer>
-        <p>&copy; Karma 2014</p>
-      </footer>
-
-    </div><!--/.container-->
-
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  </body>
-</html>
+        </div>
+    </div>
+</div>
+@stop

@@ -1,6 +1,7 @@
 /bootstrap/compiled.php
 /vendor
 /.idea
+.codio
 composer.phar
 composer.lock
 .env.*.php
@@ -9,6 +10,7 @@ composer.lock
 Thumbs.db
 startup.sh
 .settings
+.htacces
 .htaccess
 /app/config/app.php
 /app/config/database.php
