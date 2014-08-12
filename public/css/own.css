@@ -51,6 +51,8 @@ body {
 }
 
 .connect {
+    color: black;
+    opacity: 1;
     cursor: pointer;
     display: none;
     font-size: 14px;
