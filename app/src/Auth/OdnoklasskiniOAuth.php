@@ -19,15 +19,21 @@ class OdnoklassnikiOAuth extends OAuth
         $this->interfaceAPI = $interfaceAPI;
     }
 
-    public static function getAuthLink()
+    public static function getAuthLink($connect = false)
     {
         $appId = \Config::get('app.OKAppId');
         
         $full_link = 'http://www.odnoklassniki.ru/oauth/authorize?'
             . "client_id={$appId}&response_type=code"
-            . '&redirect_uri='
-            . \URL::to('login/ok/callback');
+            . '&redirect_uri=';
         
-        return $full_link;
+        $redirect = 'login';
+        
+        if($connect)
+        {
+            $redirect = 'connect';
+        }
+        
+        return $full_link.\URL::to($redirect.'/ok/callback');
     }
 }

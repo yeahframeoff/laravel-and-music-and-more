@@ -8,8 +8,14 @@ class MainController extends BaseController
 {
     public function index()
     {
-        //dd(\Session::all());
-        return View::make('index');
+        if(AuthController::logged())
+        {
+            return View::make('import')->with('socials', \Karma\Entities\User::find(\Session::get('user_id'))->socials());
+        }
+        else
+        {
+            return View::make('index');
+        }
     }
     
     public function about()

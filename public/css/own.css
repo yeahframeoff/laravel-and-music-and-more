@@ -26,14 +26,38 @@ body {
 }
 
 .social {
+    z-index: 1;
 	display: inline-block;
 	margin-left: 60px;
 	margin-right: 60px;
 	margin-bottom: 50px;
     
+    position: relative;
+    text-align: center;
+    
     -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.social:hover .connect {
+    display: block;
+}
+
+.social:hover {
+    -webkit-box-shadow: inset 0 0 75px rgba(0, 0, 0, 0.6);
+       -moz-box-shadow: inset 0 0 75px rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 0 75px rgba(0, 0, 0, 0.6);
+}
+
+.connect {
+    cursor: pointer;
+    display: none;
+    font-size: 14px;
+    left: 0;
+    position:absolute;
+    top: 68px;
+    width: 100%;
 }
 
 /*
@@ -83,9 +107,22 @@ body {
          border-radius: 150px / 10px;
 }
 
+.shadow.inactive a {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.shadow a:hover {    
+    display: inline;
+}
+
 .inactive {
-    z-index: 1;
-    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0.5;
 }
 
 /*

@@ -4,7 +4,5 @@ namespace Karma\Auth;
 
 interface OAuthInterface
 {
-    public static function getAuthLink();
+    public static function getAuthLink($connect);
 }
-
-?>

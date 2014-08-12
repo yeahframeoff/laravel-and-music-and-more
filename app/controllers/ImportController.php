@@ -8,6 +8,6 @@ class ImportController extends BaseController
     {
         $id = \Session::get('user_id');
         
-        return \View::make('import')->with('socials', \Karma\Entities\User::find($id)->socials()->get());
+        return \View::make('import')->with('socials', \Karma\Entities\User::find($id)->socials());
     }
 }

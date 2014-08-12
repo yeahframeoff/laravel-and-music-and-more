@@ -8,12 +8,13 @@ use \Karma\Entities\Credential;
 use \View;
 use \App;
 use \Redirect;
+use \Session;
 
 class AuthController extends BaseController
 {
-    // $API = App::make('Karma\API\InterfaceAPI');, $API->getUserInfo()
     protected $providers;
     protected $links;
+	protected $links_connect;
     
     public function __construct()
     {
@@ -26,11 +27,17 @@ class AuthController extends BaseController
             'vk' => \Karma\Auth\VkontakteOAuth::getAuthLink(),
             'fb' => \Karma\Auth\FacebookOAuth::getAuthLink()
         );
+        
+        $this->links_connect = array(
+            'ok' => \Karma\Auth\OdnoklassnikiOAuth::getAuthLink(true),
+            'vk' => \Karma\Auth\VkontakteOAuth::getAuthLink(true),
+            'fb' => \Karma\Auth\FacebookOAuth::getAuthLink(true)
+        );
     }
     
     public static function logged()
     {
-        return \Karma\Auth\OAuth::getUserId() != false;
+        return !is_null(\Karma\Auth\OAuth::getUserId());
     }
     
     public function login($provider)
@@ -43,21 +50,54 @@ class AuthController extends BaseController
         return Redirect::to($this->links[$provider]);
     }
     
-    public function callback($provider)
+    public function connect($provider)
     {
         if(!isset($this->providers[$provider]))
         {
             return App::abort(404);
         }
         
-        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\\' . $this->providers[$provider] . 'API');
+        if(Session::get('auth') == $provider)
+        {
+            return Redirect::route('home')->with('warnings', array('Этот аккаунт уже подключен!'));
+        }
+        
+        return Redirect::to($this->links_connect[$provider]);
+    }
+    
+    public function callback($provider, $connect = false)
+    {
+        $with = array();
+        
+        if(!isset($this->providers[$provider]))
+        {
+            return App::abort(404);
+        }
+        
+        if($connect)
+        {
+            
+            $with = array('info' => array('Аккаунт успешно подключен.'));
+        }
+        else
+        {
+            \App::bind('Karma\API\InterfaceAPI', 'Karma\API\\' . $this->providers[$provider] . 'API');
+        }
         
         $OAuth = App::make('Karma\Auth\\' . $this->providers[$provider] . 'OAuth');
-        $OAuth->auth();
+        $OAuth->auth($connect);
         
-        \Session::put('auth', $provider);
+        if(!$connect)
+        {	                 
+            Session::put('auth', $provider);
+        }
         
-        return Redirect::route('import');
+        return Redirect::route('import')->with($with);
+    }
+    
+    public function callbackConnect($provider)
+    {
+        return $this->callback($provider, true);
     }
     
     public function logout()
@@ -70,7 +110,7 @@ class AuthController extends BaseController
     {
         $API = \Karma\API\API::getAPI($social);
         $profile = $API->getUserInfo();
-        $user = \Karma\Entities\User::find(\Session::get('user_id'));
+        $user = \Karma\Entities\User::find(Session::get('user_id'));
         $user->first_name = $profile['first_name'];
         $user->last_name = $profile['last_name'];
         $user->photo = $profile['photo'];

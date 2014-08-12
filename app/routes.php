@@ -7,7 +7,7 @@ Route::model('user', 'Karma\Entities\User');
 Route::get('login/{provider}', array('as' => 'auth.login', 
                                      'uses' => 'Karma\Controllers\AuthController@login'));
 
-Route::get('login/{provider}/callback', array('as' => 'auth.callback',
+Route::get('login/{provider}/callback', array('as' => 'auth.login.callback',
                                               'uses' => 'Karma\Controllers\AuthController@callback'));
 
 Route::get('logout', array('as' => 'auth.logout', 
@@ -15,7 +15,6 @@ Route::get('logout', array('as' => 'auth.logout',
 
 Route::get('user/{social}', 'Karma\Controllers\AuthController@loadProfile');
 
-/** Profile routes */
 Route::group(array('before' => 'auth'), function()
 {
     Route::get('profile', ['as' => 'profileIndex', 'uses' => 'Karma\Controllers\ProfileController@index']);
@@ -27,6 +26,12 @@ Route::group(array('before' => 'auth'), function()
     
     Route::get('import', array('as' => 'import',
                                'uses' => 'Karma\Controllers\ImportController@index'));
+    
+    Route::get('connect/{provider}', array('as' => 'auth.connect',
+                                           'uses' => 'Karma\Controllers\AuthController@connect'));
+    
+    Route::get('connect/{provider}/callback', array('as' => 'auth.connect.callback',
+                                                    'uses' => 'Karma\Controllers\AuthController@callbackConnect'));
 });
 
 /** Homepage */

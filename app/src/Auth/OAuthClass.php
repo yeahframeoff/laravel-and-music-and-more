@@ -13,13 +13,14 @@ abstract class OAuth implements OAuthInterface
 
     private $error_msg;
 
-    public function auth()
+    public function auth($connect = false)
     {        
         $result = false;
         if (\Input::has('code')) {
             $code = \Input::get('code');
-
-            $redirectUrl = \URL::route('auth.callback', $this->dataArray['redirect']);
+			
+            $conn = $connect ? 'connect.' : 'login.';
+            $redirectUrl = \URL::route('auth.'.$conn.'callback', $this->dataArray['redirect']);
             $url = $this->dataArray['APIUrl'];
             
             $requestData = array(
