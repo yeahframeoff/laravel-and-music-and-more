@@ -9,8 +9,9 @@
             <div class="col-md-7">
                 <h3>{{ $user->first_name . ' ' . $user->last_name }}</h3>
 
+                
                 @if ($user->id != $current->id)
-
+                
                     @if ($user->isFriend ($current->id))
                         <button type="button" class="btn btn-default btn-block friendship-remove" onclick="friendshipToggle(this);">
                             <span class="glyphicon glyphicon-minus"></span>
@@ -26,7 +27,6 @@
                         </button>
 
                     @endif
-
                 @endif
 
                 <a href="#{{--$user->profileUrl()--}}" class="btn btn-default btn-block" >
