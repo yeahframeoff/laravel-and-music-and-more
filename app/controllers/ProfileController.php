@@ -12,13 +12,28 @@ use \DB;
 
 class ProfileController extends BaseController
 {
+    
+    public function index()
+    {
+        $user = User::find(Session::get('user_id'));
+        return View::make('profile')
+            ->with('user', $user)
+            ->with('friends', $user->friends())
+            ->with('requests', $user->friendshipRequests());
+    }
+    
     public function show(User $user)
     {
-        return View::make('profile')->with('user', $user);
+        return View::make('profile')
+            ->with('user', $user)
+            ->with('friends', $user->friends());
     }
 
     public function addFriend(User $user)
     {
+        if ($user->id == Session::get('user_id')){
+            return Redirect::action('profileIndex');
+        }
         $currentUser = User::find(Session::get('user_id'));
         $currentUser->sendRequest($user->id);
         return Redirect::action('profile',

@@ -18,13 +18,19 @@ class FacebookOAuth extends OAuth
         $this->interfaceAPI = $interfaceAPI;
     }
 
-    public static function getAuthLink()
+    public static function getAuthLink($connect = false)
     {
         $full_link = 'https://www.facebook.com/dialog/oauth?'
             . 'client_id=1446675095605125'
-            . '&redirect_uri='
-            . \URL::to('login/fb/callback');
+            . '&redirect_uri=';
         
-        return $full_link;
+        $redirect = 'login';
+        
+        if($connect)
+        {
+            $redirect = 'connect';
+        }
+        
+        return $full_link.\URL::to($redirect.'/fb/callback');
     }
 }

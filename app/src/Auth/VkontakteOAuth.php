@@ -19,15 +19,21 @@ class VkontakteOAuth extends OAuth
         $this->interfaceAPI = $interfaceAPI;
     }
 
-    public static function getAuthLink()
+    public static function getAuthLink($connect = false)
     {
         $cliendId = \Config::get('app.VKClientId');
         
-        $fullLink = "https://oauth.vk.com/authorize?client_id={$cliendId}&scope=audio"
+        $full_link = "https://oauth.vk.com/authorize?client_id={$cliendId}&scope=audio"
             . '&response_type=code&v=5.23'
-            . '&redirect_uri='
-            . \URL::to('login/vk/callback');
+            . '&redirect_uri=';
         
-        return $fullLink;
+        $redirect = 'login';
+        
+        if($connect)
+        {
+            $redirect = 'connect';
+        }
+        
+        return $full_link.\URL::to($redirect.'/vk/callback');
     }
 }

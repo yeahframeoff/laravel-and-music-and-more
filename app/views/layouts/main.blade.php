@@ -13,13 +13,16 @@
         @section('scripts')
         	{{ HTML::script('http://code.jquery.com/jquery-2.1.1.js') }}
         	{{ HTML::script('public/js/bootstrap.js') }}
+        	{{ HTML::script('public/audiojs/audio.min.js') }}
+        	{{ HTML::script('public/js/audioController.js') }}
         @show
 	</head>
 	
 	<body>
 		@include('navbar')		
 		
-        <div class="container" id="content" >
+        <div class="container">
+            
             @yield('content')
         </div>
 	</body>

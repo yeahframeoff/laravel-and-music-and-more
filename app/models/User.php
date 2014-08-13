@@ -35,7 +35,7 @@ class User extends \Eloquent
 
     public function socials()
     {
-        return Social::whereIn('name', $this->credentials()->lists('social_id'));
+        return Social::whereIn('id', $this->credentials()->lists('social_id'))->lists('id', 'name');
     }
 
     public function friends()
