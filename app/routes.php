@@ -32,6 +32,11 @@ Route::group(array('before' => 'auth'), function()
     
     Route::get('connect/{provider}/callback', array('as' => 'auth.connect.callback',
                                                     'uses' => 'Karma\Controllers\AuthController@callbackConnect'));
+    
+    /*music import*/
+    Route::get('import/{provider}', array('as' => 'import.provider',
+                                         'uses' => 'Karma\Controllers\ImportController@import'));
+    
 });
 
 /** Homepage */

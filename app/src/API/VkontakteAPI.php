@@ -3,6 +3,7 @@
 namespace Karma\API;
 
 use \User;
+use \Session;
 
 class VkontakteAPI extends API implements InterfaceAPI
 {    
@@ -50,6 +51,23 @@ class VkontakteAPI extends API implements InterfaceAPI
             'last_name' => $info['last_name']
         );
         
+        return $result;
+    }
+    
+    public function getUserAudio()
+    {
+        $credential = \Karma\Entities\Credential::bySocialAndId('vk', 
+                                                                Session::get('user_id'));
+        
+        $params = array(
+            'owner_id' => $credential->external_id,
+            'need_user' => 0,
+            'count' => 10,
+            'access_token' => $this->getToken()
+        );
+        
+        $result = $this->APImethod($params, 'audio.get')['response'];
+        array_shift($result);
         return $result;
     }
     

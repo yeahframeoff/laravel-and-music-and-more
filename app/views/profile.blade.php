@@ -25,8 +25,13 @@
             <audio preload></audio>
             <br/>
             <ol>
-                <li><a href="#" data-src="https://cs9-1v4.vk.me/p12/4ed504c6d852b2.mp3">karma police</a></li>
+                <!--
+                <li><a href="#" data-src="https://cs9-1v4.vk.me/p12/4ed504c6d852b2.mp3?extra=bxHpPTsyZ_KltJAcPUd4BlIaPgnAQTJMzXo4DO-3nf1vlKqwg5yWnXPzkiIulNGMy4fk8lvV1mp6lhevxWqjF-b-11iNNNQ">karma police</a></li>
                 <li><a href="#" data-src="https://cs9-1v4.vk.me/p4/aef0de06703409.mp3?extra=08fN6XbDsUAMnJ5nR6yLAjKReYL9EHTy9zXUq5eUJwmQPgXSMjZm3qELA6PCeKE2ECQ-Jv6ez50eCOXu_k_7ShyQKtau-Q">creep</a></li>
+				-->
+                @foreach($tracks as $track)
+                	<li><a href="#" data-src="{{$track->track_url}}"> {{$track->track->title}}</a></li>
+                @endforeach
             </ol>
         </div>
         

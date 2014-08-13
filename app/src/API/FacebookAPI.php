@@ -2,6 +2,10 @@
 
 namespace Karma\API;
 
+use \Karma\Entities\User;
+use \Karma\Entities\Credential;
+use \Session;
+
 class FacebookAPI extends API implements InterfaceAPI
 {
 
@@ -36,6 +40,19 @@ class FacebookAPI extends API implements InterfaceAPI
         return $result;
     }
 
+    public function getUserAudio()
+    {
+        $credential = Credential::bySocialAndId('fb', 
+                                                Session::get('user_id'));
+        
+        $params = array(
+            'access_token' => $this->getToken(),
+        );
+            
+        $info = $this->APImethodGet($params, $credential->external_id . '');
+        dd($info);
+    }
+    
     protected function getToken()
     {
         $result;

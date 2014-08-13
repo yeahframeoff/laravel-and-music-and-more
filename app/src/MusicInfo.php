@@ -72,18 +72,24 @@ class MusicInfo
             $args = array('track' => $title,
                           'artist' => $_artist->name,
                           'autocorrect' => true);
-        
+
             $info = self::$lastfm->track_getInfo($args)->track;
             
             if(!empty($info))
             {
                 $_track->title = $info->name;
-                $_genre = Genre::where('name', $info->toptags->tag[0]->name);
+                                
+                if (!isset($info->toptags->tag->name))
+                    $genre = 'unknown';
+                else
+                    $genre = $info->toptags->tag->name;
                 
-                if(!$_genre->exists())
+                $_genre = Genre::where('name', $genre)->first();
+                
+                if($_genre == NULL)
                 {
                     $_genre = new Genre;
-                    $_genre->name = $info->toptags->tag[0]->name;
+                    $_genre->name = $genre;
                     $_genre->save();
                 }
                 
@@ -110,7 +116,7 @@ class MusicInfo
      * @param string $album
      * @return object
      */
-    public static function getAlbumInfo(string $album)
+    public static function getAlbumInfo($album)
     {
         $args = array('album' => $album,
                       'autocorrect' => true,

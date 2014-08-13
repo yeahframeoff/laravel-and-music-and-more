@@ -19,14 +19,16 @@ class ProfileController extends BaseController
         return View::make('profile')
             ->with('user', $user)
             ->with('friends', $user->friends())
-            ->with('requests', $user->friendshipRequests());
+            ->with('requests', $user->friendshipRequests())
+            ->with('tracks', $user->tracks());
     }
     
     public function show(User $user)
     {
         return View::make('profile')
             ->with('user', $user)
-            ->with('friends', $user->friends());
+            ->with('friends', $user->friends())
+            ->with('tracks', $user->tracks());
     }
 
     public function addFriend(User $user)
