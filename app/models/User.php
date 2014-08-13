@@ -50,6 +50,11 @@ class User extends \Eloquent
             return array();
 
     }
+    
+    public function profileUrl()
+    {
+        return \URL::to("/profile/{$this->id}");
+    }
 
     public function friendshipRequests()
     {

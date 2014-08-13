@@ -7,6 +7,7 @@
         @section('stylesheets')
             {{ HTML::style('public/css/own.css') }}
             {{ HTML::style('public/css/bootstrap.css') }}
+            {{ HTML::style('public/css/bootstrap-theme.css') }}
         @show
         
         @section('scripts')

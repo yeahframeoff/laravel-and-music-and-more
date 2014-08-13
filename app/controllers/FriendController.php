@@ -15,12 +15,10 @@ class FriendController extends BaseController
     public function index(User $user = null)
     {
         if ($user === null)
-            $user = User::find(Session::get('user_id'));
-        
-        if ($user === null)
-            \App::abort(403, 'Forbidden! Please, sign in to watch friends');
+            return Redirect::route('friends', ['user' => Session::get('user_id')]);
         
         $friends = $user->friends();
-        return View::make('friends')->with('friends', $friends);
+        $current_user = User::find(Session::get('user_id'));
+        return View::make('friends')->with(['friends' => $friends, 'user' => $user, 'current_user' => $current_user]);
     }
 }

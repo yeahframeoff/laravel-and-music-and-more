@@ -87,3 +87,24 @@ body {
     z-index: 1;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.user-tile
+{
+    margin-bottom: 50px;
+}
+
+.user-pic
+{
+    width: 200px;
+    height: 200px;
+    /*border: 2px solid #1271E0;*/
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    overflow: hidden;
+}
+
+.user-pic > img
+{
+    width: 200px;
+}

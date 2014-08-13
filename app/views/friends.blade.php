@@ -1,8 +1,16 @@
 @extends('layouts.main')
+
+@section('scripts')
+@parent
+{{ HTML::script('public/js/friends.js') }}
+@stop
+
 @section('content')
 @foreach($friends as $friend)
-<h1>{{ $friend->first_name }}</h1>
-<h1>{{ $friend->last_name }}</h1>
-{{ HTML::image($friend->photo, $friend->first_name . ' ' . $friend->last_name) }}
+    @include ('user_tile', [
+        'user'    => $friend,
+        'current' => $current_user,
+    ])
+    
 @endforeach
 @stop
