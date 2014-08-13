@@ -88,23 +88,35 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.user-tile
+.user-tile-big
 {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+    
+    width: 460px;
+    display: inline-block;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
-.user-pic
+.user-tile-big:hover
 {
-    width: 200px;
-    height: 200px;
-    /*border: 2px solid #1271E0;*/
     -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.1) inset;
        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.1) inset;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.user-tile-pic-big
+{
+    width: 180px;
+    height: 180px;
+    /*border: 2px solid #1271E0;*/
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+       -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
     overflow: hidden;
 }
 
-.user-pic > img
+.user-tile-pic-big > img
 {
-    width: 200px;
+    width: 180px;
 }

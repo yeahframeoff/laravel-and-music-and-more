@@ -12,3 +12,4 @@
 */
 
 Artisan::add(new MakeFriendshipCommand);
+Artisan::add(new CreateTestUserCommand);

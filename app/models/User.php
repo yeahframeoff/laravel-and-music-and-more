@@ -6,7 +6,7 @@ use \DB;
 
 class User extends \Eloquent
 {
-    protected $fillable = array('id', 'first_name', 'second_name', 'photo');
+    protected $fillable = array('id', 'first_name', 'last_name', 'photo');
 
     public function credentials()
     {
