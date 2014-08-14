@@ -5,6 +5,7 @@ namespace Karma\API;
 use \Karma\Entities\User;
 use \Karma\Entities\Credential;
 use \Session;
+use \Config;
 
 class FacebookAPI extends API implements InterfaceAPI
 {
@@ -12,9 +13,9 @@ class FacebookAPI extends API implements InterfaceAPI
     public function __construct()
     {
         $this->apiLink = 'https://graph.facebook.com/';
-        $this->applicationKey = '1446675095605125';
-        $this->privateKey = 'e98bafaf60c6c78104df3de28339acdb';
-        $this->accessToken = '1446675095605125|hqta5wV-Dyc6sLC-50h364tujAE';
+        $this->applicationKey =  Config::get('app.FBClientId');
+        $this->privateKey = Config::get('app.FBClientSecret');
+        $this->accessToken = Config::get('app.FBClientToken');
     }
 
     public function getUserId()
@@ -49,7 +50,7 @@ class FacebookAPI extends API implements InterfaceAPI
             'access_token' => $this->getToken(),
         );
             
-        $info = $this->APImethodGet($params, $credential->external_id . '');
+        $info = $this->APImethodGet($params, 'me/likes');
         dd($info);
     }
     
