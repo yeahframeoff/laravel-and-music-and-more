@@ -23,6 +23,7 @@
                 
         <div class="col-lg-3">
             <audio preload></audio>
+            <div id="dz-root"></div>
             <br/>
             <ol>
                 <!--

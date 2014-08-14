@@ -34,6 +34,6 @@ class FacebookOAuth extends OAuth
             $redirect = 'connect';
         }
         
-        return $full_link.\URL::to($redirect.'/fb/callback');
+        return $full_link . \URL::to($redirect.'/fb/callback');
     }
 }

@@ -1,4 +1,8 @@
+/*
+
 $(function() { 
+    
+    
     // Setup the player to autoplay the next track
     var a = audiojs.createAll({
         trackEnded: function() {
@@ -23,22 +27,23 @@ $(function() {
         audio.load($('a', this).attr('data-src'));
         audio.play();
     });
-    // Keyboard shortcuts
-    $(document).keydown(function(e) {
-        var unicode = e.charCode ? e.charCode : e.keyCode;
-        // right arrow
-        if (unicode == 39) {
-            var next = $('li.playing').next();
-            if (!next.length) next = $('ol li').first();
-            next.click();
-            // back arrow
-        } else if (unicode == 37) {
-            var prev = $('li.playing').prev();
-            if (!prev.length) prev = $('ol li').last();
-            prev.click();
-            // spacebar
-        } else if (unicode == 32) {
-            audio.playPause();
-        }
-    })
 });
+*/
+
+function onPlayerLoaded() {
+    console.log('load');
+    //DZ.player.playPlaylist(97897981);
+    //DZ.player.play();
+}
+
+
+$(document).ready(function(){
+    DZ.init({
+        appId : '8',
+        channelUrl : 'http://developers.deezer.com/examples/channel.php',
+        player : {
+            onload : onPlayerLoaded
+        }
+    });
+});
+

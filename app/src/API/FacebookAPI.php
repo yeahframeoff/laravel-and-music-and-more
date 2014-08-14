@@ -6,6 +6,7 @@ use \Karma\Entities\User;
 use \Karma\Entities\Credential;
 use \Session;
 use \Config;
+use \Karma\Util\MusicInfo;
 
 class FacebookAPI extends API implements InterfaceAPI
 {
@@ -51,7 +52,10 @@ class FacebookAPI extends API implements InterfaceAPI
         );
             
         $info = $this->APImethodGet($params, 'me/likes');
-        dd($info);
+        
+        $albums = MusicInfo::getArtistAlbums('Noize MC');
+        dd($albums);
+        
     }
     
     protected function getToken()
