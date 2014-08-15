@@ -79,12 +79,34 @@ class User extends \Eloquent
 
     }
     
+    public function sentFriendshipRequestTo($id)
+    {
+        $sent = DB::table('friends')
+            ->where('user_id', $this->id)
+            ->where('friend_id', $id)
+            ->where('confirmed', false)->first();
+        return $sent !== null;
+    }
+    
+    public function gotFriendshipRequestFrom($id)
+    {
+        $received = DB::table('friends')
+            ->where('user_id', $id)
+            ->where('friend_id', $this->id)
+            ->where('confirmed', false)->first();
+        
+        \Log::info('Received !== null: '.($received !== null));
+        \Log::info('Received === null: '.($received === null));
+        return $received !== null;        
+    }
+    
     public function sendRequest($id)
     {
         DB::table('friends')->insert(array('user_id' => $this->id,
                                            'friend_id' => $id,
                                            'confirmed' => false));
     }
+    
     public function removeRequest($id)
     {
         DB::table('friends')->where('user_id', $this->id)

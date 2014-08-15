@@ -1,12 +1,19 @@
-function friendshipToggle(btn)
+function friendshipToggle(btn, url)
 {
     $btn = $(btn);
-    $btn.find('span.glyphicon').toggleClass('glyphicon-minus');
-    $btn.find('span.glyphicon').toggleClass('glyphicon-plus');
-    $btn.toggleClass('btn-primary');
-    $btn.toggleClass('btn-default');
-    $btn.toggleClass('friendship-remove');
-    $btn.toggleClass('friendship-add');
-    $btn.find('span.title-add').toggle();
-    $btn.find('span.title-remove').toggle();
+    $btn.find('> span.btn-title').hide();
+    $btn.find('> strong.title-loading').show();
+    
+    $btn.attr('disabled', 'disabled');
+    $.get(url)
+        .success(function(data){
+            console.log(data);
+            $btn.replaceWith(data);
+        })
+        .fail(function(data){
+            console.log(data);
+            $btn.find('> span.btn-title').show();
+            $btn.find('> strong.title-loading').hide();
+            $btn.removeAttr('disabled');
+        });
 }

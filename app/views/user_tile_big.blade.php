@@ -7,36 +7,24 @@
                 </div>
             </div>
             <div class="col-md-7">
-                <h3>{{ $user->first_name . ' ' . $user->last_name }}</h3>
+                <a class="h3" href="#{{--$user->profileUrl()--}}" style="text-align: center">
+                    {{ $user->first_name . ' ' . $user->last_name }}
+                </a>
 
                 
                 @if ($user->id != $current->id)
-                
-                    @if ($user->isFriend ($current->id))
-                        <button type="button" class="btn btn-default btn-block friendship-remove" onclick="friendshipToggle(this);">
-                            <span class="glyphicon glyphicon-minus"></span>
-                            <span class="title title-remove"><strong>Remove from my friends</strong></span>
-                            <span class="title title-add" hidden="hidden"><strong>Add to my friends</strong></span>
-                        </button>
-
-                    @else
-                        <button type="button" class="btn btn-primary btn-block friendship-add" onclick="friendshipToggle(this);">
-                            <span class="glyphicon glyphicon-plus"></span>
-                            <span class="title title-add"><strong>Add to my friends</strong></span>
-                            <span class="title title-remove" hidden="hidden"><strong>Remove from my friends</strong></span>
-                        </button>
-
-                    @endif
+                    @include ('friendship_button', ['user' => $user, 'current' => $current])
                 @endif
-
-                <a href="#{{--$user->profileUrl()--}}" class="btn btn-default btn-block" >
-                    <span class="glyphicon glyphicon-user"></span>
-                    <span class="title"><strong>Watch profile</strong></span>
-                </a>
 
                 <a href="#" class="btn btn-success btn-block">
                     <span class="glyphicon glyphicon-headphones"></span>
                     <span class="title"><strong>Listen music</strong></span>
+                </a>
+                
+                <a href="{{\URL::route('friends', ['user' => $friend->id ]) }}"
+                   class="btn btn-default btn-block" >
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="title"><strong>Watch friends</strong></span>
                 </a>
             </div>
         </div>
