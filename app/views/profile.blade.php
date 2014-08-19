@@ -18,7 +18,11 @@
         <hr>
         
         @for ($i = 0; $i < count($friends); $i++)
-            <div class="tile-3 square@if($i % 3 == 0) terminator@endif">
+            @if($i % 3 == 0)
+                <span class="terminator"></span>
+            @endif
+
+            <div class="tile-3 square">
                 <a href="{{ URL::route('userprofile', array('user' => $friends[$i]->id)) }}">
                    {{ HTML::image($friends[$i]->photo, $friends[$i]->first_name . ' ' . $friends[$i]->last_name, array('title' => $friends[$i]->first_name . ' ' . $friends[$i]->last_name, 'class' => 'img-thumbnail')) }}
                 </a>
