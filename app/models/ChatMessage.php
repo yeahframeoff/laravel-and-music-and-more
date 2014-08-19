@@ -9,11 +9,11 @@ class ChatsMessage extends \Eloquent
     
     public function chat()
     {
-        return $this->hasOne('Chat');
+        return $this->hasOne('Karma\Entities\Chat');
     }
     
     public function sender()
     {
-        return $this->hasOne('User', 'from_user_id');
+        return $this->hasOne('Karma\Entities\User', 'from_user_id');
     }
 }

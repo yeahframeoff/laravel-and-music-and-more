@@ -9,16 +9,16 @@ class Album extends \Eloquent
     
  	public function artist()
     {
-        return $this->hasOne('Artist');
+        return $this->hasOne('Karma\Entities\Artist');
     }
     
     public function genres()
     {
-        return $this->belongsToMany('Genre');
+        return $this->belongsToMany('Karma\Entities\Genre');
     }
     
     public function tracks()
     {
-        return $this->belongsToMany('Track');
+        return $this->belongsToMany('Karma\Entities\Track');
     }
 }

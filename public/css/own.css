@@ -5,6 +5,10 @@
          url('../fonts/Beech.eot') format('embedded-opentype');
 }
 
+img {
+    height: 100%;
+}
+
 body {
     padding-top: 70px; 
 }
@@ -20,7 +24,7 @@ body {
 }
 
 #content {
-	width: 75%;
+	
 }
 
 #socials {
@@ -127,6 +131,45 @@ body {
 
 .inactive {
     opacity: 0.5;
+}
+
+.avatar {
+    
+}
+
+.terminator + .tile-3 {
+    margin-left: 0;
+}
+
+.tile-3 + .tile-3 {
+    margin-left: 5%;    
+}
+
+.tile-3 {    
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width: 30%;
+    height: 0;
+    padding-bottom: 30%; 
+}
+
+.tile-3 img {
+    max-height: 100%;
+    height: 100%;
+}
+
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
 }
 
 /*

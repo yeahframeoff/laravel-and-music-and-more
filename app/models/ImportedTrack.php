@@ -10,6 +10,6 @@ class ImportedTrack extends \Eloquent
     
     public function track()
     {
-        return $this->hasOne('Track');
+        return $this->hasOne('Karma\Entities\Track');
     }
 }

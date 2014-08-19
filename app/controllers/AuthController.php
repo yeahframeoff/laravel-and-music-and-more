@@ -37,7 +37,7 @@ class AuthController extends BaseController
     
     public static function logged()
     {
-        return !is_null(\Karma\Auth\OAuth::getUserId());
+        return Session::has('user_id');
     }
     
     public function login($provider)

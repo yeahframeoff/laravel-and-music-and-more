@@ -10,5 +10,6 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
         $this->call('SocialsTableSeeder');
+        $this->call('UsersTableSeeder');
 	}
 }

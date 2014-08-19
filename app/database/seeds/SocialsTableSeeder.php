@@ -1,7 +1,7 @@
 <?php
 
-class SocialsTableSeeder extends Seeder {
-
+class SocialsTableSeeder extends Seeder 
+{
     public function run()
     {
         DB::table('socials')->delete();

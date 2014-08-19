@@ -17,15 +17,18 @@ class CreateCredentialsTable extends Migration {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('social_id')->unsigned();
+            $table->boolean('main')->default(true);
             $table->string('external_id');
             $table->string('access_token');
             $table->string('refresh_token');
             $table->timestamp('expiration')->nullable();
             $table->timestamps();
+            
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+            
             $table->foreign('social_id')
                 ->references('id')
                 ->on('socials');

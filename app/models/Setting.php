@@ -9,6 +9,6 @@ class Setting extends \Eloquent
     
     public function user()
     {
-        return $this->hasOne('User');
+        return $this->hasOne('Karma\Entities\User');
     }
 }

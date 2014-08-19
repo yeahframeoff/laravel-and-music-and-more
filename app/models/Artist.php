@@ -9,11 +9,11 @@ class Artist extends \Eloquent
     
     public function albums()
     {
-        return $this->hasMany('Album');
+        return $this->hasMany('Karma\Entities\Album');
     }
     
     public function tracks()
     {
-        return $this->hasMany('Track');
+        return $this->hasMany('Karma\Entities\Track');
     }
 }

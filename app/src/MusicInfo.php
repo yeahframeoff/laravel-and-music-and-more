@@ -3,11 +3,6 @@
 namespace Karma\Util;
 
 use Dandelionmood\LastFm\LastFm;
-use Guzzle\Http\Client;
-use MusicBrainz\HttpAdapters\GuzzleHttpAdapter;
-use MusicBrainz\MusicBrainz;
-use MusicBrainz\Filters\ArtistFilter;
-use MusicBrainz\Filters\RecordingFilter;
 use Karma\Entities\Artist;
 use Karma\Entities\Track;
 use Karma\Entities\Genre;

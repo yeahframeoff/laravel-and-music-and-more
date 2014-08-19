@@ -12,12 +12,12 @@ class Credential extends \Eloquent
 
     public function user()
     {
-        return $this->belongsTo('User', 'user_id');
+        return $this->belongsTo('Karma\Entities\User', 'user_id');
     }
     
     public function social()
     {
-        return $this->hasOne('Social');
+        return $this->hasOne('Karma\Entities\Social');
     }
     
     public function expired()

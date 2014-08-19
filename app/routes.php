@@ -17,8 +17,8 @@ Route::get('user/{social}', 'Karma\Controllers\AuthController@loadProfile');
 
 Route::group(array('before' => 'auth'), function()
 {
-    Route::get('profile', ['as' => 'profileIndex', 'uses' => 'Karma\Controllers\ProfileController@index']);
-    Route::get('profile/{user}', ['as' => 'profile', 'uses' => 'Karma\Controllers\ProfileController@show']);
+    Route::get('profile', ['as' => 'profile', 'uses' => 'Karma\Controllers\ProfileController@index']);
+    Route::get('profile/{user}', ['as' => 'userprofile', 'uses' => 'Karma\Controllers\ProfileController@show']);
     Route::get('profile/addFriend/{user}', 'Karma\Controllers\ProfileController@addFriend');
     Route::get('profile/{user}/friends', 'Karma\Controllers\ProfileController@getAllFriends');
     Route::get('profile/confirmFriend/{user}', 'Karma\Controllers\ProfileController@confirmFriend');
@@ -38,8 +38,3 @@ Route::group(array('before' => 'auth'), function()
 Route::get("/", ['as' => 'home', 'uses' => 'Karma\Controllers\MainController@index']);
 Route::get("about", 'Karma\Controllers\MainController@about');
 Route::get("rights", 'Karma\Controllers\MainController@rights');
-
-Route::get('/', function()
-{
-   return View::make('profile'); 
-});

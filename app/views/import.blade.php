@@ -10,7 +10,7 @@
     <br>
     
     <span class="social shadow">
-        @if(isset($socials['FB']))
+        @if(isset($socials['fb']))
         	<a href="{{ URL::to('/import/fb') }}">{{ HTML::image('public/images/FB_logo_big.png', 'Facebook', array('title' => 'Импорт музыки из Facebook')) }}</a>
         @else
         	<a href="{{ URL::to('/connect/fb') }}">
@@ -23,7 +23,7 @@
     </span>
     
     <span class="social shadow">
-        @if(isset($socials['VK']))
+        @if(isset($socials['vk']))
         	<a href="{{ URL::to('/import/vk') }}">{{ HTML::image('public/images/VK_logo_big.png', 'Facebook', array('title' => 'Импорт музыки из Vkontakte')) }}</a>
         @else
             <a href="{{ URL::to('/connect/vk') }}">
@@ -36,7 +36,7 @@
     </span>
     
     <span class="social shadow">
-        @if(isset($socials['OK']))
+        @if(isset($socials['ok']))
         	<a href="{{ URL::to('/import/ok') }}">{{ HTML::image('public/images/OK_logo_big.png', 'Facebook', array('title' => 'Импорт музыки из Одноклассники')) }}</a>
         @else
         	<a href="{{ URL::to('/connect/ok') }}">
