@@ -64,7 +64,7 @@ abstract class OAuth implements OAuthInterface
                 
                 if(!isset($credential->id))
                 {
-                    if(!Session::has('user_id'))
+                    if(Session::has('user_id'))
                     {
                         $user = \Karma\Entities\User::find(Session::get('user_id'));
                     }

@@ -40,8 +40,10 @@ class User extends \Eloquent
         
         foreach($socials as $social => $id)
         {
-            $socials[$social] = $credentials->where('id', $id)->pluck('main');
+            $socials[$social] = $credentials->where('social_id', $id)->first();
         }
+        
+        return $socials;
     }
     
     public function groups()

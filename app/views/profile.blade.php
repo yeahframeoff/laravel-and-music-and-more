@@ -37,7 +37,7 @@
                 </a>
             </div>                
         @else
-             <div class="btn-group btn-group-justified">
+             <div class="btn-group">
                  @foreach($socials as $name => $main)
                      <a class="btn" href="">
                          {{ HTML::image('public/images/' . strtoupper($name) . '_logo_small.png') }}
@@ -51,22 +51,20 @@
                          @endif                             
                       </a>
                  @endforeach
-                 
-                 <li class="dropdown">
-                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                         <span class="glyphicon glyphicon-plus"></span>
-                         <b class="caret"></b>
-                     </a>
-
-                     <ul class="dropdown-menu">
-                         @foreach(array('vk' => 'Вконтакте', 'fb' => 'Facebook', 'ok' => 'Одноклассники') as $soc => $name)
-                             @if(!isset($socials[$soc]))<li><a href="{{ URL::to('login/'.$soc) }}">$name</a></li>@endif
-                         @endforeach
-                     </ul>
-                </li>
-                 
-                     
-             </div>        
+            </div>        
+        
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle btn" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <b class="caret"></b>
+                </a>
+                
+                <ul class="dropdown-menu">
+                    @if(!isset($socials['vk']))<li><a href="connect/vk">Вконтакте</a></li>@endif
+                    @if(!isset($socials['fb']))<li><a href="connect/fb">Facebook</a></li>@endif
+                    @if(!isset($socials['ok']))<li><a href="connect/ok">Одноклассники</a></li>@endif
+                </ul>
+            </div> 
         @endif
     </div>
     
