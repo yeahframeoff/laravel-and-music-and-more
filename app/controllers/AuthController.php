@@ -74,15 +74,10 @@ class AuthController extends BaseController
             return App::abort(404);
         }
         
+        \App::bind('Karma\API\InterfaceAPI', 'Karma\API\\' . $this->providers[$provider] . 'API');
+
         if($connect)
-        {
-            
             $with = array('info' => array('Аккаунт успешно подключен.'));
-        }
-        else
-        {
-            \App::bind('Karma\API\InterfaceAPI', 'Karma\API\\' . $this->providers[$provider] . 'API');
-        }
         
         $OAuth = App::make('Karma\Auth\\' . $this->providers[$provider] . 'OAuth');
         $OAuth->auth($connect);

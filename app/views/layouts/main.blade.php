@@ -15,6 +15,7 @@
         	{{ HTML::script('public/js/bootstrap.js') }}
         	{{ HTML::script('public/audiojs/audio.min.js') }}
         	{{ HTML::script('public/js/audioController.js') }}
+            {{ HTML::script('http://cdn-files.deezer.com/js/min/dz.js') }}
         @show
 	</head>
 	

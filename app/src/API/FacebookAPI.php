@@ -2,15 +2,21 @@
 
 namespace Karma\API;
 
+use \Karma\Entities\User;
+use \Karma\Entities\Credential;
+use \Session;
+use \Config;
+use \Karma\Util\MusicInfo;
+
 class FacebookAPI extends API implements InterfaceAPI
 {
 
     public function __construct()
     {
         $this->apiLink = 'https://graph.facebook.com/';
-        $this->applicationKey = '1446675095605125';
-        $this->privateKey = 'e98bafaf60c6c78104df3de28339acdb';
-        $this->accessToken = '1446675095605125|hqta5wV-Dyc6sLC-50h364tujAE';
+        $this->applicationKey =  Config::get('app.FBClientId');
+        $this->privateKey = Config::get('app.FBClientSecret');
+        $this->accessToken = Config::get('app.FBClientToken');
     }
 
     public function getUserId()
@@ -36,6 +42,22 @@ class FacebookAPI extends API implements InterfaceAPI
         return $result;
     }
 
+    public function getUserAudio()
+    {
+        $credential = Credential::bySocialAndId('fb', 
+                                                Session::get('user_id'));
+        
+        $params = array(
+            'access_token' => $this->getToken(),
+        );
+            
+        $info = $this->APImethodGet($params, 'me/likes');
+        
+        $albums = MusicInfo::getArtistAlbums('Noize MC');
+        dd($albums);
+        
+    }
+    
     protected function getToken()
     {
         $result;

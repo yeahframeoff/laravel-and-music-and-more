@@ -3,6 +3,8 @@
 namespace Karma\Entities;
 
 use \DB;
+use \Session;
+use \Karma\Entities\ImportedTrack;
 
 class User extends \Eloquent
 {
@@ -20,7 +22,9 @@ class User extends \Eloquent
 
     public function tracks()
     {
-        return $this->belongsToMany('ImportedTrack', 'imported_track_user');
+        return ImportedTrack::whereIn('id',
+               DB::table('imported_track_user')->where('user_id', $this->id)->lists('imported_track_id')
+        )->get();
     }
 
     public function settings()

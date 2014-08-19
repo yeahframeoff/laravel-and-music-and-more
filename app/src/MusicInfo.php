@@ -11,6 +11,7 @@ use MusicBrainz\Filters\RecordingFilter;
 use Karma\Entities\Artist;
 use Karma\Entities\Track;
 use Karma\Entities\Genre;
+use \DeezerAPI;
 
 /**
  * This class provides access to different music information using online resources such as MusicBrainz and Last.fm
@@ -72,18 +73,24 @@ class MusicInfo
             $args = array('track' => $title,
                           'artist' => $_artist->name,
                           'autocorrect' => true);
-        
+
             $info = self::$lastfm->track_getInfo($args)->track;
             
             if(!empty($info))
             {
                 $_track->title = $info->name;
-                $_genre = Genre::where('name', $info->toptags->tag[0]->name);
+                                
+                if (!isset($info->toptags->tag->name))
+                    $genre = 'unknown';
+                else
+                    $genre = $info->toptags->tag->name;
                 
-                if(!$_genre->exists())
+                $_genre = Genre::where('name', $genre)->first();
+                
+                if($_genre == NULL)
                 {
                     $_genre = new Genre;
-                    $_genre->name = $info->toptags->tag[0]->name;
+                    $_genre->name = $genre;
                     $_genre->save();
                 }
                 
@@ -110,7 +117,7 @@ class MusicInfo
      * @param string $album
      * @return object
      */
-    public static function getAlbumInfo(string $album)
+    public static function getAlbumInfo($album)
     {
         $args = array('album' => $album,
                       'autocorrect' => true,
@@ -130,6 +137,28 @@ class MusicInfo
                       'lang' => 'ru');
         
         return self::$lastfm->artist_getInfo($args);
+    }
+    
+    
+    /**
+     * @param string $artist
+     * @return object
+     */
+    public static function getArtistAlbums($artist)
+    {
+        $artist = new DeezerAPI\Models\Artist(148130);
+        dd($artist->albums);
+        $search = new DeezerAPI\Search($artist, 'artist', 'DURATION_DESC');
+        $result = $search->search();
+        foreach ($result as $_artist){
+            if($_artist->name == $artist)
+                return $_artist->id;
+        }
+        /*
+         * TODO
+         *
+         * Throw exception or anything else ($artist not found)
+         */
     }
 }
 

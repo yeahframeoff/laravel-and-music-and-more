@@ -2,6 +2,8 @@
 
 namespace Karma\Entities;
 
+use \DB;
+
 class ImportedTrack extends \Eloquent
 {
     protected $table = 'imported_tracks';
@@ -10,6 +12,14 @@ class ImportedTrack extends \Eloquent
     
     public function track()
     {
-        return $this->hasOne('Track');
+        return $this->hasOne('Karma\Entities\Track', 'id', 'track_id');
+    }
+    
+    public function connectWithUser($id)
+    {
+        DB::table('imported_track_user')->insert(array(
+            'user_id' => $id,
+            'imported_track_id' => $this->id
+        ));
     }
 }
