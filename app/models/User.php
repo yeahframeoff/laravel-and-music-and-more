@@ -56,15 +56,20 @@ class User extends \Eloquent
         return \URL::to("/profile/{$this->id}");
     }
 
-    public function friendshipRequests()
+    public function friendshipRequests($onlyCount = false)
     {
         $list = DB::table('friends')->where('friend_id', $this->id)
             ->where('confirmed', false)
             ->lists('user_id');
         if(count($list) != 0)
-            return self::whereIn('id', $list)->get();
+            return $onlyCount ? count($list) : self::whereIn('id', $list)->get();
         else
-            return array();
+            return $onlyCount ? 0 : array();
+    }
+    
+    public function friendshipRequestsCount()
+    {
+        return $this->friendshipRequests(true);
     }
 
     public function sentFriendshipRequests()

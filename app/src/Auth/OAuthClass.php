@@ -10,6 +10,8 @@ abstract class OAuth implements OAuthInterface
 {
     protected $dataArray;
     protected $interfaceAPI;
+    
+    protected static $_userInstance = null;
 
     private $error_msg;
 
@@ -97,6 +99,13 @@ abstract class OAuth implements OAuthInterface
     public static function getUserId()
     {
         return Session::get('user_id');
+    }
+    
+    public static function getUser()
+    {
+        if (self::$_userInstance === null)
+            self::$_userInstance = \Karma\Entities\User::find(self::getUserId());
+        return self::$_userInstance;
     }
 
     public static function logout()

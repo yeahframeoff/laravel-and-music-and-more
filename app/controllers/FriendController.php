@@ -15,20 +15,26 @@ class FriendController extends BaseController
 {
     public function getAllMy()
     {
-        $user = User::find(Session::get('user_id'));
-        return $this->getAll($user);
+        $user = \Karma\Auth\OAuth::getUser();
+        return $this->getAll($user, true);
     }
     
-    public function getAll(User $user)
+    public function getAll(User $user, $withRequests = false)
     {
-        //$requests = $user->friendshipRequests();
         $friends = $user->friends();
         $current_user = $this->getCurrentUser($user);
-        return View::make('friends')
-            ->with('friends', $friends)
-            //->with('requests', $requests)
-            ->with('user', $user)
-            ->with('current_user', $current_user);
+        $data = [
+           'friends'      => $friends,
+           'user'         => $user,
+           'current_user' => $current_user,
+        ];
+        if ($withRequests || $user->id == \Karma\Auth\OAuth::getUserId())
+        {
+            $requests = $user->friendshipRequests();
+            $data = array_add($data, 'requests', $requests);
+        }
+        
+        return View::make('friends')->with($data);
     }
 
     public function add(User $user)
