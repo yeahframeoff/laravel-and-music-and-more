@@ -8,20 +8,17 @@ class SearchController extends BaseController
     {
         $method = 'searchFor'.ucfirst($for);
         
-        if(!method_exists($method))
-        {
+        if(!method_exists($this, $method))
             return App::abort(404);
-        }
         else
-        {
-            return call_user_func($method, urldecode($what));
-        }
+            return $this->$method(urldecode($what));
     }
     
-    protected function searchForPeople($whom)
+    protected function searchForPeople()
     {
-        $people = \Karma\Util\Search::search('User', ['first_name', 'last_name'], $whom);
-        return View::make('search', ['page' => 'people', 'result' => $people]);
+        $whom = \Input::has('q') ? \Input::get('q') : '';
+        $people = \Karma\Util\Search::search('\Karma\Entities\User', ['first_name', 'last_name'], $whom);
+        return \View::make('search', ['page' => 'people', 'result' => $people]);
     }
     
     protected function searchForMusic($what)

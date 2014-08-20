@@ -86,9 +86,9 @@ Route::group(array('before' => 'auth'), function()
     /*
      * Search
      */
-    Route::get('search',
-        ['as'   => 'auth.connect.callback',
-            'uses' => 'Karma\Controllers\AuthController@callbackConnect']);
+    Route::get('search/people',
+              ['as'   => 'search.people',
+               'uses' => 'Karma\Controllers\SearchController@searchForPeople']);
 
     /*
      * Music import
