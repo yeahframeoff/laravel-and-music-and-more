@@ -167,7 +167,6 @@ class User extends \Eloquent
                                            'confirmed' => true));
     }
 
-<<<<<<< HEAD
     public function forceFriendshipTo($id)
     {
         DB::table('friends')->insert(array('user_id' => $this->id,
