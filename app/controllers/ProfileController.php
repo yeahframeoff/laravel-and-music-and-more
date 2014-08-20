@@ -17,28 +17,13 @@ class ProfileController extends BaseController
     {
         $user = User::find(Session::get('user_id'));
         
-        return View::make('profile')
-                   ->with(array('user' => $user,
-                                'groups' => $user->groups(),
-                                'friends' => $user->friends(),
-                                'requests' => $user->friendshipRequests(),
-                                'preferred_artists' => $user->preferredArtists(),
-                                'socials' => $user->socials()));
+        return $this->show($user);
     }
     
     public function show(User $user)
-    {
-        if($user->id == Session::get('user_id'))
-        {
-            return Redirect::route('profile'); 
-        }
-        
+    {         
         return View::make('profile')
-            ->with(array('user' => $user,
-                         'groups' => $user->groups(),
-                         'friends' => $user->friends(),
-                         'requests' => $user->friendshipRequests(),
-                         'preferred_artists' => $user->preferredArtists()));
+            ->with('user', $user);
     }
 
     public function addFriend(User $user)

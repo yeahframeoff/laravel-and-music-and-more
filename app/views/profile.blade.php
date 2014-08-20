@@ -17,14 +17,14 @@
         <h2>Друзья</h2>
         <hr>
         
-        @for ($i = 0; $i < count($friends); $i++)
+        @for ($i = 0; $i < count($user->friends()); $i++)
             @if($i % 3 == 0)
                 <span class="terminator"></span>
             @endif
 
             <div class="tile-3 square">
-                <a href="{{ URL::route('userprofile', array('user' => $friends[$i]->id)) }}">
-                   {{ HTML::image($friends[$i]->photo, $friends[$i]->first_name . ' ' . $friends[$i]->last_name, array('title' => $friends[$i]->first_name . ' ' . $friends[$i]->last_name, 'class' => 'img-thumbnail')) }}
+                <a href="{{ URL::route('userprofile', array('user' => $user->friends()[$i]->id)) }}">
+                   {{ HTML::image($user->friends()[$i]->photo, $user->friends()[$i]->first_name . ' ' . $user->friends()[$i]->last_name, array('title' => $user->friends()[$i]->first_name . ' ' . $user->friends()[$i]->last_name, 'class' => 'img-thumbnail')) }}
                 </a>
             </div>
         @endfor
@@ -36,13 +36,19 @@
             <br>
     	@if($user->id != Session::get('user_id'))
             <div class="btn-group">
-                <a class="btn" href="{{ URL::to('profile/addFriend/' . $user->id) }}">
-                    <span class="glyphicon glyphicon-user"></span> Добавить в друзья 
-                </a>
+                @if(Karma\Entities\User::find(Session::get('user_id'))->isFriend($user->id))
+                    <a class="btn" href="{{ URL::to('profile/addFriend/' . $user->id) }}">
+                        <span class="glyphicon glyphicon-user"></span> Добавить в друзья 
+                    </a>
+                @else
+                    <a class="btn" href="{{ URL::to('profile/deleteFriend/' . $user->id) }}">
+                        <span class="glyphicon glyphicon-user"></span> Удалить из друзей
+                    </a>
+                @endif
             </div>                
         @else
              <div class="btn-group">
-                 @foreach($socials as $name => $main)
+                 @foreach($user->socials() as $name => $main)
                      <a class="btn" href="">
                          {{ HTML::image('public/images/' . strtoupper($name) . '_logo_small.png') }}
                          
@@ -64,9 +70,9 @@
                 </a>
                 
                 <ul class="dropdown-menu">
-                    @if(!isset($socials['vk']))<li><a href="connect/vk">Вконтакте</a></li>@endif
-                    @if(!isset($socials['fb']))<li><a href="connect/fb">Facebook</a></li>@endif
-                    @if(!isset($socials['ok']))<li><a href="connect/ok">Одноклассники</a></li>@endif
+                    @if(!isset($user->socials()['vk']))<li><a href="connect/vk">Вконтакте</a></li>@endif
+                    @if(!isset($user->socials()['fb']))<li><a href="connect/fb">Facebook</a></li>@endif
+                    @if(!isset($user->socials()['ok']))<li><a href="connect/ok">Одноклассники</a></li>@endif
                 </ul>
             </div> 
         @endif
