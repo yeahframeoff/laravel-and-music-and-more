@@ -7,6 +7,7 @@ use Karma\Entities\Artist;
 use Karma\Entities\Track;
 use Karma\Entities\Genre;
 use \DeezerAPI;
+use \DeezerAPI\Models\Album;
 
 /**
  * This class provides access to different music information using online resources such as MusicBrainz and Last.fm
@@ -141,13 +142,12 @@ class MusicInfo
      */
     public static function getArtistAlbums($artist)
     {
-        $artist = new DeezerAPI\Models\Artist(148130);
-        dd($artist->albums);
         $search = new DeezerAPI\Search($artist, 'artist', 'DURATION_DESC');
         $result = $search->search();
         foreach ($result as $_artist){
-            if($_artist->name == $artist)
-                return $_artist->id;
+            if($_artist->name == $artist){
+                return $_artist->albums;
+            }
         }
         /*
          * TODO

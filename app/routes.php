@@ -40,7 +40,7 @@ Route::group(array('before' => 'auth'), function()
     Route::get('import',
               ['as'   => 'import',
                'uses' => 'Karma\Controllers\ImportController@index']);
-    
+
     /*
      * Friendships
      */
@@ -82,20 +82,28 @@ Route::group(array('before' => 'auth'), function()
     Route::get('connect/{provider}/callback',
               ['as'   => 'auth.connect.callback',
                'uses' => 'Karma\Controllers\AuthController@callbackConnect']);
-    
+
+    /*
+     * Search
+     */
+    Route::get('search',
+        ['as'   => 'auth.connect.callback',
+            'uses' => 'Karma\Controllers\AuthController@callbackConnect']);
+
     /*
      * Music import
      */
     Route::get('import/{provider}', 
               ['as'   => 'import.provider',
                'uses' => 'Karma\Controllers\ImportController@import']);
-    
-    /*
-     * Search
-     */
-    Route::get('search',
-              ['as'   => 'auth.connect.callback',
-               'uses' => 'Karma\Controllers\AuthController@callbackConnect']);
+
+    Route::get('import',
+              ['as'   => 'import',
+               'uses' => 'Karma\Controllers\ImportController@index']);
+
+    Route::post('import/select/{provider}',
+               ['as'  => 'import.select',
+               'uses' => 'Karma\Controllers\ImportController@importSelect']);
 });
 
 /*
