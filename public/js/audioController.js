@@ -32,7 +32,7 @@ $(function() {
 
 function onPlayerLoaded() {
     console.log('load');
-    //DZ.player.playPlaylist(97897981);
+    DZ.player.playTracks([14669216]);
     //DZ.player.play();
 }
 
@@ -45,5 +45,17 @@ $(document).ready(function(){
             onload : onPlayerLoaded
         }
     });
+
+    $('ol li').click(function(e) {
+        e.preventDefault();
+        $(this).addClass('playing').siblings().removeClass('playing');
+        var link = $('a', this).attr('data-src');
+        if (/^-?[\d.]+(?:e-?\d+)?$/.test(link))
+            DZ.player.playTracks([link]);
+        else
+            DZ.player.playExternalTracks([link]);
+        //audio.play();
+    });
+
 });
 

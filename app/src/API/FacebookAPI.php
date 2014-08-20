@@ -7,6 +7,7 @@ use \Karma\Entities\Credential;
 use \Session;
 use \Config;
 use \Karma\Util\MusicInfo;
+use \DeezerAPI\Models\Album;
 
 class FacebookAPI extends API implements InterfaceAPI
 {
@@ -44,17 +45,50 @@ class FacebookAPI extends API implements InterfaceAPI
 
     public function getUserAudio()
     {
+        /*
         $credential = Credential::bySocialAndId('fb', 
                                                 Session::get('user_id'));
         
         $params = array(
             'access_token' => $this->getToken(),
         );
+
             
         $info = $this->APImethodGet($params, 'me/likes');
-        
+        */
+
+
+        $result = array();
+        $artists = ['Justice', 'Noize MC', 'SunSay', 'Nickelback'];
+
+        foreach ($artists as $artist){
+            $albums = MusicInfo::getArtistAlbums($artist);
+            $artist = str_replace(' ', '_', $artist);
+            $artist = str_replace(array(' ', '(', ')'), '', $artist);
+            $result[$artist] = array();
+            foreach ($albums as $album){
+                $deezerAlbum = new Album($album);
+                $_tracks = $deezerAlbum->tracks;
+                //dd($album);
+                $title = str_replace(' ', '_', $album->title);
+                $title = str_replace(array('(', ')'), '', $title);
+                $result[$artist][$title] = $_tracks;
+            }
+        }
+
+        return $result;
+
+        $tracks = array();
         $albums = MusicInfo::getArtistAlbums('Noize MC');
-        dd($albums);
+        foreach ($albums as $album){
+            $deezerAlbum = new Album($album);
+            $_tracks = $deezerAlbum->tracks;
+            foreach ($_tracks as $track){
+                $track->album = $album;
+                $tracks[] = $track;
+            }
+        }
+        return $tracks;
         
     }
     

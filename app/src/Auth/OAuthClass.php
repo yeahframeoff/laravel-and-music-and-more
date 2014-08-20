@@ -5,6 +5,7 @@ namespace Karma\Auth;
 use \Jyggen\Curl\Curl;
 use \Karma\API;
 use \Session;
+use \Guzzle\Http\Client;
 
 abstract class OAuth implements OAuthInterface
 {
@@ -33,8 +34,10 @@ abstract class OAuth implements OAuthInterface
             if (isset($this->dataArray['grant_type']))
                 $requestData['grant_type'] = $this->dataArray['grant_type'];
 
-            $response = Curl::post($url, $requestData)[0];
-            $response = $response->getContent();
+            $client= new Client();
+            $request = $client->post($url, array(), $requestData);
+            $response = $request->send();
+            $response = $response->getBody(true);
             $responseTmp = json_decode($response, true);
             
             if ($responseTmp == NULL)

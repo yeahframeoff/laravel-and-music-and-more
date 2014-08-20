@@ -23,10 +23,7 @@ Route::group(array('before' => 'auth'), function()
     Route::get('profile/{user}/friends', 'Karma\Controllers\ProfileController@getAllFriends');
     Route::get('profile/confirmFriend/{user}', 'Karma\Controllers\ProfileController@confirmFriend');
     Route::get('profile/deleteFriend/{user}', 'Karma\Controllers\ProfileController@deleteFriend');
-    
-    Route::get('import', array('as' => 'import',
-                               'uses' => 'Karma\Controllers\ImportController@index'));
-    
+
     Route::get('connect/{provider}', array('as' => 'auth.connect',
                                            'uses' => 'Karma\Controllers\AuthController@connect'));
     
@@ -36,7 +33,13 @@ Route::group(array('before' => 'auth'), function()
     /*music import*/
     Route::get('import/{provider}', array('as' => 'import.provider',
                                          'uses' => 'Karma\Controllers\ImportController@import'));
-    
+    Route::get('import', array('as' => 'import',
+                        'uses' => 'Karma\Controllers\ImportController@index'));
+    Route::post('import/select/{provider}', array('as' => 'import.select',
+                        'uses' => 'Karma\Controllers\ImportController@importSelect'));
+
+
+
 });
 
 /** Homepage */
