@@ -25,6 +25,7 @@ Route::get('user/{social}',
 
 Route::group(array('before' => 'auth'), function()
 {
+
     
     /*
      * Profile
@@ -40,7 +41,7 @@ Route::group(array('before' => 'auth'), function()
     Route::get('import',
               ['as'   => 'import',
                'uses' => 'Karma\Controllers\ImportController@index']);
-    
+
     /*
      * Friendships
      */
@@ -89,6 +90,15 @@ Route::group(array('before' => 'auth'), function()
     Route::get('import/{provider}', 
               ['as'   => 'import.provider',
                'uses' => 'Karma\Controllers\ImportController@import']);
+
+    Route::get('import',
+              ['as'   => 'import',
+               'uses' => 'Karma\Controllers\ImportController@index']);
+
+    Route::post('import/select/{provider}',
+               ['as'  => 'import.select',
+               'uses' => 'Karma\Controllers\ImportController@importSelect']);
+
 });
 
 /*

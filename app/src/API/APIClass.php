@@ -3,6 +3,7 @@
 namespace Karma\API;
 
 use \Jyggen\Curl\Curl;
+use \Guzzle\Http\Client;
 
 abstract class API 
 {
@@ -27,14 +28,17 @@ abstract class API
         
         return $API;
     }
-    
+
     protected function APImethod($params, $addToUrl = '')
     {
         $url = $this->apiLink . $addToUrl;
-        $response = Curl::post($url, $params)[0];
-        $response = $response->getContent();
+
+        $client = new Client();
+        $request = $client->post($url, array(), $params);
+        $response = $request->send();
+        $response = $response->getBody(true);
         $response = json_decode($response, true);
-        
+
         return $this->checkError($response);
     }
         
@@ -48,9 +52,11 @@ abstract class API
                 $paramsList[] = "$key=$value";
             $url = $url . '?' . implode('&', $paramsList);
         }
-        
-        $response = Curl::get($url, $params)[0];
-        $response = $response->getContent();
+
+        $client = new Client();
+        $request = $client->get($url);
+        $response = $request->send();
+        $response = $response->getBody(true);
         $response = json_decode($response, true);
         
         return $this->checkError($response);

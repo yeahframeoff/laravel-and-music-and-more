@@ -17,6 +17,7 @@
         	{{ HTML::script('public/js/audioController.js') }}
             {{ HTML::script('http://cdn-files.deezer.com/js/min/dz.js') }}
             {{ HTML::script('public/js/friends.js') }}
+            {{ HTML::script('public/js/importController.js') }}
         @show
 	</head>
 	
