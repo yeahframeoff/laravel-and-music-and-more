@@ -6,9 +6,9 @@ class SocialsTableSeeder extends Seeder
     {
         DB::table('socials')->delete();
 
-        \Karma\Entities\Social::create(array('name' => 'fb'));
-        \Karma\Entities\Social::create(array('name' => 'vk'));
-        \Karma\Entities\Social::create(array('name' => 'ok'));
+        \Karma\Entities\Social::create(array('name' => 'fb', 'title' => 'Facebook'));
+        \Karma\Entities\Social::create(array('name' => 'vk', 'title' => 'ВКонтакте'));
+        \Karma\Entities\Social::create(array('name' => 'ok', 'title' => 'Одноклассники'));
         
         $this->command->info('Socials table seeded!');
     }

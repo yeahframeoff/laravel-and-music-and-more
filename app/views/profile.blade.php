@@ -10,41 +10,58 @@
 <div class="row">
     <div class="col-md-6">
         <h2></h2>
-    	{{ HTML::image($user->photo, $user->first_name . ' ' . $user->last_name, array('title' => $user->first_name . ' ' . $user->last_name, 'class' => 'img-thumbnail')) }}
+    	{{  HTML::image(
+                $user->photo,
+                $user->first_name . ' ' . $user->last_name,
+                [
+                    'title' => $user->first_name . ' ' . $user->last_name,
+                    'class' => 'img-thumbnail',
+                ]
+        ) }}
     </div>
     
     <div class="col-md-6">
-        <h2>Друзья</h2>
+        <a class="h2" href="{{ \URL::route('friends', ['user' => $user]) }}">Друзья</a>
         <hr>
         
-        @for ($i = 0; $i < count($user->friends()); $i++)
+        @foreach ($user->friends() as $i => $friend)
             @if($i % 3 == 0)
                 <span class="terminator"></span>
             @endif
 
             <div class="tile-3 square">
                 <a href="{{ URL::route('profile', array('user' => $user->friends()[$i]->id)) }}">
-                   {{ HTML::image($user->friends()[$i]->photo, $user->friends()[$i]->first_name . ' ' . $user->friends()[$i]->last_name, array('title' => $user->friends()[$i]->first_name . ' ' . $user->friends()[$i]->last_name, 'class' => 'img-thumbnail')) }}
+                    {{  HTML::image(
+                            $friend->photo,
+                            $friend->first_name . ' ' . $friend->last_name, 
+                            [
+                                'title' => $friend->first_name . ' ' . $friend->last_name,
+                                'class' => 'img-thumbnail'
+                            ]
+                    ) }}
                 </a>
             </div>
-        @endfor
+        @endforeach
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-6">
             <br>
-    	@if($user->id != Session::get('user_id'))
+    	@if($user->id != Karma\Auth\OAuth::getUserId())
             <div class="btn-group">
-                @if(Karma\Entities\User::find(Session::get('user_id'))->isFriend($user->id))
-                    <a class="btn" href="{{ URL::to('profile/addFriend/' . $user->id) }}">
+                {{--
+                @if(!Karma\Auth\OAuth::getUser()->isFriend($user->id))
+                    <a class="btn" href="{{ URL::route('friends.add', ['user' => $user->id]) }}">
                         <span class="glyphicon glyphicon-user"></span> Добавить в друзья 
                     </a>
                 @else
-                    <a class="btn" href="{{ URL::to('profile/deleteFriend/' . $user->id) }}">
+                    <a class="btn" href="{{ URL::route('friends.delete', ['user' => $user->id]) }}">
                         <span class="glyphicon glyphicon-user"></span> Удалить из друзей
                     </a>
                 @endif
+                --}}
+                @include ('friendship_button', ['user' => $user])
             </div>                
         @else
              <div class="btn-group">
