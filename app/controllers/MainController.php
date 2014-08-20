@@ -28,4 +28,9 @@ class MainController extends BaseController
     {
         return View::make('rights');
     }
+    
+    public function library()
+    {
+        return View::make('library');
+    }
 }
