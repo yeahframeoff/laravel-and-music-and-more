@@ -88,6 +88,7 @@ abstract class OAuth implements OAuthInterface
                 }
                 $credential->refresh_token = $response[$this->dataArray['token_key']];
                 $credential->access_token = $response['access_token'];
+                $credential->main = $connect;
                 $credential->save();
                 Session::put('user_id', $credential->user_id);
             }

@@ -1,0 +1,51 @@
+body {
+    background-color: #d5c0ab;
+}
+
+nav {
+    height: 10%;
+}
+
+.nav-elem {
+    background-color: #556666;
+    color: white;
+    font-style
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px
+}
+
+.nav-elem:hover {
+    background-color: #889999;
+    border-color: #336666;
+    border-width: 0 2px
+}
+
+.centered {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;    
+}
+
+.social {
+    border-radius: 60px;
+    padding: 10px 40px;
+    margin: auto 0;
+}
+
+#logo {
+    font-family: Beech;
+    font-size: 64px;
+}
+
+#brief-about {
+    font-family: CaviarDreams;
+}
+
+#brief-about p {
+    text-indent: 20px;
+}
+

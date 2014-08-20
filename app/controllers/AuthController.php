@@ -5,6 +5,8 @@ namespace Karma\Controllers;
 use \Karma\Auth;
 use \Karma\API;
 use \Karma\Entities\Credential;
+use \Karma\Entities\User;
+use \Karma\Entities\Social;
 use \View;
 use \App;
 use \Redirect;
@@ -37,7 +39,11 @@ class AuthController extends BaseController
     
     public static function logged()
     {
-        return !is_null(\Karma\Auth\OAuth::getUserId());
+        return Session::has('user_id') && Session::has('auth') && !User::find(Session::get('user_id'))
+                                                                       ->credentials()
+                                                                       ->where('social_id', Social::byName(Session::get('auth'))->id)
+                                                                       ->first()
+                                                                       ->expired();
     }
     
     public function login($provider)

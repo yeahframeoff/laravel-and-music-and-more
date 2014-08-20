@@ -1,0 +1,14 @@
+@font-face {
+    font-family: OpenSans;
+    src: url('../fonts/OpenSans-SemiboldItalic.ttf');
+}
+
+@font-face {
+    font-family: Beech;
+    src: url('../fonts/Beech.ttf');
+}
+
+@font-face {
+    font-family: CaviarDreams;
+    src: url('../fonts/CaviarDreams.ttf');
+}

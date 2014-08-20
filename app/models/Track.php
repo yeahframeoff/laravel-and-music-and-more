@@ -9,16 +9,16 @@ class Track extends \Eloquent
         
     public function artist()
     {
-        return $this->hasOne('Artist');
+        return $this->hasOne('Karma\Entities\Artist');
     }
     
     public function albums()
     {
-        return $this->hasManyThrough('AlbumsTrack', 'Album');
+        return $this->belongsToMany('Karma\Entities\Album');
     }
     
     public function genre()
     {
-        return $this->hasOne('Genre');
+        return $this->hasOne('Karma\Entities\Genre');
     }
 }

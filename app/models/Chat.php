@@ -9,11 +9,11 @@ class Chat extends \Eloquent
     
     public function participants()
     {
-        return $this->belongsToMany('User');
+        return $this->belongsToMany('Karma\Entities\User');
     }
     
     public function messages()
     {
-        return $this->hasMany('ChatMessage');
+        return $this->hasMany('Karma\Entities\ChatMessage');
     }
 }

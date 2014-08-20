@@ -8,16 +8,16 @@ namespace Karma\Entities;
 
 class Credential extends \Eloquent
 {
-    protected $fillable = array('id', 'user_id', 'social_id', 'external_id', 'refresh_token', 'access_token', 'expiration');
+    protected $fillable = array('id', 'user_id', 'social_id', 'main', 'external_id', 'refresh_token', 'access_token', 'expiration');
 
     public function user()
     {
-        return $this->belongsTo('User', 'user_id');
+        return $this->belongsTo('Karma\Entities\User', 'user_id');
     }
     
     public function social()
     {
-        return $this->hasOne('Social');
+        return $this->hasOne('Karma\Entities\Social');
     }
     
     public function expired()

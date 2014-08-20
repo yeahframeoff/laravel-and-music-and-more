@@ -8,11 +8,11 @@ class Playlist extends \Eloquent
     
     public function tracks()
     {
-        return $this->belongsToMany('ImportedTrack', 'playlist_track');
+        return $this->belongsToMany('Karma\Entities\ImportedTrack', 'playlist_track');
     }
     
     public function user()
     {
-        return $this->hasOne('User');
+        return $this->hasOne('Karma\Entities\User');
     }
 }

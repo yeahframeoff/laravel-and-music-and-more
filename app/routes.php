@@ -47,32 +47,34 @@ Route::group(array('before' => 'auth'), function()
     Route::get('friends',
               ['as'   => 'friends.my',
                'uses' => 'Karma\Controllers\FriendController@getAllMy']);
-    
+
     Route::get('friends/{user}',
               ['as'   => 'friends',
                'uses' => 'Karma\Controllers\FriendController@getAll']);
-    
+
     Route::get('friends/add/{user}',
               ['as'   => 'friends.add',
                'uses' => 'Karma\Controllers\FriendController@add']);
-    
+
     Route::get('friends/cancel/{user}',
               ['as'   => 'friends.cancel',
                'uses' => 'Karma\Controllers\FriendController@cancel']);
-    
+
     Route::get('friends/confirm/{user}',
               ['as'   => 'friends.confirm',
                'uses' => 'Karma\Controllers\FriendController@confirm']);
-    
+
     Route::get('friends/delete/{user}',
               ['as'   => 'friends.delete',
                'uses' => 'Karma\Controllers\FriendController@delete']);
-    
+
     Route::get('friends/restore/{user}',
               ['as'   => 'friends.restore',
                'uses' => 'Karma\Controllers\FriendController@restore']);
-    //
 
+    /*
+     * Some other stuff
+     */
     Route::get('connect/{provider}',
               ['as'   => 'auth.connect',
                'uses' => 'Karma\Controllers\AuthController@connect']);
@@ -87,7 +89,6 @@ Route::group(array('before' => 'auth'), function()
     Route::get('import/{provider}', 
               ['as'   => 'import.provider',
                'uses' => 'Karma\Controllers\ImportController@import']);
-    
 });
 
 /*

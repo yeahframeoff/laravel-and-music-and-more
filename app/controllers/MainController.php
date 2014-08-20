@@ -3,6 +3,7 @@
 namespace Karma\Controllers;
 
 use \View;
+use \Session;
 
 class MainController extends BaseController
 {
@@ -10,7 +11,7 @@ class MainController extends BaseController
     {
         if(AuthController::logged())
         {
-            return View::make('import')->with('socials', \Karma\Entities\User::find(\Session::get('user_id'))->socials());
+            return View::make('import')->with('socials', \Karma\Entities\User::find(Session::get('user_id'))->socials());
         }
         else
         {

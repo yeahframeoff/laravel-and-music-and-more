@@ -13,33 +13,44 @@ class User extends \Eloquent
     public function credentials()
     {
         return $this->hasMany('Karma\Entities\Credential');
-    }    
+    }
 
     public function playlists()
     {
-        return $this->hasMany('Playlist');
+        return $this->hasMany('Karma\Entities\Playlist');
     }
 
     public function tracks()
     {
-        return ImportedTrack::whereIn('id',
-               DB::table('imported_track_user')->where('user_id', $this->id)->lists('imported_track_id')
-        )->get();
+        return $this->belongsToMany('Karma\Entities\ImportedTrack', 'imported_track_user');
     }
 
     public function settings()
     {
-        return $this->hasMany('Setting');
+        return $this->hasMany('Karma\Entities\Setting');
     }
 
     public function chats()
     {
-        return $this->belongsToMany('Chat');
+        return $this->belongsToMany('Karma\Entities\Chat');
     }
 
     public function socials()
     {
-        return Social::whereIn('id', $this->credentials()->lists('social_id'))->lists('id', 'name');
+        $credentials = $this->credentials();
+        $socials = Social::whereIn('id', $credentials->lists('social_id'))->lists('id', 'name');
+
+        foreach($socials as $social => $id)
+        {
+            $socials[$social] = $credentials->where('social_id', $id)->first();
+        }
+
+        return $socials;
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany('Karma\Entities\Group');
     }
 
     public function friends()
@@ -47,14 +58,14 @@ class User extends \Eloquent
         $list = DB::table('friends')->where('user_id', $this->id)
                     ->where('confirmed', true)
                     ->lists('friend_id');
-        
-        if(count($list) != 0)
+
+        if(count($list))
             return self::whereIn('id', $list)->get();
         else
             return array();
 
     }
-    
+
     public function profileUrl()
     {
         return \URL::to("/profile/{$this->id}");
@@ -65,12 +76,14 @@ class User extends \Eloquent
         $list = DB::table('friends')->where('friend_id', $this->id)
             ->where('confirmed', false)
             ->lists('user_id');
+
         if(count($list) != 0)
             return $onlyCount ? count($list) : self::whereIn('id', $list)->get();
+
         else
             return $onlyCount ? 0 : array();
     }
-    
+
     public function friendshipRequestsCount()
     {
         return $this->friendshipRequests(true);
@@ -81,13 +94,14 @@ class User extends \Eloquent
         $list = DB::table('friends')->where('user_id', $this->id)
             ->where('confirmed', false)
             ->lists('friend_id');
-        if(count($list) != 0)
+
+        if(count($list))
             return self::whereIn('id', $list)->get();
         else
             return array();
 
     }
-    
+
     public function sentFriendshipRequestTo($id)
     {
         $sent = DB::table('friends')
@@ -96,26 +110,26 @@ class User extends \Eloquent
             ->where('confirmed', false)->first();
         return $sent !== null;
     }
-    
+
     public function gotFriendshipRequestFrom($id)
     {
         $received = DB::table('friends')
             ->where('user_id', $id)
             ->where('friend_id', $this->id)
             ->where('confirmed', false)->first();
-        
+
         \Log::info('Received !== null: '.($received !== null));
         \Log::info('Received === null: '.($received === null));
-        return $received !== null;        
+        return $received !== null;
     }
-    
+
     public function sendRequest($id)
     {
         DB::table('friends')->insert(array('user_id' => $this->id,
                                            'friend_id' => $id,
                                            'confirmed' => false));
     }
-    
+
     public function removeRequest($id)
     {
         DB::table('friends')->where('user_id', $this->id)
@@ -131,6 +145,7 @@ class User extends \Eloquent
             ->where('confirmed', true)
             ->exists();
     }
+
     public function deleteFriend($id)
     {
         DB::table('friends')->where('confirmed', true)
@@ -142,23 +157,24 @@ class User extends \Eloquent
             })
             ->delete();
     }
-    
+
     public function confirmFriend($id)
     {
         DB::table('friends')->where('user_id', $id)
             ->where('friend_id', $this->id)
             ->update(array('confirmed' => true));
+
         DB::table('friends')->insert(array('user_id' => $this->id,
                                            'friend_id' => $id,
                                            'confirmed' => true));
     }
-    
+
     public function forceFriendshipTo($id)
     {
         DB::table('friends')->insert(array('user_id' => $this->id,
                                            'friend_id' => $id,
                                            'confirmed' => true));
-        
+
         DB::table('friends')->insert(array('user_id' => $id,
                                            'friend_id' => $this->id,
                                            'confirmed' => true));
