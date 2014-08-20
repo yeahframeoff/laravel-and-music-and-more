@@ -7,6 +7,7 @@
         @section('stylesheets')
             {{ HTML::style('public/css/own.css') }}
             {{ HTML::style('public/css/bootstrap.css') }}
+            {{ HTML::style('public/css/bootstrap-theme.css') }}
         @show
         
         @section('scripts')
@@ -20,7 +21,8 @@
 	<body>
 		@include('navbar')		
 		
-        <div class="container">
+        <div class="container" id="content">
+            
             @yield('content')
         </div>
 	</body>

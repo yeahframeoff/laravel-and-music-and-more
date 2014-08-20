@@ -31,7 +31,14 @@
                             <li @if(Request::is('/search/groups'))class="active"@endif><a href="{{ URL::to('search/groups') }}">Группы</a>
                         </ul>
                 	</li>
-                	<li @if(Request::is('/user/friends'))class="active"@endif><a href="{{ URL::to('friends') }}">Друзья</a></li>
+                	<li @if(Request::is('/friends'))class="active"@endif>
+                        <a href="{{ URL::to('friends') }}">Друзья
+                            &nbsp;
+                            @if($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
+                            <span class="badge">+{{$count}}</span>
+                            @endif
+                        </a>
+                    </li>
                 	<li @if(Request::is('/user/groups'))class="active"@endif><a href="{{ URL::to('groups') }}">Группы</a></li>
                 	<li @if(Request::is('/user/messages'))class="active"@endif><a href="{{ URL::to('messages') }}">Диалоги</a></li>
                 	<li @if(Request::is('/user/library'))class="active"@endif><a href="{{ URL::to('library') }}">Библиотека</a></li>
