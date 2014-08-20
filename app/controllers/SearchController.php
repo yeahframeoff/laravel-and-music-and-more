@@ -20,7 +20,8 @@ class SearchController extends BaseController
     
     protected function searchForPeople($whom)
     {
-        
+        $people = \Karma\Util\Search::search('User', ['first_name', 'last_name'], $whom);
+        return View::make('search', ['page' => 'people', 'result' => $people]);
     }
     
     protected function searchForMusic($what)

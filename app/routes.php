@@ -89,6 +89,13 @@ Route::group(array('before' => 'auth'), function()
     Route::get('import/{provider}', 
               ['as'   => 'import.provider',
                'uses' => 'Karma\Controllers\ImportController@import']);
+    
+    /*
+     * Search
+     */
+    Route::get('search',
+              ['as'   => 'auth.connect.callback',
+               'uses' => 'Karma\Controllers\AuthController@callbackConnect']);
 });
 
 /*
