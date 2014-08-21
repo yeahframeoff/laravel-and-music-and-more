@@ -18,8 +18,14 @@ class FriendController extends BaseController
         $user = \Karma\Auth\OAuth::getUser();
         return $this->getAll($user, true);
     }
+
+    public function getRequests()
+    {
+        $user = \Karma\Auth\OAuth::getUser();
+        return $this->getAll($user, true, true);
+    }
     
-    public function getAll(User $user, $withRequests = false)
+    public function getAll(User $user, $withRequests = false, $showRequests = false)
     {
         $friends = $user->friends();
         $current_user = $this->getCurrentUser($user);
@@ -34,7 +40,7 @@ class FriendController extends BaseController
             $data = array_add($data, 'requests', $requests);
         }
         
-        return View::make('friends')->with($data);
+        return View::make('friends')->with($data)->with('showRequests', $showRequests);
     }
 
     public function add(User $user)

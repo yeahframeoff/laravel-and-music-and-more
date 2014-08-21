@@ -3,23 +3,22 @@
 @section('content')
 @if (isset($requests))
 <ul class="nav nav-pills">
-    <li class="active"><a href="#friends" data-toggle="pill">Мои друзья</a></li>
-    
-        <li><a href="#requests" data-toggle="pill">
-            Заявки
-            &nbsp;
-            @if($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
-            <span class="badge">+{{$count}}</span>
-            @endif
-            </a>
-        </li>
+    <li @unless ($showRequests)class="active" @endunless><a href="#friends" data-toggle="pill">Мои друзья</a></li>
+    <li @if ($showRequests)class="active" @endif><a href="#requests" data-toggle="pill">
+        Заявки
+        &nbsp;
+        @if($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
+        <span class="badge">+{{$count}}</span>
+        @endif
+        </a>
+    </li>
     
 </ul>
 @endif
 
 
 <div class="tab-content">
-    <div class="tab-pane active" id="friends">
+    <div class="tab-pane @unless ($showRequests) active @endunless" id="friends">
         <div class="page-header">
             @if ($user->id == \Karma\Auth\OAuth::getUserId())
             <h1>Ваши друзья</h1>
@@ -35,7 +34,7 @@
     </div>
 
     @if (isset($requests))
-        <div class="tab-pane" id="requests">
+        <div class="tab-pane @if ($showRequests) active @endif" id="requests">
             <div class="page-header">
                 <h1>Заявки в друзья</h1>
             </div>

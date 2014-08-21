@@ -32,10 +32,10 @@
                         </ul>
                 	</li>
                 	<li @if(Request::is('/friends'))class="active"@endif>
-                        <a href="{{ URL::to('friends') }}">Друзья
+                        <a href="{{ URL::route('friends.my') }}">Друзья
                             &nbsp;
                             @if($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
-                            <span class="badge">+{{$count}}</span>
+                            <a href="{{ URL::route('friends.requests') }}"><span class="badge">+{{$count}}</span></a>
                             @endif
                         </a>
                     </li>
