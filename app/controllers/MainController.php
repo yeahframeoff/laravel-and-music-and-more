@@ -4,6 +4,7 @@ namespace Karma\Controllers;
 
 use \View;
 use \Session;
+use \Karma\Entities\User;
 
 class MainController extends BaseController
 {
@@ -11,7 +12,7 @@ class MainController extends BaseController
     {
         if(AuthController::logged())
         {
-            return View::make('import')->with('socials', \Karma\Entities\User::find(Session::get('user_id'))->socials());
+            return View::make('import')->with('socials', User::find(Session::get('user_id'))->socials());
         }
         else
         {
@@ -31,6 +32,9 @@ class MainController extends BaseController
     
     public function library()
     {
-        return View::make('library');
+        $user = User::find(Session::get('user_id'));
+        
+        return View::make('library')->with(array('playlists' => $user->playlists(),
+                                                 'tracks' => $user->tracks()));
     }
 }

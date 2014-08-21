@@ -61,7 +61,7 @@ Route::group(array('before' => 'auth'), function()
                                                     'uses' => 'Karma\Controllers\AuthController@callbackConnect'));
     
     Route::get('library', array('as' => 'library', 
-                                'uses' => ''));
+                                'uses' => 'Karma\Controllers\MainController@library'));
 
 });
 
