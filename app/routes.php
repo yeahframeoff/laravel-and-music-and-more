@@ -61,7 +61,13 @@ Route::group(array('before' => 'auth'), function()
                                                     'uses' => 'Karma\Controllers\AuthController@callbackConnect'));
     
     Route::get('library', array('as' => 'library', 
-                                'uses' => 'Karma\Controllers\MainController@library'));
+                                'uses' => 'Karma\Controllers\LibraryController@index'));
+    
+    Route::get('library/create/{name}', array('as' => 'library.create',
+                                              'uses' => 'LibraryController@create'));
+    
+    Route::get('library/delete/{id}', array('as' => 'library.delete',
+                                            'uses' => 'LibraryController@delete'));
 
 });
 

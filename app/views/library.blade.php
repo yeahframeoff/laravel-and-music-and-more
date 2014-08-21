@@ -22,12 +22,15 @@
             <h1>Плейлисты</h1>
         </div>
         
+        <a href="#create" class="btn">Создать</a>
+        {{ Form::open(array('url' => ))}}
+        
         @foreach($playlists as $playlist)
             <div class="playlist">
                 <a href="#">$playlist->name</a>
                 <div class="playlist-tracks">
                     @foreach($playlist->tracks() as $track)
-                        $track->track_url
+                        $track->track_url<br>
                     @endforeach
                 </div>
             </div>
