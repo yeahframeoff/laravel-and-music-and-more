@@ -23,7 +23,7 @@ Route::get('logout',
 Route::get('user/{social}',
            'Karma\Controllers\AuthController@loadProfile');
 
-Route::group(array('before' => 'auth'), function()
+Route::group(['before' => 'auth'], function()
 {
     
     /*
@@ -78,10 +78,25 @@ Route::group(array('before' => 'auth'), function()
     Route::get('connect/{provider}',
               ['as'   => 'auth.connect',
                'uses' => 'Karma\Controllers\AuthController@connect']);
-    
+
     Route::get('connect/{provider}/callback',
               ['as'   => 'auth.connect.callback',
                'uses' => 'Karma\Controllers\AuthController@callbackConnect']);
+
+    /*
+     * Library
+     */
+    Route::get('library',
+              ['as'   => 'library',
+               'uses' => 'Karma\Controllers\LibraryController@index']);
+    
+    Route::get('library/create/{name}',
+              ['as'   => 'library.create',
+               'uses' => 'LibraryController@create']);
+    
+    Route::get('library/delete/{id}',
+              ['as'   => 'library.delete',
+               'uses' => 'LibraryController@delete']);
 
     /*
      * Search
@@ -115,7 +130,8 @@ Route::group(array('before' => 'auth'), function()
 
     Route::get('sync',
               ['as'   => 'import.sync',
-              'uses'  => 'Karma\Controllers\ImportController@sync']);
+               'uses' => 'Karma\Controllers\ImportController@sync']);
+
 });
 
 /*

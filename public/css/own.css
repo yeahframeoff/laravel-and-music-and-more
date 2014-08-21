@@ -10,7 +10,7 @@ img {
 }
 
 body {
-    padding-top: 70px; 
+    padding-top: 70px;
 }
 
 #logo {
@@ -174,7 +174,7 @@ body {
 }
 
 /*
- * User tiles in friend list and people-search list 
+ * User tiles in friend list and people-search list
  */
 
 .user-tile-big
@@ -209,8 +209,6 @@ body {
 {
     width: 180px;
 }
-
-
 
 /* custom inclusion of left tabs */
 
@@ -261,7 +259,7 @@ body {
 .tabs-left > .nav-tabs .active > a:hover,
 .tabs-left > .nav-tabs .active > a:focus {
     border-color: #ddd transparent #ddd #ddd;
-    *border-right-color: #ffffff;
+    border-right-color: #ffffff;
 }
 
 
@@ -296,7 +294,7 @@ li.playing:before { content: '♬'; width: 14px; height: 14px; padding: 3px; lin
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
 }
-    
+
 span.btn-title
 {
     font-weight: bold;

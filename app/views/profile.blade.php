@@ -3,14 +3,14 @@
 <div style="margin: auto 0;">
     <span class="glyphicon glyphicon-user"></span>&nbsp;
     <h1 style="display: inline;">{{ $user->first_name . ' ' . $user->last_name  }}</h1>
-    <a href="{{ URL::route('import.sync') }}">Sync</a>
+
 </div>
 
 <hr>
 
 <div class="row">
     <div class="col-md-6">
-        <h2></h2>
+
     	{{  HTML::image(
                 $user->photo,
                 $user->first_name . ' ' . $user->last_name,
@@ -19,6 +19,11 @@
                     'class' => 'img-thumbnail',
                 ]
         ) }}
+
+        <hr>
+        <a class="btn btn-warning btn-block" href="{{ URL::route('import.sync') }}">
+            <span class="glyphicon glyphicon-refresh"></span>&nbsp;<strong>Sync</strong>
+        </a>
     </div>
     
     <div class="col-md-6">
