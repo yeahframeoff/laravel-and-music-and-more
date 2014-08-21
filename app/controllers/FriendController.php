@@ -16,13 +16,8 @@ class FriendController extends BaseController
     public function getAllMy()
     {
         $user = \Karma\Auth\OAuth::getUser();
-        return $this->getAll($user, true);
-    }
-
-    public function getRequests()
-    {
-        $user = \Karma\Auth\OAuth::getUser();
-        return $this->getAll($user, true, true);
+        $showRequests = \Input::has('p') && \Input::get('p') == 'requests';
+        return $this->getAll($user, true, $showRequests);
     }
     
     public function getAll(User $user, $withRequests = false, $showRequests = false)

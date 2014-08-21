@@ -49,10 +49,6 @@ Route::group(array('before' => 'auth'), function()
               ['as'   => 'friends.my',
                'uses' => 'Karma\Controllers\FriendController@getAllMy']);
 
-    Route::get('friends/requests',
-              ['as'   => 'friends.requests',
-               'uses' => 'Karma\Controllers\FriendController@getRequests']);
-
     Route::get('friends/{user}',
               ['as'   => 'friends',
                'uses' => 'Karma\Controllers\FriendController@getAll']);

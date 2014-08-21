@@ -31,14 +31,19 @@
                             <li @if(Request::is('/search/groups'))class="active"@endif><a href="{{ URL::to('search/groups') }}">Группы</a>
                         </ul>
                 	</li>
-                	<li @if(Request::is('/friends'))class="active"@endif>
-                        <a href="{{ URL::route('friends.my') }}">Друзья
-                            &nbsp;
-                            @if($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
-                            <a href="{{ URL::route('friends.requests') }}"><span class="badge">+{{$count}}</span></a>
-                            @endif
-                        </a>
+
+                    <li @if(Request::is('/friends*')) class="active" @endif >
+                        @if ($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
+                            <div class="btn-group btn-group-sm" style="margin: 10% auto">
+                                <a class="btn btn-primary" href="{{ URL::route('friends.my') }}"><strong>Друзья</strong></a>
+                                <a class="btn btn-default" href="{{ URL::route('friends.my') }}?p=requests"><strong>+{{$count}}</strong></a>
+                            </div>
+                        @else
+                            <a href="{{ URL::route('friends.my') }}">Друзья</a>
+                        @endif
+
                     </li>
+
                 	<li @if(Request::is('/user/groups'))class="active"@endif><a href="{{ URL::to('groups') }}">Группы</a></li>
                 	<li @if(Request::is('/user/messages'))class="active"@endif><a href="{{ URL::to('messages') }}">Диалоги</a></li>
                 	<li @if(Request::is('/user/library'))class="active"@endif><a href="{{ URL::to('library') }}">Библиотека</a></li>
