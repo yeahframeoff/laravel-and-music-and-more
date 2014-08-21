@@ -18,6 +18,8 @@ class CreateImportedTracksTable extends Migration {
 			$table->integer('track_id')->unsigned();
             $table->integer('social_id')->unsigned();
             $table->string('track_url');
+            //vk ID audio
+            $table->string('track_social_id')->nullable();
             
             $table->foreign('track_id')
                   ->references('id')

@@ -6,7 +6,7 @@
 @if ($provider == 'vk')
     @foreach ($tracks as $track)
         {{$track['artist']}} - {{$track['title']}}
-        <input type="checkbox" name="{{$track['title']}}" value="{{$track['artist']}}|{{$track['url']}}">
+        <input type="checkbox" name="{{$track['title']}}" value="{{$track['artist']}}|{{$track['url']}}|{{$track['aid']}}">
         <br/>
     @endforeach
 @endif

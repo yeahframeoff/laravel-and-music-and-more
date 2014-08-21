@@ -3,6 +3,7 @@
 <div style="margin: auto 0;">
     <span class="glyphicon glyphicon-user"></span>&nbsp;
     <h1 style="display: inline;">{{ $user->first_name . ' ' . $user->last_name  }}</h1>
+    <a href="{{ URL::route('import.sync') }}">Sync</a>
 </div>
 
 <hr>

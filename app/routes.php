@@ -99,6 +99,10 @@ Route::group(array('before' => 'auth'), function()
                ['as'  => 'import.select',
                'uses' => 'Karma\Controllers\ImportController@importSelect']);
 
+    Route::get('sync',
+              ['as'   => 'import.sync',
+              'uses'  => 'Karma\Controllers\ImportController@sync']);
+
 });
 
 /*

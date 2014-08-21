@@ -24,7 +24,8 @@ class CreateImportedTrackUserTable extends Migration {
             
             $table->foreign('imported_track_id')
                   ->references('id')
-                  ->on('imported_tracks');
+                  ->on('imported_tracks')
+                  ->onDelete('cascade');
 		});
 	}
 

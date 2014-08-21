@@ -46,6 +46,7 @@ class FacebookAPI extends API implements InterfaceAPI
     public function getUserAudio()
     {
         /*
+
         $credential = Credential::bySocialAndId('fb', 
                                                 Session::get('user_id'));
         
@@ -55,11 +56,17 @@ class FacebookAPI extends API implements InterfaceAPI
 
             
         $info = $this->APImethodGet($params, 'me/likes');
+
+        $artist = array();
+        foreach ($info as $artist){
+            $artists[] = $artist['name'];
+        }
         */
 
-
         $result = array();
-        $artists = ['Justice', 'Noize MC', 'SunSay', 'Nickelback'];
+        $artists = ['Noize MC', 'SunSay', 'Nickelback', 'Red Hot Chili Peppers'];
+        //$artists = ['Red Hot Chili Peppers', 'Pink Floyd', 'Radiohead'];
+        //$artists = ['Pink Floyd'];
 
         foreach ($artists as $artist){
             $albums = MusicInfo::getArtistAlbums($artist);
@@ -69,26 +76,13 @@ class FacebookAPI extends API implements InterfaceAPI
             foreach ($albums as $album){
                 $deezerAlbum = new Album($album);
                 $_tracks = $deezerAlbum->tracks;
-                //dd($album);
+
                 $title = str_replace(' ', '_', $album->title);
                 $title = str_replace(array('(', ')'), '', $title);
                 $result[$artist][$title] = $_tracks;
             }
         }
-
         return $result;
-
-        $tracks = array();
-        $albums = MusicInfo::getArtistAlbums('Noize MC');
-        foreach ($albums as $album){
-            $deezerAlbum = new Album($album);
-            $_tracks = $deezerAlbum->tracks;
-            foreach ($_tracks as $track){
-                $track->album = $album;
-                $tracks[] = $track;
-            }
-        }
-        return $tracks;
         
     }
     
