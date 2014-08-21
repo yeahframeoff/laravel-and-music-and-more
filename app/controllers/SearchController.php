@@ -17,13 +17,24 @@ class SearchController extends BaseController
     protected function searchForPeople()
     {
         $whom = \Input::has('q') ? \Input::get('q') : '';
-        $people = \Karma\Util\Search::search('\Karma\Entities\User', ['first_name', 'last_name'], $whom);
+        $people = \Karma\Util\Search::search(
+            $whom, '\Karma\Entities\User', ['first_name', 'last_name']
+        );
         return \View::make('search', ['page' => 'people', 'result' => $people]);
     }
     
-    protected function searchForMusic($what)
+    protected function searchForMusic()
     {
-        
+        $what = \Input::has('q') ? \Input::get('q') : '';
+        $tracks = \Karma\Util\Search::search(
+            $what, '\Karma\Entities\Track', ['title', 'lyrics'],
+            [
+                'artist' => ['name', 'bio'],
+                'albums' => 'name',
+                'genre'  => 'name'
+            ]
+        );
+        return \View::make('search', ['page' => 'music', 'result' => $tracks]);
     }
     
     protected function searchForGroups($what)

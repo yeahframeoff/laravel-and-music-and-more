@@ -9,7 +9,7 @@ class Track extends \Eloquent
         
     public function artist()
     {
-        return $this->hasOne('Karma\Entities\Artist');
+        return $this->belongsTo('Karma\Entities\Artist');
     }
     
     public function albums()
@@ -19,6 +19,6 @@ class Track extends \Eloquent
     
     public function genre()
     {
-        return $this->hasOne('Karma\Entities\Genre');
+        return $this->belongsTo('Karma\Entities\Genre');
     }
 }

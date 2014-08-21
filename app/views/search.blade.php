@@ -5,21 +5,10 @@
 \HTML::macro('active', function($p, $w) { return $p == $w ? 'active' : ''; });
 \HTML::macro('activeClass', function($p, $w) { return $p == $w ? 'class="active"' : ''; });
 ?>
-@if (isset($requests))
+@if (isset($result))
 <ul class="nav nav-pills">
     <li {{ \HTML::activeClass($page, 'people') }}><a href="#people" data-toggle="pill">Люди</a></li>
-
-    {{--
-    <li><a href="#requests" data-toggle="pill">
-            Заявки
-            &nbsp;
-            @if($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
-            <span class="badge">+{{$count}}</span>
-            @endif
-        </a>
-    </li>
-    --}}
-
+    <li {{ \HTML::activeClass($page, 'music')  }}><a href="#music" data-toggle="pill">Музыка</a></li>
 </ul>
 @endif
 
@@ -32,30 +21,38 @@
                 <input class="btn btn-primary" type="submit" value="Search">
             </span>
         </form><!-- /input-group -->
-        @forelse($result as $user)
-        @include ('user_tile_big', ['user' => $user])
-        @empty
-        <h2>Ничего не найдено(</h2>
-        @endforelse
+        @if ($page == 'people')
+            @forelse($result as $user)
+            @include ('user_tile_big', ['user' => $user])
+            @empty
+            <h2>Ничего не найдено:(</h2>
+            @endforelse
+        @endif
     </div>
 
-    {{--
-    @if (isset($requests))
-    <div class="tab-pane" id="requests">
-        <div class="page-header">
-            <h1>Заявки в друзья</h1>
-        </div>
-        @forelse($requests as $friend)
-        @include ('user_tile_big', [
-        'user'    => $friend,
-        'current' => $current_user,
-        ])
+    <div class="tab-pane {{ \HTML::active($page, 'music') }}" id="music">
+        <form class="input-group" action="{{ \URL::route('search.music') }}">
+            <input type="text" class="form-control" name="q">
+            <span class="input-group-btn">
+                <input class="btn btn-primary" type="submit" value="Search">
+            </span>
+        </form><!-- /input-group -->
+        @if ($page == 'music')
+            @forelse($result as $track)
+                <h3><strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}&nbsp;
 
-        @empty
-        <h2>К сожалению, нет новых заявок в друзья.</h2>
-        @endforelse
+                    <?php
+                    $albums = array();
+                    foreach ($track->albums as $album)
+                        $albums[] = $album->name;
+                    ?>
+                    @if (!empty($albums))({{ implode (', ', $albums) }}) @endif
+                </h3>
+                <hr>
+            @empty
+            <h2>Ничего не найдено:(</h2>
+            @endforelse
+        @endif
     </div>
-    @endif
-    --}}
 </div>
 @stop

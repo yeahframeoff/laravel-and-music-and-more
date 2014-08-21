@@ -90,6 +90,10 @@ Route::group(array('before' => 'auth'), function()
               ['as'   => 'search.people',
                'uses' => 'Karma\Controllers\SearchController@searchForPeople']);
 
+    Route::get('search/music',
+              ['as'   => 'search.music',
+               'uses' => 'Karma\Controllers\SearchController@searchForMusic']);
+
     /*
      * Music import
      */
