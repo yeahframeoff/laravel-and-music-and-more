@@ -24,7 +24,7 @@
                     <span class="title"><strong>Listen music</strong></span>
                 </a>
                 
-                <a href="{{\URL::route('friends', ['user' => $friend->id ]) }}"
+                <a href="{{\URL::route('friends', ['user' => $user->id ]) }}"
                    class="btn btn-default btn-block" >
                     <span class="glyphicon glyphicon-user"></span>
                     <span class="title"><strong>Watch friends</strong></span>

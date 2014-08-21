@@ -25,7 +25,6 @@ Route::get('user/{social}',
 
 Route::group(array('before' => 'auth'), function()
 {
-
     
     /*
      * Profile
@@ -83,7 +82,18 @@ Route::group(array('before' => 'auth'), function()
     Route::get('connect/{provider}/callback',
               ['as'   => 'auth.connect.callback',
                'uses' => 'Karma\Controllers\AuthController@callbackConnect']);
-    
+
+    /*
+     * Search
+     */
+    Route::get('search/people',
+              ['as'   => 'search.people',
+               'uses' => 'Karma\Controllers\SearchController@searchForPeople']);
+
+    Route::get('search/music',
+              ['as'   => 'search.music',
+               'uses' => 'Karma\Controllers\SearchController@searchForMusic']);
+
     /*
      * Music import
      */
@@ -102,7 +112,6 @@ Route::group(array('before' => 'auth'), function()
     Route::get('sync',
               ['as'   => 'import.sync',
               'uses'  => 'Karma\Controllers\ImportController@sync']);
-
 });
 
 /*
