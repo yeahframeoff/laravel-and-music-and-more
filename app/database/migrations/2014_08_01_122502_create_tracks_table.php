@@ -18,7 +18,7 @@ class CreateTracksTable extends Migration {
             $table->integer('artist_id')->unsigned();
             $table->integer('genre_id')->unsigned()->nullable();
             $table->string('title');
-            $table->text('lyrics');
+            $table->text('lyrics')->nullable();
             
             $table->foreign('artist_id')
                   ->references('id')

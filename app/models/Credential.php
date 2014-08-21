@@ -27,7 +27,7 @@ class Credential extends \Eloquent
     
     public static function bySocialAndId($social, $id)
     {
-        return self::where('user_id', $id)->where('social_id', Social::byName($social))->first();
+        return self::where('user_id', $id)->where('social_id', Social::byName($social)->id)->first();
     }
     
     public static function byToken($token)

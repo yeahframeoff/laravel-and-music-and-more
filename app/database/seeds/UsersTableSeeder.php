@@ -6,7 +6,8 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('friends')->whereBetween('user_id', array(100, 103))->orWhere('user_id', 1)->delete();
+        DB::table('friends')->whereBetween('user_id', array(100, 103))
+                            ->orWhereBetween('friend_id', array(100, 103))->delete();
         
         User::whereBetween('id', array(100, 103))->delete();
         
@@ -16,6 +17,8 @@ class UsersTableSeeder extends Seeder
         User::create(array('id' => 103, 'first_name' => 'Сергей', 'last_name' => 'Сергеев', 'photo' => 'http://cs9640.vk.me/g16252384/a_fcbbb788.jpg'));
         
         $first = User::find(1);
+        
+        if ($first === null) return;
         
         $first->sendRequest(100);
         $first->sendRequest(101);

@@ -1,10 +1,9 @@
 <?php
+$current = \Karma\Auth\OAuth::getUser();
 $sentRequest = $current->sentFriendshipRequestTo ($user->id);
 $receivedRequest  = $current->gotFriendshipRequestFrom ($user->id);
 $isFriend    = $user->isFriend ($current->id);
 $isNotFriend = !$user->isFriend ($current->id) && !$sentRequest && !$receivedRequest;
-
-
 
 $data = ['user' => $user, 'current' => $current];
 ?>

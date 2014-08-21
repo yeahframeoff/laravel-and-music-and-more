@@ -13,7 +13,7 @@
         </div>
         
         @foreach($tracks as $track)
-            $track->track_url<br>
+            @include ('track_tile', ['track' => $track])
         @endforeach
     </div>
 
@@ -21,9 +21,6 @@
         <div class="page-header">
             <h1>Плейлисты</h1>
         </div>
-        
-        <a href="#create" class="btn">Создать</a>
-        {{ Form::open(array('url' => ))}}
         
         @foreach($playlists as $playlist)
             <div class="playlist">

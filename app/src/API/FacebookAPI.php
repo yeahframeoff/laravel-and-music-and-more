@@ -2,15 +2,22 @@
 
 namespace Karma\API;
 
+use \Karma\Entities\User;
+use \Karma\Entities\Credential;
+use \Session;
+use \Config;
+use \Karma\Util\MusicInfo;
+use \DeezerAPI\Models\Album;
+
 class FacebookAPI extends API implements InterfaceAPI
 {
 
     public function __construct()
     {
         $this->apiLink = 'https://graph.facebook.com/';
-        $this->applicationKey = '1446675095605125';
-        $this->privateKey = 'e98bafaf60c6c78104df3de28339acdb';
-        $this->accessToken = '1446675095605125|hqta5wV-Dyc6sLC-50h364tujAE';
+        $this->applicationKey =  Config::get('app.FBClientId');
+        $this->privateKey = Config::get('app.FBClientSecret');
+        $this->accessToken = Config::get('app.FBClientToken');
     }
 
     public function getUserId()
@@ -36,6 +43,49 @@ class FacebookAPI extends API implements InterfaceAPI
         return $result;
     }
 
+    public function getUserAudio()
+    {
+        /*
+
+        $credential = Credential::bySocialAndId('fb', 
+                                                Session::get('user_id'));
+        
+        $params = array(
+            'access_token' => $this->getToken(),
+        );
+
+            
+        $info = $this->APImethodGet($params, 'me/likes');
+
+        $artist = array();
+        foreach ($info as $artist){
+            $artists[] = $artist['name'];
+        }
+        */
+
+        $result = array();
+        $artists = ['Noize MC', 'SunSay', 'Nickelback', 'Red Hot Chili Peppers'];
+        //$artists = ['Red Hot Chili Peppers', 'Pink Floyd', 'Radiohead'];
+        //$artists = ['Pink Floyd'];
+
+        foreach ($artists as $artist){
+            $albums = MusicInfo::getArtistAlbums($artist);
+            $artist = str_replace(' ', '_', $artist);
+            $artist = str_replace(array(' ', '(', ')'), '', $artist);
+            $result[$artist] = array();
+            foreach ($albums as $album){
+                $deezerAlbum = new Album($album);
+                $_tracks = $deezerAlbum->tracks;
+
+                $title = str_replace(' ', '_', $album->title);
+                $title = str_replace(array('(', ')'), '', $title);
+                $result[$artist][$title] = $_tracks;
+            }
+        }
+        return $result;
+        
+    }
+    
     protected function getToken()
     {
         $result;

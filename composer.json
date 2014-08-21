@@ -9,7 +9,8 @@
         "phpunit/phpunit": "4.0.*",
         "guzzle/guzzle": "3.9.*@dev",
         "rmccue/requests": "dev-master",
-        "dandelionmood/lastfm": "dev-master"
+        "dandelionmood/lastfm": "dev-master",
+        "deezer/deezer-php-sdk": "dev-master"
     },
     "autoload": {
         "classmap": [

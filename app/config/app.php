@@ -11,6 +11,9 @@ return array(
     'OKClientId' => 'CBALOCGCEBABABABA',
     'OKClientSecret' => '93D9DB4E54B94F8A8F76DDFD',
     'OKAppId' => '1096935936',
+    'FBClientId' => '1444665462474233',
+    'FBClientSecret' => '2d7e47d3a689dc70369973c5d8bb1da2',
+    'FBClientToken' => '1444665462474233|h3vsWb2Lb5ZORtco985LFfX6yqo',
     
 	/*
 	|--------------------------------------------------------------------------

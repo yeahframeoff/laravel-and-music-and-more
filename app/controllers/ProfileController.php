@@ -15,7 +15,6 @@ class ProfileController extends BaseController
     public function index()
     {
         $user = User::find(Session::get('user_id'));
-
         return $this->show($user);
     }
 
