@@ -27,12 +27,29 @@ $(function() {
         audio.load($('a', this).attr('data-src'));
         audio.play();
     });
+
+    $('.addTrack').on('click', function(){
+        if ($(this).find('span:first').hasClass('glyphicon-ok'))
+            return 0;
+
+        var id = $(this).attr('data-id');
+        var a = $(this);
+        $.get('/importTrack/' + id)
+            .success(function(data){
+                $(a).find('span:first').attr('class', 'glyphicon glyphicon-ok');
+                $(a).removeClass('addTrack');
+            })
+            .fail(function(data){
+                console.log(data);
+            });
+    });
+
 });
 /*
 
 function onPlayerLoaded() {
     console.log('load');
-    DZ.player.playTracks([14669216]);
+    //DZ.player.playTracks([14669216]);
     //DZ.player.play();
 }
 

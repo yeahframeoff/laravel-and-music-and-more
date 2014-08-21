@@ -97,6 +97,10 @@ Route::group(array('before' => 'auth'), function()
     /*
      * Music import
      */
+    Route::get('importTrack/{id}',
+              ['as'  => 'import.track',
+               'uses' => 'Karma\Controllers\ImportController@importTrack']);
+
     Route::get('import/{provider}', 
               ['as'   => 'import.provider',
                'uses' => 'Karma\Controllers\ImportController@import']);
