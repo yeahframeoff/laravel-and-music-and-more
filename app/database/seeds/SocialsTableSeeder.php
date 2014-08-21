@@ -1,15 +1,17 @@
 <?php
 
+use \Karma\Entities\Social;
+
 class SocialsTableSeeder extends Seeder 
 {
     public function run()
     {
         DB::table('socials')->delete();
 
-        \Karma\Entities\Social::create(array('name' => 'fb', 'title' => 'Facebook'));
-        \Karma\Entities\Social::create(array('name' => 'vk', 'title' => 'ВКонтакте'));
-        \Karma\Entities\Social::create(array('name' => 'ok', 'title' => 'Одноклассники'));
-        
+        Social::create(array('name' => 'fb', 'title' => 'Facebook'));
+        Social::create(array('name' => 'vk', 'title' => 'ВКонтакте'));
+        Social::create(array('name' => 'ok', 'title' => 'Одноклассники'));
+
         $this->command->info('Socials table seeded!');
     }
 }
