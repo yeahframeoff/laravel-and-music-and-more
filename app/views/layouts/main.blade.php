@@ -18,6 +18,8 @@
             {{ HTML::script('http://cdn-files.deezer.com/js/min/dz.js') }}
             {{ HTML::script('public/js/friends.js') }}
             {{ HTML::script('public/js/importController.js') }}
+            {{ HTML::script('public/audiojs/howler.js') }}
+            {{ HTML::script('public/js/audio5.js') }}
         @show
 	</head>
 	

@@ -12,7 +12,16 @@
             <h1>Все треки</h1>
         </div>
 
-        <audio preload></audio>
+        <input type="button" onclick="playerPlay(); return false;" value="play"/>
+        <input type="button" onclick="playerPause(); return false;" value="pause"/>
+        <input type="button" onclick="playerNext(); return false;" value="next"/>
+        <input type="button" onclick="playerPrev(); return false;" value="prev"/>
+
+        <div id="slider_seek" class="progressbarplay" style="">
+            <div class="bar" style="width: 0%;"></div>
+        </div>
+
+        <br/>
         <div id="dz-root"></div>
         <ol>
             @foreach($tracks as $track)
