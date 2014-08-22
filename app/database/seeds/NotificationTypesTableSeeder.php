@@ -8,10 +8,7 @@ class NotificationTypesTableSeeder extends Seeder
     {
         NotificationType::all()->delete();
 
-        NotificationType::create([
-            'title'       => NotificationType::TITLE_FRIEND_NEW_REQUEST,
-            'entity_name' => '\Karma\Entities\User',
-        ]);
+        NotificationType::create(['title' => NotificationType::TITLE_FRIEND_NEW_REQUEST]);
 
         $this->command->info('NotificationType table seeded!');
     }

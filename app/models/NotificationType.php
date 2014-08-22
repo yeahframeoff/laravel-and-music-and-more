@@ -4,7 +4,7 @@ namespace Karma\Entities;
 
 class NotificationType extends \Eloquent
 {
-    protected $fillable = ['title', 'entity_name'];
+    protected $fillable = ['title'];
     protected $table = 'notification_types';
     public $timestamps = false;
 
@@ -17,6 +17,6 @@ class NotificationType extends \Eloquent
 
     public function scopeNewFriendRequest($query)
     {
-        return $query->where('title', 'like', self::TITLE_FRIEND_NEW_REQUEST);
+        return $query->where('title', 'like', self::TITLE_FRIEND_NEW_REQUEST)->first();
     }
 } 

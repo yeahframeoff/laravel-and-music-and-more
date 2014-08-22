@@ -16,7 +16,6 @@ class CreateNotificationTypesTable extends Migration {
         {
             $table->increments('id');
             $table->string('title');
-            $table->string('entity_name');
         });
 	}
 

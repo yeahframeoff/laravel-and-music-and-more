@@ -8,7 +8,7 @@ trait NotifyingTrait
 {
     public function notifications()
     {
-        return $this->morphMany('Karma\Entities\Notification', 'notificationObject');
+        return $this->morphMany('Karma\Entities\Notification', 'object');
     }
 
     public function notify($user)

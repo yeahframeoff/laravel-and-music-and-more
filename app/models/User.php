@@ -179,4 +179,9 @@ class User extends \Eloquent
                                            'friend_id' => $this->id,
                                            'confirmed' => true));
     }
+
+    public function notifications()
+    {
+        return $this->hasMany('\Karma\Entities\Notification', 'reffered_user_id');
+    }
 }
