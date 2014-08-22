@@ -97,8 +97,25 @@
                     @if(!isset($user->socials()['fb']))<li><a href="connect/fb">Facebook</a></li>@endif
                     @if(!isset($user->socials()['ok']))<li><a href="connect/ok">Одноклассники</a></li>@endif
                 </ul>
-            </div> 
+            </div>
         @endif
+        <div class="col-lg-3">
+            <audio preload></audio>
+            <div id="dz-root"></div>
+            <br/>
+            <ol>
+                @foreach($tracks as $track)
+                <li>
+                    <a href="#" data-src="{{$track->track_url}}"> {{$track->track->title}}</a>
+                    @if($user->id != Karma\Auth\OAuth::getUserId())
+                    <a href="#" class="addTrack" data-id="{{$track->id}}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                    @endif
+                </li>
+                @endforeach
+            </ol>
+        </div>
     </div>
     
     <div class="col-md-6 center-block">
