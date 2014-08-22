@@ -1,4 +1,7 @@
-<h3><strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}&nbsp;
+<h3>
+    <a href="#" data-src="{{$url}}">
+        <strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}&nbsp;
+    </a>
     <?php
     $albums = array();
     foreach ($track->albums as $album)

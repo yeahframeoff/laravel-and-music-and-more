@@ -36,6 +36,7 @@ class ImportController extends BaseController
         $input = Input::all();
         array_shift($input);
         $tracks = array();
+
         foreach ($input as $track => $artist){
             if($artist == "on")
                 continue;

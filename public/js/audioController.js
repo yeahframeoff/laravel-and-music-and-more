@@ -1,9 +1,22 @@
 
+function onPlayerLoaded()
+{
+    console.log('load');
+}
 
-$(function() { 
-    
-    
-    // Setup the player to autoplay the next track
+
+$(function() {
+
+    //init DZ
+    DZ.init({
+        appId : '8',
+        channelUrl : 'http://developers.deezer.com/examples/channel.php',
+        player : {
+            onload : onPlayerLoaded
+        }
+    });
+
+    // init audio
     var a = audiojs.createAll({
         trackEnded: function() {
             var next = $('ol li.playing').next();
@@ -13,21 +26,32 @@ $(function() {
             audio.play();
         }
     });
-
-    // Load in the first track
-    var audio = a[0];
-    first = $('ol a').attr('data-src');
-    $('ol li').first().addClass('playing');
-    audio.load(first);
+    audio = a[0];
 
     // Load in a track on click
     $('ol li').click(function(e) {
         e.preventDefault();
         $(this).addClass('playing').siblings().removeClass('playing');
-        audio.load($('a', this).attr('data-src'));
-        audio.play();
+        var link = $('a', this).attr('data-src');
+        if (/^-?[\d.]+(?:e-?\d+)?$/.test(link)){
+            DZ.player.playTracks([link]);
+            audio.pause();
+        }
+        else{
+            DZ.player.pause();
+            audio.load($('a', this).attr('data-src'));
+            audio.play();
+        }
     });
 
+
+
+
+
+
+    /*
+     * TODO to other file?
+     */
     $('.addTrack').on('click', function(){
         if ($(this).find('span:first').hasClass('glyphicon-ok'))
             return 0;
@@ -45,35 +69,3 @@ $(function() {
     });
 
 });
-/*
-
-function onPlayerLoaded() {
-    console.log('load');
-    //DZ.player.playTracks([14669216]);
-    //DZ.player.play();
-}
-
-
-$(document).ready(function(){
-    DZ.init({
-        appId : '8',
-        channelUrl : 'http://developers.deezer.com/examples/channel.php',
-        player : {
-            onload : onPlayerLoaded
-        }
-    });
-
-    $('ol li').click(function(e) {
-        e.preventDefault();
-        $(this).addClass('playing').siblings().removeClass('playing');
-        var link = $('a', this).attr('data-src');
-        if (/^-?[\d.]+(?:e-?\d+)?$/.test(link))
-            DZ.player.playTracks([link]);
-        else
-            DZ.player.playExternalTracks([link]);
-        //audio.play();
-    });
-
-});
-
-*/

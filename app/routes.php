@@ -86,17 +86,7 @@ Route::group(['before' => 'auth'], function()
     /*
      * Library
      */
-    Route::get('library',
-              ['as'   => 'library',
-               'uses' => 'Karma\Controllers\LibraryController@index']);
-    
-    Route::get('library/create/{name}',
-              ['as'   => 'library.create',
-               'uses' => 'LibraryController@create']);
-    
-    Route::get('library/delete/{id}',
-              ['as'   => 'library.delete',
-               'uses' => 'LibraryController@delete']);
+    Route::resource('library', 'Karma\Controllers\LibraryController');
 
     /*
      * Search
