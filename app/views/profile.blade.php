@@ -72,7 +72,7 @@
         @else
              <div class="btn-group">
                  @foreach($user->socials() as $name => $main)
-                     <a class="btn" href="">
+                     <a class="btn" href="/profile/load/{{$name}}">
                          {{ HTML::image('public/images/' . strtoupper($name) . '_logo_small.png') }}
                          
                          @if($name == 'vk')

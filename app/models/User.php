@@ -39,12 +39,12 @@ class User extends \Eloquent
     {
         $credentials = $this->credentials();
         $socials = Social::whereIn('id', $credentials->lists('social_id'))->lists('id', 'name');
-        
+
         foreach($socials as $social => $id)
         {
-            $socials[$social] = $credentials->where('social_id', $id)->first();
+            $socials[$social] = $this->credentials()->where('social_id', $id)->first();
         }
-        
+
         return $socials;
     }
 

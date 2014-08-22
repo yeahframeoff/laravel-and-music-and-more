@@ -20,9 +20,6 @@ Route::get('logout',
           ['as'   => 'auth.logout',
            'uses' => 'Karma\Controllers\AuthController@logout']);
 
-Route::get('user/{social}',
-           'Karma\Controllers\AuthController@loadProfile');
-
 Route::group(['before' => 'auth'], function()
 {
     
@@ -40,6 +37,10 @@ Route::group(['before' => 'auth'], function()
     Route::get('import',
               ['as'   => 'import',
                'uses' => 'Karma\Controllers\ImportController@index']);
+
+    Route::get('profile/load/{social}',
+              ['as'   => 'profile.loadProfile',
+               'uses' => 'Karma\Controllers\AuthController@loadProfile']);
 
     /*
      * Friendships
