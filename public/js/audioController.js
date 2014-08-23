@@ -1,6 +1,6 @@
 
 
-$(function() { 
+function registerAudio() {
     
     
     // Setup the player to autoplay the next track
@@ -27,7 +27,7 @@ $(function() {
         audio.load($('a', this).attr('data-src'));
         audio.play();
     });
-});
+};
 /*
 
 function onPlayerLoaded() {
