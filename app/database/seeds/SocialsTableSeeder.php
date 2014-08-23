@@ -1,6 +1,6 @@
 <?php
 
-class SocialsTableSeeder extends Seeder 
+class SocialsTableSeeder extends Seeder
 {
     public function run()
     {
@@ -9,7 +9,5 @@ class SocialsTableSeeder extends Seeder
         \Karma\Entities\Social::create(array('name' => 'fb', 'title' => 'Facebook'));
         \Karma\Entities\Social::create(array('name' => 'vk', 'title' => 'ВКонтакте'));
         \Karma\Entities\Social::create(array('name' => 'ok', 'title' => 'Одноклассники'));
-        
-        $this->command->info('Socials table seeded!');
     }
 }

@@ -38,6 +38,8 @@ class ImportController extends BaseController
         $tracks = array();
 
         foreach ($input as $track => $artist){
+            $track = str_replace('_', ' ', $track);
+
             if($artist == "on")
                 continue;
             $tmpArray = explode('|', $artist);

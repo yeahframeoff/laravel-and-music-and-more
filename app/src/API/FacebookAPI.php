@@ -70,9 +70,7 @@ class FacebookAPI extends API implements InterfaceAPI
 
         foreach ($artists as $artist){
             $albums = MusicInfo::getArtistAlbums($artist);
-            /*
-             * FIXME regexp
-             */
+
             $artist = str_replace(' ', '_', $artist);
             $artist = preg_replace('~[^A-Za-z0-9\-\_]+~', '', $artist);
             $result[$artist] = array();

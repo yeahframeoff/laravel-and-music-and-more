@@ -70,42 +70,40 @@ class MusicInfo
                           'artist' => $_artist->name,
                           'autocorrect' => true);
 
-            $info = self::$lastfm->track_getInfo($args)->track;
-            
-            if(!empty($info))
-            {
+            $info;
+            try{
+                $info = self::$lastfm->track_getInfo($args)->track;
                 $_track->title = $info->name;
-                                
-                if (!isset($info->toptags->tag->name))
+
+                if (!isset($info->toptags->tag[0]->name))
                     $genre = 'unknown';
                 else
-                    $genre = $info->toptags->tag->name;
-                
+                    $genre = $info->toptags->tag[0]->name;
+
                 $_genre = Genre::where('name', $genre)->first();
-                
+
                 if($_genre == NULL)
                 {
                     $_genre = new Genre;
                     $_genre->name = $genre;
                     $_genre->save();
                 }
-                
+
                 $_track->genre_id = $_genre->id;
                 $_track->lyrics = 'not available';//TODO
-            }
-            else
-            {
+            } catch (\Exception $e) {
                 $_track->title = $title;
-                $_track->lyrics = 'Текст песни недоступен.';
+                $_track->genre_id = Genre::where('name', 'unknown')->first()->id;
+                $_track->lyrics = 'not available';
             }
 
-        	$_track->save();   
+            $_track->save();
         }
         else
         {
             $_track = $_track->first();
         }           
-        
+
         return $_track;
     }
     
@@ -150,9 +148,7 @@ class MusicInfo
             }
         }
         /*
-         * TODO
-         *
-         * Throw exception or anything else ($artist not found)
+         * TODO make the view with list of artists, where user can choose the correct one.
          */
     }
 }
