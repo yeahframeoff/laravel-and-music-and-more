@@ -111,7 +111,16 @@ Route::group(array('before' => 'auth'), function()
 
     Route::get('sync',
               ['as'   => 'import.sync',
-              'uses'  => 'Karma\Controllers\ImportController@sync']);
+               'uses' => 'Karma\Controllers\ImportController@sync']);
+
+    /*
+     * Notifications
+     */
+    Route::get('notifications',
+              ['before' => 'ajax-only',
+               'as'   => 'notify.check',
+               'uses' => 'Karma\Controllers\NotificationController@checkNotifications']);
+
 });
 
 /*
