@@ -74,14 +74,14 @@ class FacebookAPI extends API implements InterfaceAPI
              * FIXME regexp
              */
             $artist = str_replace(' ', '_', $artist);
-            $artist = str_replace(array(' ', '(', ')'), '', $artist);
+            $artist = preg_replace('~[^A-Za-z0-9\-\_]+~', '', $artist);
             $result[$artist] = array();
             foreach ($albums as $album){
                 $deezerAlbum = new Album($album);
                 $_tracks = $deezerAlbum->tracks;
 
                 $title = str_replace(' ', '_', $album->title);
-                $title = str_replace(array('(', ')'), '', $title);
+                $title = preg_replace('~[^A-Za-z0-9\-\_]+~', '', $title);
                 $result[$artist][$title] = $_tracks;
             }
         }
