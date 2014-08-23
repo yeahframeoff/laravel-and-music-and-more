@@ -283,6 +283,7 @@ li.playing:before { content: '♬'; width: 14px; height: 14px; padding: 3px; lin
  */
 
 .glyphicon-refresh-animate {
+    animation: spin .7s infinite linear;
     -animation: spin .7s infinite linear;
     -webkit-animation: webkit-spin .7s infinite linear;
 }
