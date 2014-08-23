@@ -32,8 +32,12 @@
                         </ul>
                 	</li>
 
+                    <li>
+                        <a id="notify-check" href="{{ URL::route('notify.check') }}"> <span class="glyphicon glyphicon-flash"></span> </a>
+                    </li>
+
                     <li @if(Request::is('/friends*')) class="active" @endif >
-                        @if ($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
+                        @if ($count = \KAuth::user()->friendshipRequestsCount() > 0 )
                             <div class="btn-group btn-group-sm" style="margin: 10% auto">
                                 <a class="btn btn-primary" href="{{ URL::route('friends.my') }}"><strong>Друзья</strong></a>
                                 <a class="btn btn-default" href="{{ URL::route('friends.my') }}?p=requests"><strong>+{{$count}}</strong></a>

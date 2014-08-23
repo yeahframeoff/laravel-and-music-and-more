@@ -35,6 +35,11 @@ class User extends \Eloquent
         return $this->belongsToMany('Karma\Entities\Chat');
     }
 
+    public function friendships()
+    {
+        return $this->hasMany('Karma\Entities\Friend', 'user_id');
+    }
+
     public function socials()
     {
         $credentials = $this->credentials();
@@ -64,6 +69,9 @@ class User extends \Eloquent
         else
             return array();
 
+//        return self::with(['friendships' => function($query) use ($this){
+//                $query->where('user_id', '=', $this->id)->where('confirmed', '=', true);
+//            }]);
     }
 
     public function profileUrl()
@@ -82,6 +90,9 @@ class User extends \Eloquent
 
         else
             return $onlyCount ? 0 : array();
+
+//        return self::friendships()->where('friend_id', '=', $this->id)
+//            ->where('confirmed', '=', false)->friend();
     }
 
     public function friendshipRequestsCount()
@@ -125,17 +136,30 @@ class User extends \Eloquent
 
     public function sendRequest($id)
     {
-        DB::table('friends')->insert(array('user_id' => $this->id,
-                                           'friend_id' => $id,
-                                           'confirmed' => false));
+//        DB::table('friends')->insert(array('user_id' => $this->id,
+//                                           'friend_id' => $id,
+//                                           'confirmed' => false));
+        $friend = Friend::create(['user_id' => $this->id,
+                        'friend_id' => $id]);
+        $friend->notify($id, Notification::FRIENDS_REQUEST_NEW);
     }
 
     public function removeRequest($id)
     {
-        DB::table('friends')->where('user_id', $this->id)
-            ->where('friend_id', $id)
-            ->where('confirmed', false)
-            ->delete();
+//        DB::table('friends')->where('user_id', $this->id)
+//            ->where('friend_id', $id)
+//            ->where('confirmed', false)
+//            ->delete();
+
+        $friend = Friend::where('user_id', '=', $this->id)
+            ->where('friend_id', '=', $id)
+            ->where('confirmed', '=', false)->first();
+
+        if ($friend === null)
+            return;
+
+        $friend->notifications()->where('type', '=', Notification::FRIENDS_REQUEST_NEW)->delete();
+        $friend->delete();
     }
 
     public function isFriend($id)
@@ -160,13 +184,14 @@ class User extends \Eloquent
 
     public function confirmFriend($id)
     {
-        DB::table('friends')->where('user_id', $id)
-            ->where('friend_id', $this->id)
-            ->update(array('confirmed' => true));
+        $friend = Friend::where('user_id', '=', $id)
+            ->where('friend_id', '=', $this->id)->first();
+        $friend->update(['confirmed' => true]);
+        $friend->notify($id, Notification::FRIENDS_REQUEST_CONFIFMED);
 
-        DB::table('friends')->insert(array('user_id' => $this->id,
-                                           'friend_id' => $id,
-                                           'confirmed' => true));
+        Friend::create(['user_id' => $this->id,
+                        'friend_id' => $id,
+                        'confirmed' => true]);
     }
 
     public function forceFriendshipTo($id)

@@ -11,6 +11,5 @@ class DatabaseSeeder extends Seeder {
 	{
         $this->call('SocialsTableSeeder');
         $this->call('UsersTableSeeder');
-        $this->call('NotificationTypesTableSeeder');
 	}
 }
