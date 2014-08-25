@@ -19,7 +19,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 @if(Karma\Controllers\AuthController::logged())
-                	<li class="dropdown@if(Request::is('/search/*')) active@endif">
+                	<li class="dropdown @if(Request::is('/search/*')) active @endif">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Поиск
                             <b class="caret"></b>
@@ -33,7 +33,7 @@
                 	</li>
 
                     <li>
-                        <a id="notify-check" href="{{ URL::route('notify.check') }}"> <span class="glyphicon glyphicon-flash"></span> </a>
+                        <a id="notify-check" href="{{ URL::route('notify.check') }}"> <span class="glyphicon glyphicon-globe"></span><span id="badge"></span> </a>
                     </li>
 
                     <li @if(Request::is('/friends*')) class="active" @endif >

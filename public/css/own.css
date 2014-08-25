@@ -302,3 +302,8 @@ span.btn-title
 {
     font-weight: bold;
 }
+
+a#notify-check.new-notifications
+{
+    color: #f0f0f0;
+}

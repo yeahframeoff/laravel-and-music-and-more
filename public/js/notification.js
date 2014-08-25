@@ -3,20 +3,31 @@ function registerNotification()
     console.log('notification registered');
 
     $notify = $('#notify-check');
-    $('#notify-check').click(function(e)
+    $href = $notify.attr('href');
+    var time = 4000;
+
+    updateNotifier = function(data)
     {
-        console.log('#notify-check clicked');
-        e.preventDefault();
-        href = $(this).attr('href')
-        $.get(href, function(data) {
+        $badge = $notify.find('span#badge');
+        if (data.length != 0)
+        {
+            $badge.addClass('badge');
+            $badge.html(data.length);
+            $notify.addClass('new-notifications');
+        }
+        else
+        {
+            $badge.removeClass('badge');
+            $badge.html('');
+            $notify.addClass('new-notifications');
+        }
+    }
+    timer = setInterval(function()
+    {
+        console.log('interval');
+        $.get($href, function(data) {
             console.log(data);
-            console.log (typeof data);
-            if (data.length != 0)
-            {
-                console.log($notify);
-                console.log($notify.parent());
-                $notify.parent().addClass('active');
-            }
+            updateNotifier(data);
         }, 'json');
-    });
+    }, time);
 };
