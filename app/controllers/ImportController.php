@@ -37,6 +37,7 @@ class ImportController extends BaseController
         array_shift($input);
         $tracks = array();
 
+
         foreach ($input as $track => $artist){
             $track = str_replace('_', ' ', $track);
 
@@ -52,14 +53,8 @@ class ImportController extends BaseController
         }
 
         foreach ($tracks as $track){
-            /*
-             * TODO try to musicInfo???
-             */
-            try {
-                $_track = MusicInfo::getTrackByArtistAndTitle($track['artist'], $track['title']);
-            } catch (\Exception $e) {
-                continue;
-            }
+            $_track = MusicInfo::getTrackByArtistAndTitle($track['artist'], $track['title']);
+
             $params = array(
                 'social_id' => Social::byName($provider)->id,
                 'track_id' => $_track->id,

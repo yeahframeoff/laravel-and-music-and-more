@@ -37,20 +37,16 @@ class MusicInfo
         if(!$_artist->exists())
         {
             $_artist = new Artist;
-            
-            $info = self::getArtistInfo($artist)->artist;
-            
-            if(!empty($info))
-            {
+            try{
+                $info = self::getArtistInfo($artist)->artist;
+
                 $_artist->name = $info->name;
-            	$_artist->bio  = $info->bio->summary;
-            }
-            else
-            {
+                $_artist->bio  = $info->bio->summary;
+            } catch (\Exception $e) {
                 $_artist->name = $artist;
                 $_artist->bio = 'Не доступна.';
             }
-            
+
             $_artist->save();
         }
        	else
@@ -71,15 +67,18 @@ class MusicInfo
                           'artist' => $_artist->name,
                           'autocorrect' => true);
 
-            $info;
             try{
                 $info = self::$lastfm->track_getInfo($args)->track;
                 $_track->title = $info->name;
 
-                if (!isset($info->toptags->tag[0]->name))
-                    $genre = 'unknown';
+                if (isset($info->toptags->tag)){
+                    if (is_array($info->toptags->tag))
+                        $genre = $info->toptags->tag[0]->name;
+                    else
+                        $genre = $info->toptags->tag->name;
+                }
                 else
-                    $genre = $info->toptags->tag[0]->name;
+                    $genre = 'unknown';
 
                 $_genre = Genre::where('name', $genre)->first();
 
@@ -113,7 +112,7 @@ class MusicInfo
 
 
             } catch (\Exception $e) {
-                dd($e->getMessage());
+                //dd($e->getMessage());
                 $_track->title = $title;
                 $_track->genre_id = Genre::where('name', 'unknown')->first()->id;
                 $_track->lyrics = 'not available';
@@ -149,7 +148,7 @@ class MusicInfo
      */
     public static function getArtistInfo($artist)
     {
-        $args = array('mbid' => $artist,
+        $args = array('artist' => $artist,
                       'autocorrect' => true,
                       'lang' => 'ru');
         
