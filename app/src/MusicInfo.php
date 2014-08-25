@@ -6,8 +6,9 @@ use Dandelionmood\LastFm\LastFm;
 use Karma\Entities\Artist;
 use Karma\Entities\Track;
 use Karma\Entities\Genre;
+use Karma\Entities\Album;
+use Karma\Entities\AlbumsTrack;
 use \DeezerAPI;
-use \DeezerAPI\Models\Album;
 
 /**
  * This class provides access to different music information using online resources such as MusicBrainz and Last.fm
@@ -91,13 +92,33 @@ class MusicInfo
 
                 $_track->genre_id = $_genre->id;
                 $_track->lyrics = 'not available';//TODO
+                $_track->save();
+
+                //album processing
+                if(isset($info->album->title)){
+                    $lastFmAlbum = self::getAlbumInfo($info->album->title, $_artist->name);
+                    $album = new Album;
+                    $album->artist_id = $_artist->id;
+                    $album->name = $lastFmAlbum->album->name;
+                    $album->artwork = array_values((Array)end($lastFmAlbum->album->image))[0];
+                    $dt = new \DateTime($lastFmAlbum->album->releasedate);
+                    $album->release_date = $dt;
+                    $album->save();
+
+                    $albumsTrack = new AlbumsTrack;
+                    $albumsTrack->album_id = $album->id;
+                    $albumsTrack->track_id = $_track->id;
+                    $albumsTrack->save();
+                }
+
+
             } catch (\Exception $e) {
+                dd($e->getMessage());
                 $_track->title = $title;
                 $_track->genre_id = Genre::where('name', 'unknown')->first()->id;
                 $_track->lyrics = 'not available';
+                $_track->save();
             }
-
-            $_track->save();
         }
         else
         {
@@ -109,11 +130,13 @@ class MusicInfo
     
     /**
      * @param string $album
+     * @param string $artist
      * @return object
      */
-    public static function getAlbumInfo($album)
+    public static function getAlbumInfo($album, $artist)
     {
         $args = array('album' => $album,
+                      'artist' => $artist,
                       'autocorrect' => true,
                       'lang' => 'ru');
         
@@ -126,7 +149,7 @@ class MusicInfo
      */
     public static function getArtistInfo($artist)
     {
-        $args = array('artist' => $artist,
+        $args = array('mbid' => $artist,
                       'autocorrect' => true,
                       'lang' => 'ru');
         
