@@ -1,4 +1,15 @@
 @extends('layouts.main')
+
+@section('stylesheets')
+    {{ HTML::style('public/css/player.css') }}
+    @parent
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('public/js/audioController.js') }}
+@stop
+
 @section('content')
 <div style="margin: auto 0;">
     <span class="glyphicon glyphicon-user"></span>&nbsp;
@@ -103,7 +114,7 @@
             <audio preload></audio>
             <div id="dz-root"></div>
             <br/>
-            <ol>
+            <ol class="musicList">
                 @foreach($tracks as $track)
                 <li>
                     <a href="#" data-src="{{$track->track_url}}"> {{$track->track->title}}</a>

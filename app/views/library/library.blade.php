@@ -1,4 +1,15 @@
 @extends('layouts.main')
+
+@section('stylesheets')
+    {{ HTML::style('public/css/player.css') }}
+    @parent
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('public/js/audioController.js') }}
+@stop
+
 @section('content')
 <ul class="nav nav-pills">
     <li class="active"><a href="#all" data-toggle="pill">Все треки</a></li>
@@ -12,22 +23,35 @@
             <h1>Все треки</h1>
         </div>
 
-        <input type="button" onclick="playerPlay(); return false;" value="play"/>
-        <input type="button" onclick="playerPause(); return false;" value="pause"/>
-        <input type="button" onclick="playerNext(); return false;" value="next"/>
-        <input type="button" onclick="playerPrev(); return false;" value="prev"/>
+        <div class="musicPlayer">
+            <h1>Demo - Preview Song</h1>
+            <img class="cover" src="img/cover.png">
+            <div class="play">
+                <button title="play/pause"></button>
+            </div>
+            <div class="mute">
+                <button title="mute/unmute"></button>
+            </div>
+            <div class="volume-slider">
+                <div class="volume-total"></div>
+                <div class="volume-current"></div>
+            </div>
+            <div class="time-rail">
+                <span class="time-total">
+                    <span class="time-loaded"></span>
+                    <span class="time-current"></span>
+                </span>
+            </div>
 
-        <div id="slider_seek" class="progressbarplay" style="">
-            <div class="bar" style="width: 0%;"></div>
         </div>
 
         <br/>
         <div id="dz-root"></div>
-        <ol>
+        <ol class="musicList">
             @foreach($tracks as $track)
-                <li>
-                    <a href="#" data-src="{{$track->track_url}}"> {{$track->track->title}}</a>
-                </li>
+            <li class="musicPlayer li">
+                <a href="#" data-src="{{$track->track_url}}" data-cover="{{$track->track->albums->first()->artwork or ''}}"> {{$track->track->title}}</a>
+            </li>
             @endforeach
         </ol>
     </div>
