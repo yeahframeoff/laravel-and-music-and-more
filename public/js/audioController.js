@@ -97,9 +97,4 @@ registerAudio = function()
             prev = $('ol li' + ui).last();
         prev.click();
     });
-}
-
-
-$(function() {
-    initPlayers();
-});
+};
