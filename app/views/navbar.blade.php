@@ -34,16 +34,16 @@
 
                     <li class="dropdown">
                         <a id="notify-check" href="#" data-href="{{ URL::route('notify.check') }}"
-                            data-toggle="tooltip" data-placement="bottom" data-trigger="manual">
+                            data-toggle="dropdown" data-placement="bottom" data-trigger="manual">
                             <span class="glyphicon glyphicon-globe"></span><span id="badge"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li>Action</li>
-                            <li>Another action</li>
-                            <li>Something else here</li>
+                            <li><a>Action</a></li>
+                            <li><a>Another action</a></li>
+                            <li><a>Something else here</a></li>
                             <li class="divider"></li>
-                            <li>Separated link</li>
+                            <li><a>Separated link</a></li>
                         </ul>
                     </li>
 

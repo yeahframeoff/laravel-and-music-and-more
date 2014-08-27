@@ -13,6 +13,9 @@ class NotificationController extends BaseController
 
     public function checkNotifications()
     {
-        dd(\Input::all());
+        $checked = \Input::get('checked');
+        \Log::info($checked);
+        if (!empty($checked))
+            \Karma\Entities\Notification::whereIn('id', $checked)->update(['checked' => true]);
     }
 } 
