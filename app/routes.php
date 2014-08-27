@@ -119,8 +119,13 @@ Route::group(array('before' => 'auth'), function()
     Route::get('notifications',
               ['before' => 'ajax-only',
                'as'   => 'notify.check',
-               'uses' => 'Karma\Controllers\NotificationController@checkNotifications']);
+               'uses' => 'Karma\Controllers\NotificationController@checkForNew']);
 
+    Route::match(['POST', 'PUT', 'PATCH'],
+               'notifications',
+              ['before' => 'ajax-only',
+               'as'   => 'notify.check',
+               'uses' => 'Karma\Controllers\NotificationController@checkNotifications']);
 });
 
 /*

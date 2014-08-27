@@ -141,7 +141,7 @@ class User extends \Eloquent
 //                                           'confirmed' => false));
         $friend = Friend::create(['user_id' => $this->id,
                         'friend_id' => $id]);
-        $friend->notify($id, Notification::FRIENDS_REQUEST_NEW);
+        $friend->notify($id, NotifType::FRIENDS_REQUEST_NEW);
     }
 
     public function removeRequest($id)
@@ -158,7 +158,7 @@ class User extends \Eloquent
         if ($friend === null)
             return;
 
-        $friend->notifications()->where('type', '=', Notification::FRIENDS_REQUEST_NEW)->delete();
+        $friend->notifications()->where('type', '=', NotifType::FRIENDS_REQUEST_NEW)->delete();
         $friend->delete();
     }
 
@@ -187,7 +187,7 @@ class User extends \Eloquent
         $friend = Friend::where('user_id', '=', $id)
             ->where('friend_id', '=', $this->id)->first();
         $friend->update(['confirmed' => true]);
-        $friend->notify($id, Notification::FRIENDS_REQUEST_CONFIFMED);
+        $friend->notify($id, NotifType::FRIENDS_REQUEST_CONFIFMED);
 
         Friend::create(['user_id' => $this->id,
                         'friend_id' => $id,
