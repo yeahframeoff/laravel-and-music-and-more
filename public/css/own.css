@@ -10,7 +10,7 @@ img {
 }
 
 body {
-    padding-top: 70px; 
+    padding-top: 70px;
 }
 
 #logo {
@@ -174,7 +174,7 @@ body {
 }
 
 /*
- * User tiles in friend list and people-search list 
+ * User tiles in friend list and people-search list
  */
 
 .user-tile-big
@@ -209,8 +209,6 @@ body {
 {
     width: 180px;
 }
-
-
 
 /* custom inclusion of left tabs */
 
@@ -261,22 +259,8 @@ body {
 .tabs-left > .nav-tabs .active > a:hover,
 .tabs-left > .nav-tabs .active > a:focus {
     border-color: #ddd transparent #ddd #ddd;
-    *border-right-color: #ffffff;
+    border-right-color: #ffffff;
 }
-
-
-/*
- * Audio player css
- */
-
-ol { padding: 0px; margin: 0px; list-style: decimal-leading-zero inside; color: #ccc; width: 460px; border-top: 1px solid #ccc; font-size: 0.9em; }
-ol li { position: relative; margin: 0px; padding: 9px 2px 10px; border-bottom: 1px solid #ccc; cursor: pointer; }
-ol li a { display: block; text-indent: -3.3ex; padding: 0px 0px 0px 20px; }
-li.playing { color: #aaa; text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.3); }
-li.playing a { color: #000; }
-li.playing:before { content: '♬'; width: 14px; height: 14px; padding: 3px; line-height: 14px; margin: 0px; position: absolute; left: -24px; top: 9px; color: #000; font-size: 13px; text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2); }
-
-
 
 /*
  * loading icon animation
@@ -297,7 +281,7 @@ li.playing:before { content: '♬'; width: 14px; height: 14px; padding: 3px; lin
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
 }
-    
+
 span.btn-title
 {
     font-weight: bold;

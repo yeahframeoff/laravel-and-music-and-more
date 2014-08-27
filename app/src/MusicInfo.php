@@ -6,8 +6,9 @@ use Dandelionmood\LastFm\LastFm;
 use Karma\Entities\Artist;
 use Karma\Entities\Track;
 use Karma\Entities\Genre;
+use Karma\Entities\Album;
+use Karma\Entities\AlbumsTrack;
 use \DeezerAPI;
-use \DeezerAPI\Models\Album;
 
 /**
  * This class provides access to different music information using online resources such as MusicBrainz and Last.fm
@@ -36,20 +37,16 @@ class MusicInfo
         if(!$_artist->exists())
         {
             $_artist = new Artist;
-            
-            $info = self::getArtistInfo($artist)->artist;
-            
-            if(!empty($info))
-            {
+            try{
+                $info = self::getArtistInfo($artist)->artist;
+
                 $_artist->name = $info->name;
-            	$_artist->bio  = $info->bio->summary;
-            }
-            else
-            {
+                $_artist->bio  = $info->bio->summary;
+            } catch (\Exception $e) {
                 $_artist->name = $artist;
                 $_artist->bio = 'Не доступна.';
             }
-            
+
             $_artist->save();
         }
        	else
@@ -70,52 +67,75 @@ class MusicInfo
                           'artist' => $_artist->name,
                           'autocorrect' => true);
 
-            $info = self::$lastfm->track_getInfo($args)->track;
-            
-            if(!empty($info))
-            {
+            try{
+                $info = self::$lastfm->track_getInfo($args)->track;
                 $_track->title = $info->name;
-                                
-                if (!isset($info->toptags->tag->name))
-                    $genre = 'unknown';
+
+                if (isset($info->toptags->tag)){
+                    if (is_array($info->toptags->tag))
+                        $genre = $info->toptags->tag[0]->name;
+                    else
+                        $genre = $info->toptags->tag->name;
+                }
                 else
-                    $genre = $info->toptags->tag->name;
-                
+                    $genre = 'unknown';
+
                 $_genre = Genre::where('name', $genre)->first();
-                
+
                 if($_genre == NULL)
                 {
                     $_genre = new Genre;
                     $_genre->name = $genre;
                     $_genre->save();
                 }
-                
+
                 $_track->genre_id = $_genre->id;
                 $_track->lyrics = 'not available';//TODO
-            }
-            else
-            {
-                $_track->title = $title;
-                $_track->lyrics = 'Текст песни недоступен.';
-            }
+                $_track->save();
 
-        	$_track->save();   
+                //album processing
+                if(isset($info->album->title)){
+                    $lastFmAlbum = self::getAlbumInfo($info->album->title, $_artist->name);
+                    $album = new Album;
+                    $album->artist_id = $_artist->id;
+                    $album->name = $lastFmAlbum->album->name;
+                    $album->artwork = array_values((Array)end($lastFmAlbum->album->image))[0];
+                    $dt = new \DateTime($lastFmAlbum->album->releasedate);
+                    $album->release_date = $dt;
+                    $album->save();
+
+                    $albumsTrack = new AlbumsTrack;
+                    $albumsTrack->album_id = $album->id;
+                    $albumsTrack->track_id = $_track->id;
+                    $albumsTrack->save();
+                }
+
+
+            } catch (\Exception $e) {
+                //dd($e->getMessage());
+                $_track->title = $title;
+                $_track->genre_id = Genre::where('name', 'unknown')->first()->id;
+                $_track->lyrics = 'not available';
+                $_track->save();
+            }
         }
         else
         {
             $_track = $_track->first();
         }           
-        
+
         return $_track;
     }
     
     /**
      * @param string $album
+     * @param string $artist
      * @return object
      */
-    public static function getAlbumInfo($album)
+    public static function getAlbumInfo($album, $artist)
     {
         $args = array('album' => $album,
+                      'artist' => $artist,
                       'autocorrect' => true,
                       'lang' => 'ru');
         
@@ -150,9 +170,7 @@ class MusicInfo
             }
         }
         /*
-         * TODO
-         *
-         * Throw exception or anything else ($artist not found)
+         * TODO make the view with list of artists, where user can choose the correct one.
          */
     }
 }

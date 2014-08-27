@@ -17,7 +17,7 @@ class CreateAlbumsTable extends Migration {
 			$table->increments('id');
 			$table->integer('artist_id')->unsigned();
             $table->string('name');
-            $table->binary('artwork');
+            $table->string('artwork');
 			$table->date('release_date');
             
             $table->foreign('artist_id')

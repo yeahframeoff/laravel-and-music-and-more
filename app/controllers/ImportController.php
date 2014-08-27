@@ -11,6 +11,7 @@ use \Session;
 use \View;
 use \Redirect;
 use \Input;
+use \Response;
 
 class ImportController extends BaseController
 {
@@ -35,7 +36,11 @@ class ImportController extends BaseController
         $input = Input::all();
         array_shift($input);
         $tracks = array();
+
+
         foreach ($input as $track => $artist){
+            $track = str_replace('_', ' ', $track);
+
             if($artist == "on")
                 continue;
             $tmpArray = explode('|', $artist);
@@ -48,14 +53,8 @@ class ImportController extends BaseController
         }
 
         foreach ($tracks as $track){
-            /*
-             * TODO try to musicInfo???
-             */
-            try {
-                $_track = MusicInfo::getTrackByArtistAndTitle($track['artist'], $track['title']);
-            } catch (\Exception $e) {
-                continue;
-            }
+            $_track = MusicInfo::getTrackByArtistAndTitle($track['artist'], $track['title']);
+
             $params = array(
                 'social_id' => Social::byName($provider)->id,
                 'track_id' => $_track->id,
@@ -85,7 +84,6 @@ class ImportController extends BaseController
 
         foreach ($userTracks as $userTrack){
             $found = false;
-            $foundImport = false;
             foreach ($serviceTracks as $serviceTrack){
                 if ($userTrack['track_social_id'] == $serviceTrack['aid'])
                     $found = true;
@@ -108,5 +106,12 @@ class ImportController extends BaseController
         return View::make('importSelect')
             ->with('tracks', $importTracks)
             ->with('provider', 'vk');
+    }
+
+    public function importTrack($id)
+    {
+        $importTrack = ImportedTrack::find($id);
+        $importTrack->connectWithUser(Session::get('user_id'));
+        return Response::json(array('result' => 1));
     }
 }

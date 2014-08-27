@@ -119,6 +119,8 @@ class AuthController extends BaseController
         $user->last_name = $profile['last_name'];
         $user->photo = $profile['photo'];
         $user->save();
-        return View::make('auth.profile')->with('user', $user);
+        return View::make('profile')
+            ->with('user', $user)
+            ->with('tracks', $user->tracks);
     }
 }

@@ -1,16 +1,27 @@
 @extends('layouts.main')
+
+@section('stylesheets')
+    {{ HTML::style('public/css/player.css') }}
+    @parent
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('public/js/audioController.js') }}
+@stop
+
 @section('content')
 <div style="margin: auto 0;">
     <span class="glyphicon glyphicon-user"></span>&nbsp;
     <h1 style="display: inline;">{{ $user->first_name . ' ' . $user->last_name  }}</h1>
-    <a href="{{ URL::route('import.sync') }}">Sync</a>
+
 </div>
 
 <hr>
 
 <div class="row">
     <div class="col-md-6">
-        <h2></h2>
+
     	{{  HTML::image(
                 $user->photo,
                 $user->first_name . ' ' . $user->last_name,
@@ -19,6 +30,11 @@
                     'class' => 'img-thumbnail',
                 ]
         ) }}
+
+        <hr>
+        <a class="btn btn-warning btn-block" href="{{ URL::route('import.sync') }}">
+            <span class="glyphicon glyphicon-refresh"></span>&nbsp;<strong>Sync</strong>
+        </a>
     </div>
     
     <div class="col-md-6">
@@ -67,7 +83,7 @@
         @else
              <div class="btn-group">
                  @foreach($user->socials() as $name => $main)
-                     <a class="btn" href="">
+                     <a class="btn" href="/profile/load/{{$name}}">
                          {{ HTML::image('public/images/' . strtoupper($name) . '_logo_small.png') }}
                          
                          @if($name == 'vk')
@@ -92,8 +108,25 @@
                     @if(!isset($user->socials()['fb']))<li><a href="connect/fb">Facebook</a></li>@endif
                     @if(!isset($user->socials()['ok']))<li><a href="connect/ok">Одноклассники</a></li>@endif
                 </ul>
-            </div> 
+            </div>
         @endif
+        <div class="col-lg-3">
+            <audio preload></audio>
+            <div id="dz-root"></div>
+            <br/>
+            <ol class="musicList">
+                @foreach($tracks as $track)
+                <li>
+                    <a href="#" data-src="{{$track->track_url}}"> {{$track->track->title}}</a>
+                    @if($user->id != Karma\Auth\OAuth::getUserId())
+                    <a href="#" class="addTrack" data-id="{{$track->id}}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                    @endif
+                </li>
+                @endforeach
+            </ol>
+        </div>
     </div>
     
     <div class="col-md-6 center-block">

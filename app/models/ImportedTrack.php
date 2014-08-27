@@ -12,7 +12,7 @@ class ImportedTrack extends \Eloquent
     
     public function track()
     {
-        return $this->hasOne('Karma\Entities\Track');
+        return $this->hasOne('Karma\Entities\Track', 'id', 'track_id');
     }
     
     public function connectWithUser($id)

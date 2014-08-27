@@ -68,6 +68,11 @@ class VkontakteAPI extends API implements InterfaceAPI
         
         $result = $this->APImethod($params, 'audio.get')['response'];
         array_shift($result);
+        $result = array_map(function($track){
+            $track['title'] = str_replace(['[',']'], '', $track['title']);
+            $track['artist'] = str_replace(['[',']'], '', $track['artist']);
+            return $track;
+        }, $result);
         return $result;
     }
     

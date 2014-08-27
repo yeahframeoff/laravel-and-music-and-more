@@ -15,4 +15,9 @@ class Playlist extends \Eloquent
     {
         return $this->hasOne('Karma\Entities\User');
     }
+
+    public function playlistTracks()
+    {
+        return $this->hasMany('Karma\Entities\PlaylistsTrack', 'playlist_id');
+    }
 }
