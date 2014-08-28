@@ -116,6 +116,10 @@ function initPlayers()
         prev.click();
     });
 
+    var playPause = function(){
+
+    }
+
     var playNext = function(){
         var next = $('li.playing' + ui).next();
         $(ui + ' h1').html(next.text());
@@ -124,8 +128,8 @@ function initPlayers()
         next.click();
     }
 
-    $('.musicList').children().first().click();
-    $(ui + ' > .play');
+    var first = $('.musicList').children().first();
+    $(ui + ' h1').html(first.text());
 }
 
 
