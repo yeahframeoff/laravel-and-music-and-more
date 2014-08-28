@@ -1,5 +1,5 @@
 <h3>
-    <a href="#" data-src="{{$url}}">
+    <a href="#" data-src="{{$track->url}}">
         <strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}&nbsp;
     </a>
     <?php
