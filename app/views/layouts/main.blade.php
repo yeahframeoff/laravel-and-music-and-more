@@ -26,6 +26,8 @@
         {{ HTML::script('public/js/importController.js') }}
         {{ HTML::script('public/audiojs/howler.js') }}
         {{ HTML::script('public/js/audio5.js') }}
+        {{ HTML::script('public/js/underscore-min.js') }}
+        {{ HTML::script('public/js/backbone-min.js') }}
         {{ HTML::script('public/js/socket.js') }}
         @show
 	</body>

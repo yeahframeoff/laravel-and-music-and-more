@@ -3,8 +3,6 @@
 @section('scripts')
 @parent
     {{ HTML::script('public/js/handlebars.runtime-v1.3.0.js') }}
-    {{ HTML::script('public/js/underscore-min.js') }}
-    {{ HTML::script('public/js/backbone-min.js') }}
     {{ HTML::script('public/js/chat.js') }}
 @stop
 
