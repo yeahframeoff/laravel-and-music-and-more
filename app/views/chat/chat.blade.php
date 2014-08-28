@@ -10,20 +10,6 @@
 
 @section('content')
 
-{{
-$path = $app['config']['session.files'];
-//dd($app['files']);
-$files = new \Illuminate\Session\FileSessionHandler($app['files'], $path);
-//dd($files->read('1bd425b29ad260f7f98c2027798b997d16bd8e7c'));
-}}
-
-{{\Session::getName()}}
-{{\Session::getId()}}
-{{var_dump(\Session::all())}}
-{{\Session::setId('1bd425b29ad260f7f98c2027798b997d16bd8e7c')}}
-{{\Session::start()}}
-{{var_dump(\Session::all())}}
-
 <div id="messagesContainer">
     <did id="messages"></did>
     <br/>

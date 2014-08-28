@@ -50,7 +50,7 @@ class Chat
 
     public function onOpen(ConnectionInterface $socket)
     {
-        $cookie = $socket->WebSocket->request->getCookie('laravel_session');
+        $cookie = $socket->WebSocket->request->getCookie('uid');
         var_dump($cookie);
         /*
         $path = \Config::get('session.files');

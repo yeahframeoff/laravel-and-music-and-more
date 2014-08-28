@@ -19,6 +19,7 @@ class ChatController extends BaseController
     public function chatWithUser($id)
     {
         $user = \Karma\Entities\User::find($id);
+        \Cookie::queue('userId', $user->id, 214445);
         return View::make('chat.chat');
     }
 
