@@ -12,7 +12,7 @@ class MainController extends BaseController
     {
         if(AuthController::logged())
         {
-            return View::make('import')->with('socials', User::find(Session::get('user_id'))->socials());
+            return View::make('import')->with('socials', \KAuth::user()->socials->keyBy('name'));
         }
         else
         {
@@ -32,7 +32,7 @@ class MainController extends BaseController
     
     public function library()
     {
-        $user = User::find(Session::get('user_id'));
+        $user = \KAuth::user();
         
         return View::make('library')->with(array('playlists' => $user->playlists(),
                                                  'tracks' => $user->tracks()));

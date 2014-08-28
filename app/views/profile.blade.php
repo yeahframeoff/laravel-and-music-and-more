@@ -66,7 +66,7 @@
             @include ('friendship_button', ['user' => $user])
         @else
             <div class="btn-group">
-                @foreeach ($user->credentials as $cr)
+                @foreach ($user->credentials as $cr)
                     <a class="btn" href="{{ URL::route('profile.load', ['name' => $cr->social->name]) }}">
                     <img src="{{ $cr->social->iconUrl() }}">
                     {{ $cr->social->title }} @if($cr) <span class="glyphicon glyphicon-ok"></span>@endif

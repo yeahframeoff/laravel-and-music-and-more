@@ -17,8 +17,8 @@ class ImportController extends BaseController
 {
     public function index()
     {
-        $id = Session::get('user_id');
-        return View::make('import')->with('socials', \Karma\Entities\User::find($id)->socials());
+        $user = \KAuth::user();
+        return View::make('import')->with('socials', $user->socials->keyBy('name'));
     }
     
     public function import($provider)

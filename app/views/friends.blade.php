@@ -20,7 +20,7 @@
 <div class="tab-content">
     <div class="tab-pane @unless ($showRequests) active @endunless" id="friends">
         <div class="page-header">
-            @if ($user->id == \Karma\Auth\OAuth::getUserId())
+            @if ($user->id == \KAuth::getUserId())
             <h1>Ваши друзья</h1>
             @else
             <h1>Друзья пользователя {{ $user->first_name . ' ' . $user->last_name }}</h1>
@@ -28,8 +28,16 @@
         </div>
         @forelse($friends as $friend)
             @include ('user_tile_big', ['user' => $friend])
-        @empty    
+        @empty
+            @if ($user->id == \KAuth::getUserId())
             <h2>У вас пока что нет друзей :(</h2>
+            @else
+            <h2>У пользователя
+                <a href="{{ URL::route('profile', ['user' => $user->id])}}">
+                    {{ $user->first_name . ' ' . $user->last_name }}</a>
+                пока что нет ни одного друга :(
+            </h2>
+            @endif
         @endforelse
     </div>
 
