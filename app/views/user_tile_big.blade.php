@@ -29,6 +29,11 @@
                     <span class="glyphicon glyphicon-user"></span>
                     <span class="title"><strong>Watch friends</strong></span>
                 </a>
+                <a href="/messages?{{$user->id}}"
+                   class="btn btn-default btn-block send-message" >
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    <span class="title"><strong>Send message</strong></span>
+                </a>
             </div>
         </div>
     </div>

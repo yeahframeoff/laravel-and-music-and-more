@@ -123,6 +123,18 @@ Route::group(['before' => 'auth'], function()
               ['as'   => 'import.sync',
                'uses' => 'Karma\Controllers\ImportController@sync']);
 
+    /*
+     * Messages
+     */
+
+    Route::get('messages/',
+              ['as' => 'chat.index',
+              'uses' => 'Karma\Controllers\ChatController@index']);
+
+    Route::get('messages/{id}',
+              ['as' => 'chat.chat',
+              'uses' => 'Karma\Controllers\ChatController@chatWithUser']);
+
 });
 
 /*

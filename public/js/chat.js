@@ -1,33 +1,45 @@
-Message = Backbone.Model.extend({
+var socket = window.socket;
+
+var MessageModel = Backbone.Model.extend({
 
 });
 
-Messages = Backbone.Collection.extend({
-    model: Message
+var MessagesCollection = Backbone.Collection.extend({
+    model: MessageModel
 });
 
-User = Backbone.Model.extend({
-    collection: Messages
+var UserModel = Backbone.Model.extend({
+    collection: MessagesCollection
 });
 
-Users = Backbone.Collection.extend({
-    model: User
+var UsersCollection = Backbone.Collection.extend({
+    model: UserModel
 })
 
-MessagesView = Backbone.View.extend({
+var MessageItemView = Backbone.View.extend({
+    render: function() {
+        var source = $('#messageTemplate').html();
+        var template = Handlebars.compile(source);
+        var html = template(this.model.toJSON());
+        this.$el.html(html);
+        return this;
+    }
+})
+
+var MessagesView = Backbone.View.extend({
     events: {
         "click button": "send"
     },
 
     render: function() {
-        var source = $('#messagesTemplate').html();
-        var template = Handlebars.compile(source);
-        var html = template(this.collection.toJSON());
-        this.$el.html(html);
+        this.collection.each(function(person){
+            this.renderMessageView(person);
+        }, this);
+        return this; // returning this for chaining..
     },
 
     initialize: function(){
-        this.collection.on('add', this.render, this)
+        //this.collection.on('add', this.render, this)
     },
     send: function(){
         console.log(this);
@@ -35,59 +47,22 @@ MessagesView = Backbone.View.extend({
             type: 'message',
             data: this.$el.find('input').val()
         }));
-    }
-});
-
-UserRouter = Backbone.Router.extend ({
-    routes: {
-        ':id': 'userLoad'
     },
-    userLoad: function (id) {
-        socket.send(JSON.stringify({
-            type: 'user',
-            data: id
-        }));
+    renderMessageView: function(message){
+        messageView = new MessageItemView({ model: message });
+        this.$el.find('#messages').append(messageView.render().el);
+        return this;
     }
 });
 
-var appRouter = new UserRouter();
+var messages = new MessagesCollection();
 
-Backbone.history.start();
-
-
-try {
-    var id = 1;
-    if (!WebSocket) {
-        console.log("no websocket support");
-    } else {
-        socket = new WebSocket("ws://127.0.0.1:7778/");
-        var id = 1;
-        socket.addEventListener("open", function (e) {
-            console.log("open: ", e);
-        });
-        socket.addEventListener("error", function (e) {
-            console.log("error: ", e);
-        });
-        socket.addEventListener("message", function (e) {
-            var data = JSON.parse(e.data);
-            console.log(data);
-            var message = new Message({user_name: data.user.name, message: data.message.data})
-            messages.add(message);
-        });
-        window.socket = socket; // debug
-    }
-} catch (e) {
-    console.log("exception: " + e);
-}
-
-var messages = new Messages();
-
-var message1 = new Message({user_name: 'Alex', message: 'Hello, world!'})
-var message2 = new Message({user_name: 'Denis', message: 'Hi!'})
+var message1 = new MessageModel({user_name: 'Alex', message: 'Hello, world!'})
+var message2 = new MessageModel({user_name: 'Denis', message: 'Hi!'})
 
 var messagesView = new MessagesView({
     collection: messages,
-    el: ".messagesContainer"
+    el: "#messagesContainer"
 })
 
 messages.add(message1);
