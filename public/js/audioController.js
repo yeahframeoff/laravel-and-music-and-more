@@ -1,4 +1,3 @@
-
 registerAudio = function()
 {
     var ui = '.musicPlayer';

@@ -1,7 +1,7 @@
 <?php
-$current = \Karma\Auth\OAuth::getUser();
-$sentRequest = $current->sentFriendshipRequestTo ($user->id);
-$receivedRequest  = $current->gotFriendshipRequestFrom ($user->id);
+$current = \KAuth::user();
+$sentRequest = $current->friendships()->requests()->where('friend_id', '=', $user->id)->exists();
+$receivedRequest  = $current->friendshipz()->requests()->where('user_id', '=', $user->id)->exists();
 $isFriend    = $user->isFriend ($current->id);
 $isNotFriend = !$user->isFriend ($current->id) && !$sentRequest && !$receivedRequest;
 

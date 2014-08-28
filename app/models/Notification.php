@@ -7,7 +7,7 @@ use \Karma\Entities\User;
 
 trait NotifyingTrait
 {
-    public function notifications()
+    public function boundNotifications()
     {
         return $this->morphMany('Karma\Entities\Notification', 'object');
     }
@@ -22,7 +22,15 @@ trait NotifyingTrait
         $notification->refferedUser()->associate($user);
         $notification->object()->associate($this);
         $notification->save();
-        return $this->notifications()->save($notification);
+        return $this->boundNotifications()->save($notification);
+    }
+
+    public function unnotify($user, $type)
+    {
+        if ($user instanceof User)
+            $user = $user->id;
+        $this->boundNotifications()->where('reffered_user_id', '=', $user)
+            ->where('type', '=', $type)->orderBy('updated_at', 'desc')->first()->delete();
     }
 
     //public abstract function getMessageParams();
@@ -34,8 +42,9 @@ class NotifType
 {
     const FRIENDS_REQUEST_NEW       = 'friends-request-new';
     const FRIENDS_REQUEST_CONFIFMED = 'friends-request-confirmed';
+    const FRIENDS_REQUEST_REMOVED   = 'friends-request-removed';
     const FRIENDS_REQUEST_DENIED    = 'friends-request-denied';
-    const FRIENDS_DELETED           = 'friends-request-deleted';
+    const FRIENDS_DELETED           = 'friends-deleted';
 
     private static $messages = array(
         /*
@@ -50,6 +59,11 @@ class NotifType
             [
                 'popup' => 'Friendship request confirmed',
                 'msg' => 'User %user% confirmed your friendship request',
+            ],
+        self::FRIENDS_REQUEST_REMOVED =>
+            [
+                'popup' => 'Friendship request cancelled',
+                'msg' => 'User %user% cancelled friendship request, sent to you before',
             ],
         self::FRIENDS_REQUEST_DENIED =>
             [

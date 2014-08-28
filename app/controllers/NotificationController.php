@@ -7,7 +7,7 @@ class NotificationController extends BaseController
 {
     public function checkForNew()
     {
-        $notifications = \KAuth::getUser()->notifications()->unchecked()->with('object')->get();
+        $notifications = \KAuth::user()->notifications()->unchecked()->with('object')->get();
         return \Response::json($notifications);
     }
 

@@ -14,13 +14,13 @@
             {{ HTML::script('http://code.jquery.com/jquery-2.1.1.js') }}
             {{-- HTML::script('public/js/jquery-2.1.1.js') --}}
             {{ HTML::script('public/js/bootstrap.js') }}
-            {{ HTML::script('public/audiojs/howler.js') }}
             {{ HTML::script('public/audiojs/audio.min.js') }}
-            {{ HTML::script('public/js/audio5.js') }}
             {{ HTML::script('http://cdn-files.deezer.com/js/min/dz.js') }}
+            {{ HTML::script('public/js/importController.js') }}
+            {{ HTML::script('public/audiojs/howler.js') }}
+            {{ HTML::script('public/js/audio5.js') }}
             {{ HTML::script('public/js/audioController.js') }}
             {{ HTML::script('public/js/friends.js') }}
-            {{ HTML::script('public/js/importController.js') }}
             {{ HTML::script('public/js/notification.js') }}
             {{ HTML::script('public/js/main.js') }}
         @show
