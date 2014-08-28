@@ -39,7 +39,7 @@ Route::group(['before' => 'auth'], function()
                'uses' => 'Karma\Controllers\ImportController@index']);
 
     Route::get('profile/load/{social}',
-              ['as'   => 'profile.loadProfile',
+              ['as'   => 'profile.load',
                'uses' => 'Karma\Controllers\AuthController@loadProfile']);
 
     /*
@@ -47,11 +47,11 @@ Route::group(['before' => 'auth'], function()
      */
     Route::get('friends',
               ['as'   => 'friends.my',
-               'uses' => 'Karma\Controllers\FriendController@getAllMy']);
+               'uses' => 'Karma\Controllers\FriendController@allMy']);
 
     Route::get('friends/{user}',
               ['as'   => 'friends',
-               'uses' => 'Karma\Controllers\FriendController@getAll']);
+               'uses' => 'Karma\Controllers\FriendController@all']);
 
     Route::get('friends/add/{user}',
               ['as'   => 'friends.add',

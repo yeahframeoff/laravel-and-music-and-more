@@ -13,14 +13,14 @@ use \Request;
 
 class FriendController extends BaseController
 {
-    public function getAllMy()
+    public function allMy()
     {
         $user = \Karma\Auth\OAuth::getUser();
         $showRequests = \Input::has('p') && \Input::get('p') == 'requests';
-        return $this->getAll($user, true, $showRequests);
+        return $this->all($user, true, $showRequests);
     }
     
-    public function getAll(User $user, $withRequests = false, $showRequests = false)
+    public function all(User $user, $withRequests = false, $showRequests = false)
     {
         $friends = $user->friends();
         $current_user = $this->getCurrentUser($user);

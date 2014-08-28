@@ -8,9 +8,9 @@ class SocialsTableSeeder extends Seeder
     {
         DB::table('socials')->delete();
 
-        Social::create(array('name' => 'fb', 'title' => 'Facebook'));
-        Social::create(array('name' => 'vk', 'title' => 'ВКонтакте'));
-        Social::create(array('name' => 'ok', 'title' => 'Одноклассники'));
+        Social::create(['name' => 'fb', 'title' => 'Facebook']);
+        Social::create(['name' => 'vk', 'title' => 'ВКонтакте']);
+        Social::create(['name' => 'ok', 'title' => 'Одноклассники']);
 
         $this->command->info('Socials table seeded!');
     }

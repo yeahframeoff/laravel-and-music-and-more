@@ -41,15 +41,7 @@ class User extends \Eloquent
 
     public function socials()
     {
-        $credentials = $this->credentials();
-        $socials = Social::whereIn('id', $credentials->lists('social_id'))->lists('id', 'name');
-
-        foreach($socials as $social => $id)
-        {
-            $socials[$social] = $this->credentials()->where('social_id', $id)->first();
-        }
-
-        return $socials;
+        return $this->belongsToMany('Karma\Entities\Social', 'credentials');
     }
 
     public function groups()

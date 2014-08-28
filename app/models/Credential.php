@@ -17,7 +17,7 @@ class Credential extends \Eloquent
     
     public function social()
     {
-        return $this->hasOne('Karma\Entities\Social');
+        return $this->belongsTo('Karma\Entities\Social');
     }
     
     public function expired()
