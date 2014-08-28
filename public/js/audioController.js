@@ -123,6 +123,9 @@ function initPlayers()
             next = $('ol li' + ui).first();
         next.click();
     }
+
+    $('.musicList').children().first().click();
+    $(ui + ' > .play');
 }
 
 
