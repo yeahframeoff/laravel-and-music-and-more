@@ -140,4 +140,20 @@ class User extends \Eloquent
     {
         return $this->hasMany('\Karma\Entities\Notification', 'reffered_user_id');
     }
+
+    public function getMessageParams($type)
+    {
+        switch ($type)
+        {
+            case NotifType::FRIENDS_REQUEST_NEW:
+            case NotifType::FRIENDS_REQUEST_REMOVED:
+            case NotifType::FRIENDS_REQUEST_CONFIFMED:
+            case NotifType::FRIENDS_REQUEST_DENIED:
+            case NotifType::FRIENDS_DELETED:
+                return ['user' => $this->first_name . ' ' . $this->last_name];
+            default:
+                return [];
+        }
+
+    }
 }

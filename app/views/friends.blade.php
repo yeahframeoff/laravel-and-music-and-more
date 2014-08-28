@@ -7,7 +7,7 @@
     <li @if ($showRequests)class="active" @endif><a href="#requests" data-toggle="pill">
         Заявки
         &nbsp;
-        @if($count = \Karma\Auth\OAuth::getUser()->friendshipRequestsCount() > 0 )
+        @if($count = \KAuth::user()->friendshipz()->requests()->count() > 0 )
         <span class="badge">+{{$count}}</span>
         @endif
         </a>
@@ -38,9 +38,9 @@
             <div class="page-header">
                 <h1>Заявки в друзья</h1>
             </div>
-        @forelse($requests as $friend)
+        @forelse($requests as $request)
             @include ('user_tile_big', [
-                'user'    => $friend,
+                'user'    => $request->user,
                 'current' => $current_user,
             ])
 
