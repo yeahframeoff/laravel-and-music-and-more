@@ -90,6 +90,14 @@ class LibraryController extends BaseController
         return Redirect::route('library.index');
     }
 
+    public function show($playlistId)
+    {
+        $playlist = Playlist::find($playlistId);
+        return View::make('library.library')
+            ->with('tracks', $playlist->tracks)
+            ->with('playlists',OAuth::getUser()->playlists()->get());
+    }
+
     public function delete($id)
     {
         Playlist::find($id)->delete();

@@ -39,7 +39,7 @@
         </form><!-- /input-group -->
         @if ($page == 'music')
             @forelse($result as $track)
-                @include ('library.track_tile', ['track' => $track])
+                @include ('track_tile', ['track' => $track])
             @empty
             <h2>Ничего не найдено:(</h2>
             @endforelse

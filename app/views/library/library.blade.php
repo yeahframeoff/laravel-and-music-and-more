@@ -23,6 +23,7 @@
             <h1>Все треки</h1>
         </div>
 
+        @if(count($tracks) > 0)
         <div class="musicPlayer">
             <h1>Demo - Preview Song</h1>
             <img class="cover" src="img/cover.png">
@@ -44,6 +45,7 @@
             </div>
 
         </div>
+        @endif
 
         <br/>
         <div id="dz-root"></div>
@@ -64,7 +66,7 @@
         
         @foreach($playlists as $playlist)
             <div class="playlist">
-                <a href="#">{{$playlist->name}}</a>
+                {{HTML::linkAction('Karma\Controllers\LibraryController@show', $playlist->name, array('id' => $playlist->id))}}
                 {{HTML::linkAction('Karma\Controllers\LibraryController@edit', 'edit', array('id' => $playlist->id))}}
                 <div class="playlist-tracks">
                     @foreach($playlist->tracks as $track)
