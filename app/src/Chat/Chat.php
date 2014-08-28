@@ -51,6 +51,7 @@ class Chat
     public function onOpen(ConnectionInterface $socket)
     {
         $cookie = $socket->WebSocket->request->getCookie('uid');
+        dd($socket);
         var_dump($cookie);
         /*
         $path = \Config::get('session.files');
