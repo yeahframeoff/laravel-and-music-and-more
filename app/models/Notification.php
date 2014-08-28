@@ -33,7 +33,7 @@ trait NotifyingTrait
             ->where('type', '=', $type)->orderBy('updated_at', 'desc')->first()->delete();
     }
 
-    //public abstract function getMessageParams();
+    public abstract function getMessageParams($type);
 
 }
 
@@ -143,7 +143,7 @@ class Notification extends \Eloquent
 
     public function getMessageAttribute()
     {
-        return NotifType::message($this->type, ['user' => 'The User']);
+        return NotifType::message($this->type, $this->object->getMessageParams($this->type));
     }
 
     public function getPopupTextAttribute()

@@ -78,7 +78,7 @@ class FriendController extends BaseController
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->confirmFriend($user->id);
-        return $this->reslveAjax(
+        return $this->resolveAjax(
             View::make('friendship_button.remove')
                 ->with('user', $user)
                 ->with('current', $currentUser)

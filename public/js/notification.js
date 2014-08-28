@@ -34,6 +34,7 @@ registerNotification = function()
     {
         newData.length = 0;
         var d;
+        console.log(incomingData);
         for (var i = 0; i < incomingData.length; ++i)
         {
             d = incomingData[i];
@@ -69,8 +70,24 @@ registerNotification = function()
     {
         $dropdown = $notify.parent('li.dropdown').find('> ul.dropdown-menu');
         $dropdown.empty();
+        var toAppend;
         data.forEach(function(e) {
-            $dropdown.append('<li><a>' + e.message + '</a></li>');
+            toAppend = '<li><a';
+            if (e.object.hasOwnProperty('profileUrl'))
+                toAppend += ' href="' + e.object.profileUrl +'" ';
+            toAppend += '>';
+            console.log('started making notification tile');
+            console.log(e);
+            console.log(e.object_type);
+            if (e.object_type.indexOf('\\User') != -1)
+            {
+                console.log('contains');
+                toAppend += '<img class="icon" src="' + e.object.photo + '">';
+                console.log(toAppend);
+            }
+            toAppend += '' + e.message + '</a></li>';
+            console.log(toAppend);
+            $dropdown.append(toAppend);
         });
     }
 
@@ -81,7 +98,7 @@ registerNotification = function()
             checked.push(e.id);
         });
         console.log(checked);
-        $.post($href, {'checked' : checked}).done(function(d){console.log(d)});
+        $.post($href, {'checked' : checked});
         data.length = 0;
     });
 

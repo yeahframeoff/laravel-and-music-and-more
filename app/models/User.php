@@ -12,6 +12,8 @@ class User extends \Eloquent
 
     protected $fillable = array('id', 'first_name', 'last_name', 'photo');
 
+    protected $appends = array('profileUrl');
+
     public function credentials()
     {
         return $this->hasMany('Karma\Entities\Credential');
@@ -82,7 +84,7 @@ class User extends \Eloquent
             ->withPivot('confirmed')->where('confirmed', '=', true);
     }
 
-    public function profileUrl()
+    public function getProfileUrlAttribute()
     {
         return \URL::to("/profile/{$this->id}");
     }

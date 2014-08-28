@@ -291,3 +291,8 @@ a#notify-check.new-notifications
 {
     color: #f0f0f0;
 }
+
+li img.icon
+{
+    width: 40px;
+}
