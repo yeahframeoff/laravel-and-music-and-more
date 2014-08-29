@@ -4,7 +4,7 @@ registerNotification = function()
 
     var $notify = $('a#notify-check'),
         $href = $notify.data('href'),
-        updPeriod = 4000,
+        updPeriod = 2000,
         tooltipShowTime = 2500,
         timeBetweenToolTips = 1500,
         timer,

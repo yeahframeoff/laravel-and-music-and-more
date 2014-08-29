@@ -29,7 +29,7 @@ abstract class API
         return $API;
     }
 
-    protected function APImethod($params, $addToUrl = '')
+    protected function APImethod(array $params, $addToUrl = '')
     {
         $url = $this->apiLink . $addToUrl;
 
@@ -42,7 +42,7 @@ abstract class API
         return $this->checkError($response);
     }
         
-    protected function APImethodGet($params, $addToUrl = '')
+    protected function APImethodGet(array $params, $addToUrl = '')
     {
         $url = $this->apiLink . $addToUrl;
         

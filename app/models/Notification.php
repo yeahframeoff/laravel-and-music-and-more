@@ -29,8 +29,10 @@ trait NotifyingTrait
     {
         if ($user instanceof User)
             $user = $user->id;
-        $this->boundNotifications()->where('reffered_user_id', '=', $user)
-            ->where('type', '=', $type)->orderBy('updated_at', 'desc')->first()->delete();
+        $found = $this->boundNotifications()->where('reffered_user_id', '=', $user)
+            ->where('type', '=', $type)->orderBy('updated_at', 'desc')->first();
+        if ($found !== null)
+            $found->delete();
     }
 
     public abstract function getMessageParams($type);

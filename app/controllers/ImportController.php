@@ -72,7 +72,7 @@ class ImportController extends BaseController
 
     public function sync()
     {
-        $user = User::find(Session::get('user_id'));
+        $user = \KAuth::user();
         $API = API::getAPI('vk');
 
         $userTracks = $user->tracks->toArray();

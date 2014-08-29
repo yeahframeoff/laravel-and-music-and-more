@@ -22,6 +22,7 @@
             {{ HTML::script('public/js/audioController.js') }}
             {{ HTML::script('public/js/friends.js') }}
             {{ HTML::script('public/js/notification.js') }}
+            {{ HTML::script('public/js/player.js') }}
             {{ HTML::script('public/js/main.js') }}
         @show
     </head>

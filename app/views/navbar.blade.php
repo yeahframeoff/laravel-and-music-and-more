@@ -39,11 +39,7 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li><a>Action</a></li>
-                            <li><a>Another action</a></li>
-                            <li><a>Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a>Separated link</a></li>
+                            <li><a>Нет непрочитанных уведомлений</a></li>
                         </ul>
                     </li>
 

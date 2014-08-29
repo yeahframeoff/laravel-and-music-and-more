@@ -32,6 +32,13 @@
         ) }}
 
         <hr>
+        @if ($user->id == KAuth::getUserId())
+        <a class="btn btn-warning btn-block" href="{{ URL::route('import.sync') }}">
+            <span class="glyphicon glyphicon-refresh"></span>&nbsp;<strong>Sync</strong>
+        </a>
+        @else
+            @include ('friendship_button', ['user' => $user])
+        @endif
     </div>
     
     <div class="col-md-6">
@@ -62,9 +69,7 @@
 <div class="row">
     <div class="col-md-6">
             <br>
-    	@if($user->id != KAuth::getUserId())
-            @include ('friendship_button', ['user' => $user])
-        @else
+    	@if($user->id == KAuth::getUserId())
             <div class="btn-group">
                 @foreach ($user->credentials as $cr)
                     <a class="btn" href="{{ URL::route('profile.load', ['name' => $cr->social->name]) }}">
@@ -99,7 +104,7 @@
                 @foreach($tracks as $track)
                 <li>
                     <a href="#" data-src="{{$track->track_url}}"> {{$track->track->title}}</a>
-                    @if($user->id != Karma\Auth\OAuth::getUserId())
+                    @if($user->id != KAuth::getUserId())
                     <a href="#" class="addTrack" data-id="{{$track->id}}">
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>

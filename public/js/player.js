@@ -1,6 +1,8 @@
 registerPlayer = function() {
 
-    $('.addTrack').on('click', function(){
+    $('.addTrack').on('click', function(e)
+    {
+        e.preventDefault();
         if ($(this).find('span:first').hasClass('glyphicon-ok'))
             return 0;
 
@@ -16,4 +18,4 @@ registerPlayer = function() {
             });
     });
 
-}
+};

@@ -84,7 +84,7 @@ class User extends \Eloquent
     public function sendRequest($user, $notify = true)
     {
         $id = $user instanceof User ?  $user->id : $user;
-        $this->theFriends()->attach($id, ['confirmed' => 'false']);
+        $this->theFriends()->attach($id);
         if ($notify == true)
             $this->notify($user, NotifType::FRIENDS_REQUEST_NEW);
     }
@@ -124,10 +124,13 @@ class User extends \Eloquent
             $this->notify($user, NotifType::FRIENDS_REQUEST_CONFIFMED);
     }
 
-    public function forceFriendshipTo($id)
+    public function forceFriendshipTo($id, $unnotify = true)
     {
-        $this->sendRequest($id, false);
-        User::find($id)->confirmFriend($this, false);
+        //$this->sendRequest($id, false);
+        //User::find($id)->confirmFriend($this, false);
+        $this->theFriends()->attach($id, ['confirmed' => true]);
+        if ($unnotify)
+            $this->unnotify($id, NotifType::FRIENDS_DELETED);
     }
 
     public function notifications()
