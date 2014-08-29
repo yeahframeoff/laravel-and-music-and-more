@@ -26,7 +26,7 @@
         @if(count($tracks) > 0)
         <div class="musicPlayer">
             <h1>Demo - Preview Song</h1>
-            <img class="cover" src="img/cover.png">
+            <img class="cover" src="/public/images/empty.png">
             <div class="play">
                 <button title="play/pause"></button>
             </div>
@@ -43,9 +43,11 @@
                     <span class="time-current"></span>
                 </span>
             </div>
-
         </div>
+        <input type="button" class="prev" value="prev"/>
+        <input type="button" class="next" value="next"/>
         @endif
+
 
         <br/>
         <div id="dz-root"></div>

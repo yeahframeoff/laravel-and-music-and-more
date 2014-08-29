@@ -104,14 +104,26 @@ registerAudio = function()
         }
     });
 
-    $(ui + '.next').on('click', function(){
+    $('.next').on('click', function(){
         playNext();
     });
 
-    $(ui + '.prev').on('click', function(){
+    $('.prev').on('click', function(){
         var prev = $('li.playing' + ui).prev();
         if (!prev.length)
             prev = $('ol li' + ui).last();
         prev.click();
     });
+
+    var playNext = function(){
+        var next = $('li.playing' + ui).next();
+        $(ui + ' h1').html(next.text());
+        if (!next.length)
+            next = $('ol li' + ui).first();
+        next.click();
+    }
+
+    var first = $('.musicList').children().first();
+    $(ui + ' h1').html(first.text());
+
 };

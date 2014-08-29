@@ -19,7 +19,7 @@
                     @include ('friendship_button', ['user' => $user])
                 @endif
 
-                <a href="#" class="btn btn-success btn-block">
+                <a href={{action('Karma\Controllers\LibraryController@userAudio', $user->id)}} class="btn btn-success btn-block">
                     <span class="glyphicon glyphicon-headphones"></span>
                     <span class="title"><strong>Listen music</strong></span>
                 </a>

@@ -88,6 +88,7 @@ Route::group(['before' => 'auth'], function()
      * Library
      */
     Route::resource('library', 'Karma\Controllers\LibraryController');
+    Route::get('audio/{user}', 'Karma\Controllers\LibraryController@userAudio');
 
     /*
      * Search
