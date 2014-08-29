@@ -103,7 +103,8 @@ class LibraryController extends BaseController
         $playlist = Playlist::find($playlistId);
         return View::make('library.library')
             ->with('tracks', $playlist->tracks)
-            ->with('playlists',OAuth::getUser()->playlists()->get());
+            ->with('playlists', OAuth::getUser()->playlists()->get())
+            ->with('playlist', $playlist);
     }
 
     public function delete($id)

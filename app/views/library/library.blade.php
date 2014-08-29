@@ -20,7 +20,11 @@
 <div class="tab-content">
     <div class="tab-pane active" id="all">
         <div class="page-header">
-            <h1>Все треки</h1>
+            @if(isset($playlist))
+                <h1>{{$playlist->name}}</h1>
+            @else
+                <h1>Все треки</h1>
+            @endif
         </div>
 
         @if(count($tracks) > 0)
