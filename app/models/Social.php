@@ -13,7 +13,7 @@ class Social extends \Eloquent
     
     public function scopeByName($query, $name)
     {
-        return $query->where('name', $name);
+        return $query->where('name', $name)->first();
     }
     
     public function iconUrl()

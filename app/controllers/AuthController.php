@@ -44,7 +44,7 @@ class AuthController extends BaseController
                Session::has('auth') &&
                !OAuth::user()
                    ->credentials()
-                   ->where('social_id', Social::byName(Session::get('auth'))->first()->id)
+                   ->where('social_id', Social::byName(Session::get('auth'))->id)
                    ->first()
                    ->expired();
     }
