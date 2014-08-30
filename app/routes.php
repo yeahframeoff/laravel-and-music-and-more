@@ -137,6 +137,21 @@ Route::group(['before' => 'auth'], function()
               ['before' => 'ajax-only',
                'as'   => 'notify.check',
                'uses' => 'Karma\Controllers\NotificationController@checkNotifications']);
+    /*
+     * Messages
+     */
+
+    Route::get('messages/',
+              ['as' => 'chat.index',
+              'uses' => 'Karma\Controllers\ChatController@index']);
+
+    Route::get('messages/{id}',
+              ['as' => 'chat.chat',
+              'uses' => 'Karma\Controllers\ChatController@chatWithUser']);
+
+    Route::get('messages/history/{user}',
+              ['as' => 'chat.history',
+              'uses' => 'Karma\Controllers\ChatController@getHistory']);
 });
 
 /*
