@@ -135,6 +135,10 @@ Route::group(['before' => 'auth'], function()
               ['as' => 'chat.chat',
               'uses' => 'Karma\Controllers\ChatController@chatWithUser']);
 
+    Route::get('messages/history/{user}',
+              ['as' => 'chat.history',
+              'uses' => 'Karma\Controllers\ChatController@getHistory']);
+
 });
 
 /*

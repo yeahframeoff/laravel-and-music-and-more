@@ -12,8 +12,7 @@ try {
             Backbone.trigger("socket:error", {socket: e});
         });
         socket.addEventListener("message", function (e) {
-            var data = JSON.parse(e.data);
-            Backbone.trigger("socket:message", {data: data});
+            Backbone.trigger("socket:message", {data: e});
         });
         window.socket = socket; // debug
     }

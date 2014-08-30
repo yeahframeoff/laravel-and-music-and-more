@@ -50,20 +50,21 @@ class Chat
 
     public function onOpen(ConnectionInterface $socket)
     {
-        $cookie = $socket->WebSocket->request->getCookie('uid');
-        dd($socket);
-        var_dump($cookie);
-        /*
-        $path = \Config::get('session.files');
-        $filesystem = new \Illuminate\Filesystem\Filesystem();
-        $files = new \Illuminate\Session\FileSessionHandler($filesystem, $path);
-        //var_dump($files->read('1bd425b29ad260f7f98c2027798b997d16bd8e7c'));
-        */
-        $user = new User();
-        $user->setSocket($socket);
-
-        $this->users->attach($user);
-        $this->emitter->emit("open", [$user]);
+        try{
+            $cookie = $socket->WebSocket->request->getCookie('laravel_session');
+            $cookie = str_replace('%3D', '', $cookie);
+            $key = \Config::get('app.key');
+            $encryptor = new \Illuminate\Encryption\Encrypter($key);
+            $id = $encryptor->decrypt($cookie);
+            $payload = base64_decode(\DB::table('sessions')->where('id', $id)->first()->payload);
+            $payload = unserialize($payload);
+            $user = User::find($payload['user_id']);
+            $user->setSocket($socket);
+            $this->users->attach($user);
+            $this->emitter->emit("open", [$user]);
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+        }
     }
 
     public function onMessage(
@@ -79,18 +80,15 @@ class Chat
             $message->data
         ]);
 
-        foreach ($this->users as $next)
-        {
-            if ($next !== $user)
-            {
-                $next->getSocket()->send(json_encode([
-                    "user" => [
-                        "id"   => $user->id,
-                        "name" => $user->first_name
-                    ],
-                    "message" => $message
-                ]));
-            }
+        switch($message->type){
+            case 'message':
+                $privateMessage = \Karma\Entities\PrivateMessage::create(array(
+                    'from_user_id' => $user->id,
+                    'to_user_id' => $message->user,
+                    'message' => $message->data
+                ));
+                $this->sendMessageToIdFromId($message->user, $message->data, $user->id);
+                break;
         }
     }
 
@@ -116,6 +114,21 @@ class Chat
         {
             $user->getSocket()->close();
             $this->emitter->emit("error", [$user, $exception]);
+        }
+    }
+
+    private function sendMessageToIdFromId($id, $message, $senderId)
+    {
+        foreach ($this->users as $next)
+        {
+            if ($next->id == $id)
+            {
+                var_dump('send');
+                $next->getSocket()->send(json_encode([
+                    "id" => $senderId,
+                    "message" => $message
+                ]));
+            }
         }
     }
 }
