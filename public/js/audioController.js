@@ -1,4 +1,3 @@
-
 function initPlayers()
 {
     var ui = '.musicPlayer';

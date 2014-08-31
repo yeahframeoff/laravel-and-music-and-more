@@ -26,6 +26,10 @@
         {{ HTML::script('public/js/importController.js') }}
         {{ HTML::script('public/audiojs/howler.js') }}
         {{ HTML::script('public/js/audio5.js') }}
+        {{ HTML::script('public/js/friends.js') }}
+        {{ HTML::script('public/js/notification.js') }}
+        {{ HTML::script('public/js/player.js') }}
+        {{ HTML::script('public/js/main.js') }}
         {{ HTML::script('public/js/underscore-min.js') }}
         {{ HTML::script('public/js/backbone-min.js') }}
         {{ HTML::script('public/js/socket.js') }}

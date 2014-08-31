@@ -10,6 +10,8 @@ use SplObjectStorage;
 class Chat
     implements ChatInterface
 {
+    use NotifyingTrait;
+
     protected $users;
     protected $emitter;
     protected $id = 1;
@@ -51,14 +53,7 @@ class Chat
     public function onOpen(ConnectionInterface $socket)
     {
         try{
-            $cookie = $socket->WebSocket->request->getCookie('laravel_session');
-            $cookie = str_replace('%3D', '', $cookie);
-            $key = \Config::get('app.key');
-            $encryptor = new \Illuminate\Encryption\Encrypter($key);
-            $id = $encryptor->decrypt($cookie);
-            $payload = base64_decode(\DB::table('sessions')->where('id', $id)->first()->payload);
-            $payload = unserialize($payload);
-            $user = User::find($payload['user_id']);
+            $user = $this->getUserFromCookie($socket);
             $user->setSocket($socket);
             $this->users->attach($user);
             $this->emitter->emit("open", [$user]);
@@ -80,6 +75,10 @@ class Chat
             $message->data
         ]);
 
+        $functionName = $message->type();
+        $this->$functionName($message->user, $message->data, $user->id);
+
+        /*
         switch($message->type){
             case 'message':
                 $privateMessage = \Karma\Entities\PrivateMessage::create(array(
@@ -90,6 +89,7 @@ class Chat
                 $this->sendMessageToIdFromId($message->user, $message->data, $user->id);
                 break;
         }
+        */
     }
 
     public function onClose(ConnectionInterface $socket)
@@ -117,7 +117,20 @@ class Chat
         }
     }
 
-    private function sendMessageToIdFromId($id, $message, $senderId)
+    private function getUserFromCookie($socket)
+    {
+        $cookie = $socket->WebSocket->request->getCookie('laravel_session');
+        $cookie = str_replace('%3D', '', $cookie);
+        $key = \Config::get('app.key');
+        $encryptor = new \Illuminate\Encryption\Encrypter($key);
+        $id = $encryptor->decrypt($cookie);
+        $payload = base64_decode(\DB::table('sessions')->where('id', $id)->first()->payload);
+        $payload = unserialize($payload);
+        $user = User::find($payload['user_id']);
+        return $user;
+    }
+
+    private function message($id, $message, $senderId)
     {
         foreach ($this->users as $next)
         {
