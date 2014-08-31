@@ -54,6 +54,13 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+
+Route::filter('ajax-only', function()
+{
+    if (!Request::ajax())
+        App::abort('403', 'Not allowed');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Guest Filter

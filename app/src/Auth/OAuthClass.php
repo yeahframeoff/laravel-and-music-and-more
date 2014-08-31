@@ -112,6 +112,15 @@ abstract class OAuth implements OAuthInterface
         return self::$_userInstance;
     }
 
+    /*
+     * Short syntax for \Karma\Auth\OAuth::getUser() :
+     * \KAuth::user()
+     */
+    public static function user()
+    {
+        return self::getUser();
+    }
+
     public static function logout()
     {
         Session::forget('user_id');

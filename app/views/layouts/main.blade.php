@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Karma</title>
+    <head>
+        <title>Karma</title>
         <meta charset="UTF-8">
         <meta lang="ru">
         @section('stylesheets')
@@ -17,6 +17,7 @@
         <div class="container" id="content">
             @yield('content')
         </div>
+
         @section('scripts')
         {{ HTML::script('http://code.jquery.com/jquery-2.1.1.js') }}
         {{ HTML::script('public/js/bootstrap.js') }}

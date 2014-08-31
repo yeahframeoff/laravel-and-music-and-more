@@ -13,14 +13,14 @@ use \Request;
 
 class FriendController extends BaseController
 {
-    public function getAllMy()
+    public function allMy()
     {
         $user = \Karma\Auth\OAuth::getUser();
         $showRequests = \Input::has('p') && \Input::get('p') == 'requests';
-        return $this->getAll($user, true, $showRequests);
+        return $this->all($user, true, $showRequests);
     }
     
-    public function getAll(User $user, $withRequests = false, $showRequests = false)
+    public function all(User $user, $withRequests = false, $showRequests = false)
     {
         $friends = $user->friends();
         $current_user = $this->getCurrentUser($user);
@@ -29,9 +29,9 @@ class FriendController extends BaseController
            'user'         => $user,
            'current_user' => $current_user,
         ];
-        if ($withRequests || $user->id == \Karma\Auth\OAuth::getUserId())
+        if ($withRequests || $user->id == \KAuth::getUserId())
         {
-            $requests = $user->friendshipRequests();
+            $requests = $user->friendshipz()->requests()->with('user')->get();
             $data = array_add($data, 'requests', $requests);
         }
         
@@ -45,72 +45,68 @@ class FriendController extends BaseController
         }
         $currentUser = $this->getCurrentUser($user);
         $currentUser->sendRequest($user->id);
-        if (Request::ajax())
-            return View::make('friendship_button.sent')
+        return $this->resolveAjax(
+            View::make('friendship_button.sent')
                 ->with('user', $user)
-                ->with('current', $currentUser);
-        else
-            return Redirect::action('profile',
-                                array(Session::get('user_id')));
+                ->with('current', $currentUser)
+        );
     }
 
     public function cancel(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->removeRequest($user->id);
-        if (Request::ajax())
-            return View::make('friendship_button.add')
+        return $this->resolveAjax(
+            View::make('friendship_button.add')
                 ->with('user', $user)
-                ->with('current', $currentUser);
-        else
-            return Redirect::action('profile',
-                                array(Session::get('user_id')));
+                ->with('current', $currentUser)
+        );
     }
     
     public function delete(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->deleteFriend($user->id);
-        if (Request::ajax())
-            return View::make('friendship_button.restore')
+        return $this->resolveAjax(
+            View::make('friendship_button.restore')
                 ->with('user', $user)
-                ->with('current', $currentUser);
-        else
-            return Redirect::action('profile',
-                                array(Session::get('user_id')));
+                ->with('current', $currentUser)
+        );
     }
 
     public function confirm(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->confirmFriend($user->id);
-        if (Request::ajax())
-            return View::make('friendship_button.remove')
+        return $this->resolveAjax(
+            View::make('friendship_button.remove')
                 ->with('user', $user)
-                ->with('current', $currentUser);
-        else
-            return Redirect::action('profile',
-                                array(Session::get('user_id')));
+                ->with('current', $currentUser)
+        );
     }
     
     public function restore(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
-        $currentUser->forceFriendshipTo($user->id);
-        if (Request::ajax())
-            return View::make('friendship_button.remove')
+        $currentUser->forceFriendshipTo($user);
+        return $this->resolveAjax(
+            View::make('friendship_button.remove')
                 ->with('user', $user)
-                ->with('current', $currentUser);
+                ->with('current', $currentUser)
+        );
+    }
+
+    public function resolveAjax($response)
+    {
+        if (Request::ajax())
+            return $response;
         else
-            return Redirect::action('profile',
-                                array(Session::get('user_id')));
+            return Redirect::route('profileIndex');
     }
     
     private function getCurrentUser(User $user)
     {
-        return Session::get('user_id') == $user->id ?
-            $user :
-            User::find(Session::get('user_id'));
+        return \KAuth::getUserId() == $user->id ? $user : \KAuth::user();
     }
     
 }

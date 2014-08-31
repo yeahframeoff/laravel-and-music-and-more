@@ -78,4 +78,13 @@ App::down(function()
 |
 */
 
+/*
+Event::listen("illuminate.query", function($query, $bindings, $time, $name){
+    Log::info($time);
+    Log::info($name);
+    Log::info($query);
+    Log::info(json_encode($bindings));
+});
+*/
+
 require app_path().'/filters.php';

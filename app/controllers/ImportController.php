@@ -17,8 +17,8 @@ class ImportController extends BaseController
 {
     public function index()
     {
-        $id = Session::get('user_id');
-        return View::make('import')->with('socials', \Karma\Entities\User::find($id)->socials());
+        $user = \KAuth::user();
+        return View::make('import')->with('socials', $user->socials->keyBy('name'));
     }
     
     public function import($provider)
@@ -75,28 +75,32 @@ class ImportController extends BaseController
         $user = User::find(Session::get('user_id'));
         $API = API::getAPI('vk');
 
-        $userTracks = $user->tracks->toArray();
+        $userTracks = $user->tracks/*->toArray()*/;
         $serviceTracks = $API->getUserAudio();
         /*
          * TODO optimization?
          */
 
 
-        foreach ($userTracks as $userTrack){
+        foreach ($userTracks as $key => $userTrack){
             $found = false;
             foreach ($serviceTracks as $serviceTrack){
-                if ($userTrack['track_social_id'] == $serviceTrack['aid'])
+                if ($userTrack->track_social_id == $serviceTrack['aid'])
                     $found = true;
             }
             if ($found == false)
-                ImportedTrack::find($userTrack['id'])->delete();
+            {
+                $userTracks->forget($key);
+                $userTrack->delete();
+            }
+                
         }
 
         $importTracks = array();
         foreach ($serviceTracks as $serviceTrack){
             $found = false;
             foreach ($userTracks as $userTrack){
-                if ($userTrack['track_social_id'] == $serviceTrack['aid'])
+                if ($userTrack->track_social_id == $serviceTrack['aid'])
                     $found = true;
             }
             if ($found == false)

@@ -42,7 +42,7 @@ class AuthController extends BaseController
     {
         return Session::has('user_id') &&
                Session::has('auth') &&
-               !OAuth::getUser()
+               !OAuth::user()
                    ->credentials()
                    ->where('social_id', Social::byName(Session::get('auth'))->id)
                    ->first()

@@ -20,12 +20,17 @@
 <div class="tab-content">
     <div class="tab-pane active" id="all">
         <div class="page-header">
-            <h1>Все треки</h1>
+            @if(isset($playlist))
+                <h1>{{$playlist->name}}</h1>
+            @else
+                <h1>Все треки</h1>
+            @endif
         </div>
 
+        @if(count($tracks) > 0)
         <div class="musicPlayer">
             <h1>Demo - Preview Song</h1>
-            <img class="cover" src="img/cover.png">
+            <img class="cover" src="/public/images/empty.png">
             <div class="play">
                 <button title="play/pause"></button>
             </div>
@@ -42,8 +47,11 @@
                     <span class="time-current"></span>
                 </span>
             </div>
-
         </div>
+        <input type="button" class="prev" value="prev"/>
+        <input type="button" class="next" value="next"/>
+        @endif
+
 
         <br/>
         <div id="dz-root"></div>
@@ -64,7 +72,7 @@
         
         @foreach($playlists as $playlist)
             <div class="playlist">
-                <a href="#">{{$playlist->name}}</a>
+                {{HTML::linkAction('Karma\Controllers\LibraryController@show', $playlist->name, array('id' => $playlist->id))}}
                 {{HTML::linkAction('Karma\Controllers\LibraryController@edit', 'edit', array('id' => $playlist->id))}}
                 <div class="playlist-tracks">
                     @foreach($playlist->tracks as $track)

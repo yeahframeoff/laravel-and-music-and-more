@@ -4,6 +4,7 @@ namespace Karma\Controllers;
 
 use \Karma\Entities\Playlist;
 use \Karma\Entities\PlaylistsTrack;
+use \Karma\Entities\User;
 use \Karma\Auth\Oauth;
 use \View;
 use \Input;
@@ -17,7 +18,14 @@ class LibraryController extends BaseController
             ->with('tracks', OAuth::getUser()->tracks)
             ->with('playlists',OAuth::getUser()->playlists()->get());
     }
-    
+
+    public function userAudio($user)
+    {
+        return View::make('library.library')
+            ->with('tracks', $user->tracks)
+            ->with('playlists', $user->playlists);
+    }
+
     public function create()
     {
         return View::make('library.playlist_form')
@@ -88,6 +96,15 @@ class LibraryController extends BaseController
         }
 
         return Redirect::route('library.index');
+    }
+
+    public function show($playlistId)
+    {
+        $playlist = Playlist::find($playlistId);
+        return View::make('library.library')
+            ->with('tracks', $playlist->tracks)
+            ->with('playlists', OAuth::getUser()->playlists()->get())
+            ->with('playlist', $playlist);
     }
 
     public function delete($id)

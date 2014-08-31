@@ -39,7 +39,7 @@ Route::group(['before' => 'auth'], function()
                'uses' => 'Karma\Controllers\ImportController@index']);
 
     Route::get('profile/load/{social}',
-              ['as'   => 'profile.loadProfile',
+              ['as'   => 'profile.load',
                'uses' => 'Karma\Controllers\AuthController@loadProfile']);
 
     /*
@@ -47,11 +47,11 @@ Route::group(['before' => 'auth'], function()
      */
     Route::get('friends',
               ['as'   => 'friends.my',
-               'uses' => 'Karma\Controllers\FriendController@getAllMy']);
+               'uses' => 'Karma\Controllers\FriendController@allMy']);
 
     Route::get('friends/{user}',
               ['as'   => 'friends',
-               'uses' => 'Karma\Controllers\FriendController@getAll']);
+               'uses' => 'Karma\Controllers\FriendController@all']);
 
     Route::get('friends/add/{user}',
               ['as'   => 'friends.add',
@@ -88,6 +88,7 @@ Route::group(['before' => 'auth'], function()
      * Library
      */
     Route::resource('library', 'Karma\Controllers\LibraryController');
+    Route::get('audio/{user}', 'Karma\Controllers\LibraryController@userAudio');
 
     /*
      * Search
@@ -124,6 +125,19 @@ Route::group(['before' => 'auth'], function()
                'uses' => 'Karma\Controllers\ImportController@sync']);
 
     /*
+     * Notifications
+     */
+    Route::get('notifications',
+              ['before' => 'ajax-only',
+               'as'   => 'notify.check',
+               'uses' => 'Karma\Controllers\NotificationController@checkForNew']);
+
+    Route::match(['POST', 'PUT', 'PATCH'],
+               'notifications',
+              ['before' => 'ajax-only',
+               'as'   => 'notify.check',
+               'uses' => 'Karma\Controllers\NotificationController@checkNotifications']);
+    /*
      * Messages
      */
 
@@ -138,7 +152,6 @@ Route::group(['before' => 'auth'], function()
     Route::get('messages/history/{user}',
               ['as' => 'chat.history',
               'uses' => 'Karma\Controllers\ChatController@getHistory']);
-
 });
 
 /*

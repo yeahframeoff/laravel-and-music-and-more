@@ -44,7 +44,7 @@ class MakeFriendshipCommand extends Command {
             return;
         
         $user1 = User::findOrFail($userIds[0]);
-        $user1->forceFriendshipTo($userIds[1]);
+        $user1->forceFriendshipTo($userIds[1], false);
 	}
     
     private function retrieveUsers()

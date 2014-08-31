@@ -8,7 +8,11 @@ use \Karma\Entities\ImportedTrack;
 
 class User extends \Eloquent
 {
+    use NotifyingTrait;
+
     protected $fillable = array('id', 'first_name', 'last_name', 'photo');
+
+    protected $appends = array('profileUrl');
 
     public function credentials()
     {
@@ -37,15 +41,7 @@ class User extends \Eloquent
 
     public function socials()
     {
-        $credentials = $this->credentials();
-        $socials = Social::whereIn('id', $credentials->lists('social_id'))->lists('id', 'name');
-
-        foreach($socials as $social => $id)
-        {
-            $socials[$social] = $this->credentials()->where('social_id', $id)->first();
-        }
-
-        return $socials;
+        return $this->belongsToMany('Karma\Entities\Social', 'credentials');
     }
 
     public function groups()
@@ -53,130 +49,108 @@ class User extends \Eloquent
         return $this->belongsToMany('Karma\Entities\Group');
     }
 
-    public function friends()
+    public function friendships()
     {
-        $list = DB::table('friends')->where('user_id', $this->id)
-                    ->where('confirmed', true)
-                    ->lists('friend_id');
-
-        if(count($list))
-            return self::whereIn('id', $list)->get();
-        else
-            return array();
-
+        return $this->hasMany('Karma\Entities\Friend', 'user_id');
     }
 
-    public function profileUrl()
+    public function friendshipz()
+    {
+        return $this->hasMany('Karma\Entities\Friend', 'friend_id');
+    }
+
+    public function friends()
+    {
+        return $this->theFriends()->get()->merge($this->theFriendz()->get());
+    }
+
+    public function theFriends()
+    {
+        return $this->belongsToMany('Karma\Entities\User', 'friends', 'user_id', 'friend_id')
+            ->withPivot('confirmed')->where('confirmed', '=', true);
+    }
+
+    public function theFriendz()
+    {
+        return $this->belongsToMany('Karma\Entities\User', 'friends', 'friend_id', 'user_id')
+            ->withPivot('confirmed')->where('confirmed', '=', true);
+    }
+
+    public function getProfileUrlAttribute()
     {
         return \URL::to("/profile/{$this->id}");
     }
 
-    public function friendshipRequests($onlyCount = false)
+    public function sendRequest($user, $notify = true)
     {
-        $list = DB::table('friends')->where('friend_id', $this->id)
-            ->where('confirmed', false)
-            ->lists('user_id');
-
-        if(count($list) != 0)
-            return $onlyCount ? count($list) : self::whereIn('id', $list)->get();
-
-        else
-            return $onlyCount ? 0 : array();
+        $id = $user instanceof User ?  $user->id : $user;
+        $this->theFriends()->attach($id);
+        if ($notify == true)
+            $this->notify($user, NotifType::FRIENDS_REQUEST_NEW);
     }
 
-    public function friendshipRequestsCount()
+    public function removeRequest($id, $notify = true)
     {
-        return $this->friendshipRequests(true);
-    }
-
-    public function sentFriendshipRequests()
-    {
-        $list = DB::table('friends')->where('user_id', $this->id)
-            ->where('confirmed', false)
-            ->lists('friend_id');
-
-        if(count($list))
-            return self::whereIn('id', $list)->get();
-        else
-            return array();
-
-    }
-
-    public function sentFriendshipRequestTo($id)
-    {
-        $sent = DB::table('friends')
-            ->where('user_id', $this->id)
-            ->where('friend_id', $id)
-            ->where('confirmed', false)->first();
-        return $sent !== null;
-    }
-
-    public function gotFriendshipRequestFrom($id)
-    {
-        $received = DB::table('friends')
-            ->where('user_id', $id)
-            ->where('friend_id', $this->id)
-            ->where('confirmed', false)->first();
-
-        \Log::info('Received !== null: '.($received !== null));
-        \Log::info('Received === null: '.($received === null));
-        return $received !== null;
-    }
-
-    public function sendRequest($id)
-    {
-        DB::table('friends')->insert(array('user_id' => $this->id,
-                                           'friend_id' => $id,
-                                           'confirmed' => false));
-    }
-
-    public function removeRequest($id)
-    {
-        DB::table('friends')->where('user_id', $this->id)
-            ->where('friend_id', $id)
-            ->where('confirmed', false)
-            ->delete();
+        $this->friendships()->requests()->where('friend_id', '=', $id)->delete();
+        \Log::info('REMOVE REQUEST OK');
+        $this->unnotify($id, NotifType::FRIENDS_REQUEST_NEW);
+        if ($notify == true)
+            $this->notify($id, NotifType::FRIENDS_REQUEST_REMOVED);
     }
 
     public function isFriend($id)
     {
-        return DB::table('friends')->where('user_id', $this->id)
-            ->where('friend_id', $id)
-            ->where('confirmed', true)
-            ->exists();
+        return $this->friendships()->where('friend_id', '=', $id)->where('confirmed', '=', true)->exists() ||
+               $this->friendshipz()->where('user_id', '=', $id)->where('confirmed', '=', true)->exists();
+               //$this->theFriendz()->where('id', '=', $id)->exists();
     }
 
-    public function deleteFriend($id)
+    public function deleteFriend($id, $notify = true)
     {
-        DB::table('friends')->where('confirmed', true)
-            ->where(function($query) use($id) {
-                $query->where('user_id', $this->id)
-                    ->where('friend_id', $id)
-                    ->orWhere('user_id', $id)
-                    ->where('friend_id', $this->id);
-            })
-            ->delete();
+        $this->theFriends()->detach($id);
+        $this->theFriendz()->detach($id);
+        if ($notify)
+            $this->notify($id, NotifType::FRIENDS_DELETED);
     }
 
-    public function confirmFriend($id)
+    public function confirmFriend($user, $notify = true)
     {
-        DB::table('friends')->where('user_id', $id)
-            ->where('friend_id', $this->id)
-            ->update(array('confirmed' => true));
+        if ($user instanceof User)
+            $user = $user->id;
+        $this->friendshipz()->requests()->where('user_id', '=', $user)
+            ->update(['confirmed' => true]);
 
-        DB::table('friends')->insert(array('user_id' => $this->id,
-                                           'friend_id' => $id,
-                                           'confirmed' => true));
+        if ($notify == true)
+            $this->notify($user, NotifType::FRIENDS_REQUEST_CONFIFMED);
     }
 
-    public function forceFriendshipTo($id)
+    public function forceFriendshipTo($id, $unnotify = true)
     {
-        DB::table('friends')->insert(array('user_id' => $this->id,
-                                           'friend_id' => $id,
-                                           'confirmed' => true));
+        //$this->sendRequest($id, false);
+        //User::find($id)->confirmFriend($this, false);
+        $this->theFriends()->attach($id, ['confirmed' => true]);
+        if ($unnotify)
+            $this->unnotify($id, NotifType::FRIENDS_DELETED);
+    }
 
-        DB::table('friends')->insert(array('user_id' => $id,
-                                           'friend_id' => $this->id,
-                                           'confirmed' => true));
+    public function notifications()
+    {
+        return $this->hasMany('\Karma\Entities\Notification', 'reffered_user_id');
+    }
+
+    public function getMessageParams($type)
+    {
+        switch ($type)
+        {
+            case NotifType::FRIENDS_REQUEST_NEW:
+            case NotifType::FRIENDS_REQUEST_REMOVED:
+            case NotifType::FRIENDS_REQUEST_CONFIFMED:
+            case NotifType::FRIENDS_REQUEST_DENIED:
+            case NotifType::FRIENDS_DELETED:
+                return ['user' => $this->first_name . ' ' . $this->last_name];
+            default:
+                return [];
+        }
+
     }
 }

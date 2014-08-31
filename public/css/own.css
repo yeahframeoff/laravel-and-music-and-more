@@ -267,6 +267,7 @@ body {
  */
 
 .glyphicon-refresh-animate {
+    animation: spin .7s infinite linear;
     -animation: spin .7s infinite linear;
     -webkit-animation: webkit-spin .7s infinite linear;
 }
@@ -284,4 +285,14 @@ body {
 span.btn-title
 {
     font-weight: bold;
+}
+
+a#notify-check.new-notifications
+{
+    color: #f0f0f0;
+}
+
+li img.icon
+{
+    width: 40px;
 }
