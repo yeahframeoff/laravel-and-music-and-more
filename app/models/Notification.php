@@ -37,6 +37,7 @@ trait NotifyingTrait
 
     public abstract function getMessageParams($type);
 
+    public abstract function getUrlParams($type);
 }
 
 
@@ -55,27 +56,32 @@ class NotifType
         self::FRIENDS_REQUEST_NEW =>
             [
                 'popup' => 'New friendship request',
-                'msg' => 'User %user% wants to be your friend',
+                'msg'   => 'User %user% wants to be your friend',
+                'route' => 'profile',
             ],
         self::FRIENDS_REQUEST_CONFIFMED =>
             [
                 'popup' => 'Friendship request confirmed',
-                'msg' => 'User %user% confirmed your friendship request',
+                'msg'   => 'User %user% confirmed your friendship request',
+                'route' => 'profile',
             ],
         self::FRIENDS_REQUEST_REMOVED =>
             [
                 'popup' => 'Friendship request cancelled',
-                'msg' => 'User %user% cancelled friendship request, sent to you before',
+                'msg'   => 'User %user% cancelled friendship request, sent to you before',
+                'route' => 'profile',
             ],
         self::FRIENDS_REQUEST_DENIED =>
             [
                 'popup' => 'Friendship request denied',
-                'msg' => 'User %user% decided to reject your friendship request',
+                'msg'   => 'User %user% decided to reject your friendship request',
+                'route' => 'profile',
             ],
         self::FRIENDS_DELETED =>
             [
                 'popup' => 'Someone deleted you from friends list',
-                'msg' => 'User %user% deleted you from friends list',
+                'msg'   => 'User %user% deleted you from friends list',
+                'route' => 'profile',
             ],
     );
 
@@ -98,6 +104,14 @@ class NotifType
             return '';
         return self::$messages[$type]['popup'];
     }
+
+    public static function objectUrl($type, array $params)
+    {
+        if (!isset(self::$messages[$type]))
+            return '';
+        $route = self::$messages[$type]['route'];
+        return \URL::route($route, $params);
+    }
 }
 
 
@@ -109,8 +123,7 @@ class Notification extends \Eloquent
     protected $fillable = ['type'];
     //protected $dates = ['deleted_at'];
 
-    //protected $attributes = ['message'];
-    protected $appends = ['message', 'popupText'];
+    protected $appends = ['message', 'popupText', 'objectUrl'];
 
     protected $hidden = [];
 
@@ -151,5 +164,10 @@ class Notification extends \Eloquent
     public function getPopupTextAttribute()
     {
         return NotifType::popupText($this->type);
+    }
+
+    public function getObjectUrlAttribute()
+    {
+        return NotifType::objectUrl($this->type, $this->object->getUrlParams($this->type));
     }
 } 

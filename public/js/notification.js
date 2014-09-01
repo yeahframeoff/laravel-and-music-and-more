@@ -73,8 +73,8 @@ registerNotification = function()
         data.forEach(function(e)
         {
             toAppend = '<li><a';
-            if (e.object.hasOwnProperty('profileUrl'))
-                toAppend += ' href="' + e.object.profileUrl +'" ';
+            if (e.hasOwnProperty('objectUrl'))
+                toAppend += ' href="' + e.objectUrl +'" ';
             toAppend += '>';
             if (e.object_type.indexOf('\\User') != -1)
                 toAppend += '<img class="icon" src="' + e.object.photo + '">';

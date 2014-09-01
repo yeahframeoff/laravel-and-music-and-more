@@ -153,4 +153,20 @@ class User extends \Eloquent
         }
 
     }
+
+    public function getUrlParams($type)
+    {
+        switch ($type)
+        {
+            case NotifType::FRIENDS_REQUEST_NEW:
+            case NotifType::FRIENDS_REQUEST_REMOVED:
+            case NotifType::FRIENDS_REQUEST_CONFIFMED:
+            case NotifType::FRIENDS_REQUEST_DENIED:
+            case NotifType::FRIENDS_DELETED:
+                return ['user' => $this->id];
+            default:
+                return [];
+        }
+
+    }
 }
