@@ -1,33 +1,29 @@
 @extends('layouts.main')
+
+@section('scripts')
+    @parent
+    {{ HTML::script('public/js/handlebars.runtime-v1.3.0.js') }}
+    {{ HTML::script('public/js/getFriends.js') }}
+@stop
+
 @section('content')
 
 <div class="tabbable tabs-left">
-    <ul class="nav nav-tabs">
-        @foreach($friends as $friend)
-        <li>
-            <a href="{{action('Karma\Controllers\ChatController@chatWithUser', $friend->id)}}" display="inline">
-                {{$friend->first_name . ' ' . $friend->last_name }}
-            </a>
-        </li>
-        <br>
-        @endforeach
+    <ul class="nav nav-tabs" id="usersContainer">
     </ul>
 </div>
 
 <script type="text/x-handlebars">
     @{{outlet}}
 </script>
-<script type="text/x-handlebars-template" id="messagesTemplate">
-    @{{#each []}}
-        @{{this.user_name}}:
-        @{{this.message}}
-        <br/>
-    @{{/each}}
-    <div class="input-group">
-        <input type="text" class="form-control"/>
-        <span class="input-group-btn">
-            <button class="btn btn-default send">Send</button>
-        </span>
-    </div>
+
+<script type="text/x-handlebars-template" id="userTemplate">
+    <li>
+        <a href="{{action('Karma\Controllers\ChatController@chatWithUser', '')}}/@{{this.id}}" display="inline">
+            @{{this.first_name}} @{{this.last_name}}
+            @{{this.online}}
+        </a>
+    </li>
+    <br/>
 </script>
 @stop

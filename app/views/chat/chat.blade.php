@@ -4,11 +4,11 @@
 @parent
     {{ HTML::script('public/js/handlebars.runtime-v1.3.0.js') }}
     <script type="text/javascript">
-        var thisUser = {
+        window.thisUser = {
             name: '{{Karma\Auth\OAuth::getUser()->first_name}}',
             user_id: {{Karma\Auth\OAuth::getUserId()}}
         };
-        var recieverUser = {
+        window.recieverUser = {
             name: '{{$user->first_name}}',
             user_id: {{$user->id}}
         };

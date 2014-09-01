@@ -10,8 +10,6 @@ use SplObjectStorage;
 class Chat
     implements ChatInterface
 {
-    use NotifyingTrait;
-
     protected $users;
     protected $emitter;
     protected $id = 1;
@@ -72,11 +70,12 @@ class Chat
 
         $this->emitter->emit("message", [
             $user,
-            $message->data
+            $message->type
         ]);
 
-        $functionName = $message->type();
-        $this->$functionName($message->user, $message->data, $user->id);
+        $functionName = $message->type;
+        var_dump($functionName);
+        $this->$functionName($user, $message);
 
         /*
         switch($message->type){
@@ -130,18 +129,65 @@ class Chat
         return $user;
     }
 
-    private function message($id, $message, $senderId)
+    private function message($sender, $messageArray)
     {
+        var_dump('message');
+        $id = $messageArray->user;
+        $message = $messageArray->data;
+
+        $privateMessage = \Karma\Entities\PrivateMessage::create(array(
+            'from_user_id' => $sender->id,
+            'to_user_id' => $id,
+            'message' => $message
+        ));
+
         foreach ($this->users as $next)
         {
             if ($next->id == $id)
             {
                 var_dump('send');
                 $next->getSocket()->send(json_encode([
-                    "id" => $senderId,
+                    "id" => $sender->id,
+                    "type" => "message",
                     "message" => $message
                 ]));
             }
         }
+    }
+
+    private function getFriends($user, $messageArray)
+    {
+        var_dump('friends');
+        $online = array();
+        foreach ($this->users as $next)
+        {
+            var_dump('foreach');
+            if($next->isFriend($user->id)){
+                $online[] = $next;
+                var_dump('is friend');
+            }
+        }
+
+        var_dump(count($online));
+        $result = array();
+        $result['online'] = $online;
+        foreach($user->friends() as $friend){
+            if(!$this->userInArray($friend, $online)){
+                $result['offline'][] = $friend;
+            }
+        }
+        var_dump(json_encode(["result" => $result]));
+        $user->getSocket()->send(json_encode([
+            "result" => $result,
+            "type" => "friends"
+        ]));
+    }
+
+    private function userInArray($user, $array)
+    {
+        foreach($array as $_user)
+            if($user->id == $_user->id)
+                return true;
+        return false;
     }
 }

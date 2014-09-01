@@ -34,7 +34,7 @@ registerNotification = function()
     {
         newData.length = 0;
         var d;
-        console.log(incomingData);
+        //console.log(incomingData);
         for (var i = 0; i < incomingData.length; ++i)
         {
             d = incomingData[i];
