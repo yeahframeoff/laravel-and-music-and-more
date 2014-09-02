@@ -3,7 +3,8 @@ var socket = window.socket;
 function Chat(socket, mainContainer)
 {
     this.ui = {
-
+        sendButton: '.send',
+        messagesContainer: '#messages-container'
     };
 
     this.MessageModel = Backbone.Model.extend({
@@ -92,8 +93,9 @@ function Chat(socket, mainContainer)
             var messageText = this.$el.find('input').val();
             this.$el.find('input').val('');
             if (messageText.length != 0){
-                var message = new MessageModel({user_name: this.collection.thisUser.get('name'), message: messageText});
-                this.collection.add(message);
+                //var message = new MessageModel({user_name: this.collection.thisUser.get('name'), message: messageText});
+                //this.collection.add(message);
+                this.collection.create({user_name: this.collection.thisUser.get('name'), message: messageText});
                 socket.send(JSON.stringify({
                     type: 'message',
                     data: {
@@ -104,7 +106,6 @@ function Chat(socket, mainContainer)
             }
         },
         renderMessageView: function(message){
-            console.log(this);
             var messageView = new this.MessageItemView({ model: message });
             this.$el.find('#messages').append(messageView.render().el);
             return this;
@@ -114,11 +115,12 @@ function Chat(socket, mainContainer)
     this.init = function(socket, mainContainer){
         Backbone.on('socket:message', function(e){
             var data = e.data;
+            //?????????? TODO
+            //var btn = $(this.ui.sendButton);
             var btn = $('.send');
             console.log(data.id, btn.attr('data-to'));
             if (btn.attr('data-to') == data.id){
-                var message = new MessageModel({user_name: btn.attr('user-name'), message: data.message});
-                messages.add(message);
+                messages.create({user_name: btn.attr('user-name'), message: data.message});
             }
         });
 
@@ -136,7 +138,7 @@ function Chat(socket, mainContainer)
 
         var messagesView = new this.MessagesView({
             collection: messages,
-            el: "#messagesContainer"
+            el: this.ui.messagesContainer
         });
     }
 

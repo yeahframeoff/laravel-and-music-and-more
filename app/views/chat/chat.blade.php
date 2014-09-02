@@ -18,7 +18,7 @@
 
 @section('content')
 
-<div id="messagesContainer">
+<div id="messages-container">
     <did id="messages"></did>
     <br/>
     <div class="input-group">
