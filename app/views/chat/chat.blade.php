@@ -2,7 +2,6 @@
 
 @section('scripts')
 @parent
-    {{ HTML::script('public/js/handlebars.runtime-v1.3.0.js') }}
     <script type="text/javascript">
         window.thisUser = {
             name: '{{Karma\Auth\OAuth::getUser()->first_name}}',

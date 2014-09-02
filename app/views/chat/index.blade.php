@@ -2,7 +2,6 @@
 
 @section('scripts')
     @parent
-    {{ HTML::script('public/js/handlebars.runtime-v1.3.0.js') }}
     {{ HTML::script('public/js/getFriends.js') }}
 @stop
 
