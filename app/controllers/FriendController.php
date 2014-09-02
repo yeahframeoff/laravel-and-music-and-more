@@ -11,6 +11,8 @@ use \Redirect;
 use \DB;
 use \Request;
 
+use Karma\FriendButtonComposer;
+
 class FriendController extends BaseController
 {
     public function allMy()
@@ -45,55 +47,35 @@ class FriendController extends BaseController
         }
         $currentUser = $this->getCurrentUser($user);
         $currentUser->sendRequest($user->id);
-        return $this->resolveAjax(
-            View::make('friendship_button.sent')
-                ->with('user', $user)
-                ->with('current', $currentUser)
-        );
+        return $this->resolveAjax(\Response::json(FriendButtonComposer::sent($user)));
     }
 
     public function cancel(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->removeRequest($user->id);
-        return $this->resolveAjax(
-            View::make('friendship_button.add')
-                ->with('user', $user)
-                ->with('current', $currentUser)
-        );
+        return $this->resolveAjax(\Response::json(FriendButtonComposer::add($user)));
     }
     
     public function delete(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->deleteFriend($user->id);
-        return $this->resolveAjax(
-            View::make('friendship_button.restore')
-                ->with('user', $user)
-                ->with('current', $currentUser)
-        );
+        return $this->resolveAjax(\Response::json(FriendButtonComposer::restore($user)));
     }
 
     public function confirm(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->confirmFriend($user->id);
-        return $this->resolveAjax(
-            View::make('friendship_button.remove')
-                ->with('user', $user)
-                ->with('current', $currentUser)
-        );
+        return $this->resolveAjax(\Response::json(FriendButtonComposer::remove($user)));
     }
     
     public function restore(User $user)
     {
         $currentUser = $this->getCurrentUser($user);
         $currentUser->forceFriendshipTo($user);
-        return $this->resolveAjax(
-            View::make('friendship_button.remove')
-                ->with('user', $user)
-                ->with('current', $currentUser)
-        );
+        return $this->resolveAjax(\Response::json(FriendButtonComposer::remove($user)));
     }
 
     public function resolveAjax($response)

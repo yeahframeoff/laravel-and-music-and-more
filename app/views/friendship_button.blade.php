@@ -1,19 +1,18 @@
 <?php
-$current = \KAuth::user();
-$sentRequest = $current->friendships()->requests()->where('friend_id', '=', $user->id)->exists();
-$receivedRequest  = $current->friendshipz()->requests()->where('user_id', '=', $user->id)->exists();
-$isFriend    = $user->isFriend ($current->id);
-$isNotFriend = !$user->isFriend ($current->id) && !$sentRequest && !$receivedRequest;
-
-$data = ['user' => $user, 'current' => $current];
+if (empty($btndata))
+    $btndata = Karma\FriendButtonComposer::compose($user);
 ?>
+<a  id="{{$user->id}}"
+    class="btn btn-block {{ $btndata['btncolor'] }} friendship {{ $btndata['class'] }}"
+    href="{{ $btndata['route'] }}" >
 
-@if ($isFriend)
-    @include ('friendship_button.remove', $data)
-@elseif ($isNotFriend)
-    @include ('friendship_button.add', $data)
-@elseif ($sentRequest)
-    @include ('friendship_button.sent', $data)
-@elseif ($receivedRequest)
-    @include ('friendship_button.received', $data)
-@endif
+    <span class="btn-title">
+        <span class="glyphicon {{ $btndata['glyphicon'] }}"></span>&nbsp;
+        <span class="btn-label">{{ $btndata['title'] }}</span>
+    </span>
+
+    <strong hidden class="title-loading">
+        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;Loading...
+    </strong>
+</a>
+<?php $btnData = array(); ?>
