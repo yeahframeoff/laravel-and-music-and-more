@@ -4,7 +4,7 @@ registerNotification = function()
 
     var $notify = $('a#notify-check'),
         $href = $notify.data('href'),
-        updPeriod = 2000,
+        updPeriod = 4000,
         tooltipShowTime = 2500,
         timeBetweenToolTips = 1500,
         timer,
@@ -34,7 +34,6 @@ registerNotification = function()
     {
         newData.length = 0;
         var d;
-        console.log(incomingData);
         for (var i = 0; i < incomingData.length; ++i)
         {
             d = incomingData[i];
@@ -71,22 +70,15 @@ registerNotification = function()
         $dropdown = $notify.parent('li.dropdown').find('> ul.dropdown-menu');
         $dropdown.empty();
         var toAppend;
-        data.forEach(function(e) {
+        data.forEach(function(e)
+        {
             toAppend = '<li><a';
-            if (e.object.hasOwnProperty('profileUrl'))
-                toAppend += ' href="' + e.object.profileUrl +'" ';
+            if (e.hasOwnProperty('objectUrl'))
+                toAppend += ' href="' + e.objectUrl +'" ';
             toAppend += '>';
-            console.log('started making notification tile');
-            console.log(e);
-            console.log(e.object_type);
             if (e.object_type.indexOf('\\User') != -1)
-            {
-                console.log('contains');
                 toAppend += '<img class="icon" src="' + e.object.photo + '">';
-                console.log(toAppend);
-            }
             toAppend += '' + e.message + '</a></li>';
-            console.log(toAppend);
             $dropdown.append(toAppend);
         });
     }
@@ -97,7 +89,6 @@ registerNotification = function()
         data.forEach(function(e) {
             checked.push(e.id);
         });
-        console.log(checked);
         $.post($href, {'checked' : checked});
         data.length = 0;
     });
@@ -105,13 +96,22 @@ registerNotification = function()
     startCheck = function()
     {
         timer = setInterval(function () {
-            $.get($href,
+            var fIds = [];
+            $('a.friendship').each(function(i, fb) {
+                fIds.push ($(fb).attr('id'));
+            });
+            $.get($href, {friends : fIds},
                 function (incomingData)
                 {
-                    updateData(incomingData);
+                    updateData(incomingData.notifications);
                     updateNotifier();
                     updateDropdown();
                     toolTips();
+                    if (incomingData.hasOwnProperty('friends'))
+                    {
+                        console.log(incomingData);
+                        Friends.updateBtns(incomingData.friends);
+                    }
                 }, 'json');
         }, updPeriod);
     };
