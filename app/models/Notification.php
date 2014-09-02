@@ -48,6 +48,7 @@ class NotifType
     const FRIENDS_REQUEST_REMOVED   = 'friends-request-removed';
     const FRIENDS_REQUEST_DENIED    = 'friends-request-denied';
     const FRIENDS_DELETED           = 'friends-deleted';
+    const MESSAGES_NEW              = 'messages-new';
 
     private static $messages = array(
         /*
@@ -82,6 +83,12 @@ class NotifType
                 'popup' => 'Someone deleted you from friends list',
                 'msg'   => 'User %user% deleted you from friends list',
                 'route' => 'profile',
+            ],
+        self::MESSAGES_NEW =>
+            [
+                'popup' => 'New message',
+                'msg'   => 'New message from %user%',
+                'route' => 'messages'
             ],
     );
 

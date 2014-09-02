@@ -153,6 +153,7 @@ class Chat
                 ]));
             }
         }
+        $next->notify($id, \Karma\Entities\NotifType::MESSAGES_NEW);
     }
 
     private function getFriends($user, $messageArray)

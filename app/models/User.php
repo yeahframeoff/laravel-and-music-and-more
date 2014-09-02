@@ -147,6 +147,7 @@ class User extends \Eloquent
             case NotifType::FRIENDS_REQUEST_CONFIFMED:
             case NotifType::FRIENDS_REQUEST_DENIED:
             case NotifType::FRIENDS_DELETED:
+            case NotifType::MESSAGES_NEW:
                 return ['user' => $this->first_name . ' ' . $this->last_name];
             default:
                 return [];
@@ -163,6 +164,7 @@ class User extends \Eloquent
             case NotifType::FRIENDS_REQUEST_CONFIFMED:
             case NotifType::FRIENDS_REQUEST_DENIED:
             case NotifType::FRIENDS_DELETED:
+            case NotifType::MESSAGES_NEW:
                 return ['user' => $this->id];
             default:
                 return [];
