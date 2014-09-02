@@ -7,6 +7,7 @@ use \Karma\Util\MusicInfo;
 use \Karma\Entities\User;
 use \Karma\Entities\Social;
 use \Karma\Entities\ImportedTrack;
+use \Karma\Entities\Track;
 use \Session;
 use \View;
 use \Redirect;
@@ -117,5 +118,21 @@ class ImportController extends BaseController
         $importTrack = ImportedTrack::find($id);
         $importTrack->connectWithUser(Session::get('user_id'));
         return Response::json(array('result' => 1));
+    }
+
+    public function importTrackFromDeezer($id)
+    {
+        $importTrack = ImportedTrack::firstOrNew(array('track_url' => $id));
+        if($importTrack->exist == false){
+            $deezerTrack = new \DeezerAPI\Models\Track($id);
+            $track = MusicInfo::getTrackByArtistAndTitle($deezerTrack->artist->name, $deezerTrack->title, $deezerTrack->album);
+            $importTrack = ImportedTrack::firstOrNew(array(
+                'track_id' => $track->id,
+                'social_id' => Social::byName('fb')->id,
+                'track_url' => $id
+            ));
+            $importTrack->save();
+            $importTrack->connectWithUser(Session::get('user_id'));
+        }
     }
 }

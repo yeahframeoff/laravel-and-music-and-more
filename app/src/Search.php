@@ -4,6 +4,13 @@ namespace Karma\Util;
 
 class Search
 {
+    public static function searchDeezer($q)
+    {
+        $search = new \Karma\Util\Deezer($q, 'autocomplete');
+        $result = $search->search();
+        return $result;
+    }
+
     public static function search($string, $className, $fields, array $related = array())
     {
         $attrs = self::resolveSearchString($string);

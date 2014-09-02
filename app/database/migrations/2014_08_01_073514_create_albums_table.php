@@ -18,7 +18,7 @@ class CreateAlbumsTable extends Migration {
 			$table->integer('artist_id')->unsigned();
             $table->string('name');
             $table->string('artwork');
-			$table->date('release_date');
+			$table->date('release_date')->nullable();
             
             $table->foreign('artist_id')
                   ->references('id')
