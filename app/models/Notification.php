@@ -88,7 +88,7 @@ class NotifType
             [
                 'popup' => 'New message',
                 'msg'   => 'New message from %user%',
-                'route' => 'messages'
+                'route' => 'chat.chat'
             ],
     );
 
