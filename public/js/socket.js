@@ -14,7 +14,8 @@ try {
         });
         socket.addEventListener("message", function (e) {
             var type = JSON.parse(e.data).type;
-            Backbone.trigger("socket:" + type, {data: e});
+            var data = JSON.parse(e.data).data;
+            Backbone.trigger("socket:" + type, {data: data});
         });
         window.socket = socket; // debug
     }

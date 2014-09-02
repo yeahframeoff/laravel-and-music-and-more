@@ -74,8 +74,13 @@ class Chat
         ]);
 
         $functionName = $message->type;
-        var_dump($functionName);
-        $this->$functionName($user, $message);
+        if(method_exists($this, $functionName))
+            $this->$functionName($user, $message->data);
+        else
+            $this->emitter->emit("error", [
+                $user,
+                new Exception('Method ' . $functionName . ' doesnt exist')
+            ]);
 
         /*
         switch($message->type){
@@ -129,31 +134,33 @@ class Chat
         return $user;
     }
 
-    private function message($sender, $messageArray)
+    private function message($sender, $messageObject)
     {
         var_dump('message');
-        $id = $messageArray->user;
-        $message = $messageArray->data;
+        $receiver_id = $messageObject->user_id;
+        $message = $messageObject->data;
 
         $privateMessage = \Karma\Entities\PrivateMessage::create(array(
             'from_user_id' => $sender->id,
-            'to_user_id' => $id,
+            'to_user_id' => $receiver_id,
             'message' => $message
         ));
 
         foreach ($this->users as $next)
         {
-            if ($next->id == $id)
+            if ($next->id == $receiver_id)
             {
                 var_dump('send');
                 $next->getSocket()->send(json_encode([
-                    "id" => $sender->id,
                     "type" => "message",
-                    "message" => $message
+                    "data" => [
+                        "id" => $sender->id,
+                        "message" => $message
+                    ]
                 ]));
             }
         }
-        $next->notify($id, \Karma\Entities\NotifType::MESSAGES_NEW);
+        $next->notify($receiver_id, \Karma\Entities\NotifType::MESSAGES_NEW);
     }
 
     private function getFriends($user, $messageArray)
@@ -179,8 +186,10 @@ class Chat
         }
         var_dump(json_encode(["result" => $result]));
         $user->getSocket()->send(json_encode([
-            "result" => $result,
-            "type" => "friends"
+            "type" => "friends",
+            "data" => [
+                "result" => $result
+            ]
         ]));
     }
 

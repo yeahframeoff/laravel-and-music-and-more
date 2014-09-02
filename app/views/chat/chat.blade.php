@@ -29,9 +29,9 @@
     </div>
 </div>
 
-<script type="text/x-handlebars" id="messageTemplate">
-    @{{this.user_name}}:
-    @{{this.message}}
+<script type="text/template" id="message-template">
+    <%= model.user_name %>:
+    <%= model.message %>
     <br/>
 </script>
 @stop

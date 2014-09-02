@@ -85,8 +85,10 @@ var MessagesView = Backbone.View.extend({
             this.collection.add(message);
             socket.send(JSON.stringify({
                 type: 'message',
-                data: messageText,
-                user: this.collection.recieverUser.get('user_id')
+                data: {
+                    data: messageText,
+                    user_id: this.collection.recieverUser.get('user_id')
+                }
             }));
         }
     },
