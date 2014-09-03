@@ -24,14 +24,19 @@
 <div class="col-lg-6">
     {{ Form::open(['route' => 'feed.store']) }}
     <div class="row">
-        <textarea name="text" class="form-control" rows="3"></textarea>
+    <label class="h2" for="post-text">
+        New post
+    </label>
+    <textarea id="post-text" name="text" class="form-control" rows="3"></textarea>
     </div>
+    <hr>
     <div class="row">
         <label class="col-lg-6">
             Tracks
             <select name="tracks" id="tracks" multiple class="form-control"></select>
+
             <select id="available_tracks" class="form-control"
-                onchange="move('available_tracks', 'tracks')">
+                    onchange="move('available_tracks', 'tracks')">
                 <option selected value=""></option>
                 @foreach ($tracks as $track)
                     <option value="{{$track->id}}">{{$track->artist->name . ' ' . $track->title}}</option>
@@ -39,14 +44,16 @@
             </select>
 
             <input type="button" class="btn btn-default btn-block" value="Delete"
-                    onclick="move('tracks', 'available_tracks')"/>
+                   onclick="move('tracks', 'available_tracks')"/>
+            <input type="submit" value="Post" class="btn btn-default btn-block"
+                   onclick="retrieveItems('tracks'); retrieveItems('playlists');"/>
         </label>
+
         <label class="col-lg-6">
             Playlists
             <select name="playlists" id="playlists"  multiple class="form-control"></select>
-
             <select id="available_playlists" class="form-control"
-                onchange="move('available_playlists', 'playlists')">
+                    onchange="move('available_playlists', 'playlists')">
                 <option selected value=""></option>
                 @foreach ($playlists as $list)
                     <option value="{{$list->id}}">{{$list->name}}</option>
@@ -54,11 +61,11 @@
             </select>
 
             <input type="button" class="btn btn-default btn-block" value="Delete"
-                    onclick="move('playlists', 'available_playlists')"/>
+                   onclick="move('playlists', 'available_playlists')"/>
+            <a class="btn btn-default btn-block" href="{{ URL::route('feed.index') }}">Cancel</a>
+
         </label>
 
-        <input type="submit" value="Post" class="btn btn-default btn-block"
-            onclick="retrieveItems('tracks'); retrieveItems('playlists');"/>
     </div>
 
     {{ Form::close() }}
