@@ -76,6 +76,11 @@ class User extends \Eloquent
             ->withPivot('confirmed')->where('confirmed', '=', true);
     }
 
+    public function posts()
+    {
+        return $this->hasMany('Karma\Entities\Post', 'author_id');
+    }
+
     public function getProfileUrlAttribute()
     {
         return \URL::to("/profile/{$this->id}");
@@ -138,6 +143,11 @@ class User extends \Eloquent
         return $this->hasMany('\Karma\Entities\Notification', 'reffered_user_id');
     }
 
+    public function __toString()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
     public function getMessageParams($type)
     {
         switch ($type)
@@ -147,7 +157,7 @@ class User extends \Eloquent
             case NotifType::FRIENDS_REQUEST_CONFIFMED:
             case NotifType::FRIENDS_REQUEST_DENIED:
             case NotifType::FRIENDS_DELETED:
-                return ['user' => $this->first_name . ' ' . $this->last_name];
+                return ['user' => strval($this)];
             default:
                 return [];
         }

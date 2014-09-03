@@ -21,4 +21,9 @@ class Track extends \Eloquent
     {
         return $this->belongsTo('Karma\Entities\Genre');
     }
+
+    public function posts()
+    {
+        return $this->morphToMany('Karma\Entities\Post', 'post_item', 'posts_postitems');
+    }
 }

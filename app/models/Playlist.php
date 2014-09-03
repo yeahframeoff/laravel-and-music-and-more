@@ -20,4 +20,9 @@ class Playlist extends \Eloquent
     {
         return $this->hasMany('Karma\Entities\PlaylistsTrack', 'playlist_id');
     }
+
+    public function posts()
+    {
+        return $this->morphToMany('Karma\Entities\Post', 'post_item', 'posts_postitems');
+    }
 }

@@ -137,6 +137,12 @@ Route::group(['before' => 'auth'], function()
               ['before' => 'ajax-only',
                'as'   => 'notify.check',
                'uses' => 'Karma\Controllers\NotificationController@checkNotifications']);
+
+    /*
+     * Feed
+     */
+
+    Route::resource('feed', 'Karma\Controllers\FeedController');
 });
 
 /*
