@@ -22,18 +22,26 @@
     }
 </script>
 <div class="col-lg-6">
-    {{ Form::open(['route' => 'feed.store']) }}
+    @if (isset($post))
+    {{ Form::open(['route' => ['feed.update', $post->id], 'method' => 'PUT']) }}
+    @else
+    {{ Form::open(['route' => 'feed.store' ]) }}
+    @endif
     <div class="row">
     <label class="h2" for="post-text">
         New post
     </label>
-    <textarea id="post-text" name="text" class="form-control" rows="3"></textarea>
+    <textarea id="post-text" name="text" class="form-control" rows="3">{{$post->text}}</textarea>
     </div>
     <hr>
     <div class="row">
         <label class="col-lg-6">
             Tracks
-            <select name="tracks" id="tracks" multiple class="form-control"></select>
+            <select name="tracks" id="tracks" multiple class="form-control">
+                @foreach ($post->tracks as $track)
+                    <option value="{{$track->id}}">{{$track->artist->name . ' ' . $track->title}}</option>
+                @endforeach
+            </select>
 
             <select id="available_tracks" class="form-control"
                     onchange="move('available_tracks', 'tracks')">
@@ -51,7 +59,11 @@
 
         <label class="col-lg-6">
             Playlists
-            <select name="playlists" id="playlists"  multiple class="form-control"></select>
+            <select name="playlists" id="playlists"  multiple class="form-control">
+                @foreach ($post->playlists as $list)
+                    <option value="{{$list->id}}">{{$list->name}}</option>
+                @endforeach
+            </select>
             <select id="available_playlists" class="form-control"
                     onchange="move('available_playlists', 'playlists')">
                 <option selected value=""></option>

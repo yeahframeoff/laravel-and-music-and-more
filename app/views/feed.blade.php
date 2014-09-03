@@ -1,8 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
-    @foreach ($posts as $post)
+    @forelse ($posts as $post)
         @include ('post', ['post' => $post])
         <hr>
-    @endforeach
+    @empty
+        <h2>No posts yet</h2>
+        <a class="btn btn-primary" href="{{ URL::route('feed.create') }}"><strong>Create new</strong></a>
+    @endforelse
 @stop

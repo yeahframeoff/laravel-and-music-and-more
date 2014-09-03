@@ -23,6 +23,7 @@
             {{ HTML::script('public/js/friends.js') }}
             {{ HTML::script('public/js/notification.js') }}
             {{ HTML::script('public/js/player.js') }}
+            {{ HTML::script('public/js/httpdelete.js') }}
             {{ HTML::script('public/js/main.js') }}
         @show
     </head>

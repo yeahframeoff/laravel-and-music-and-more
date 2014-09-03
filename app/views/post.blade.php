@@ -5,19 +5,16 @@
         </h4>
         @if($post->author_id == KAuth::getUserId())
         <div class="btn-group pull-right">
-            {{--
-            {{ Form::open(['route' => ['feed.edit', $post->id]]) }}
-            {{ Form::button('<span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit',
-            ['class' => 'btn btn-default btn-sm'])}}
-            {{ Form::close() }}
-            {{ Form::open(['route' => ['feed.destroy', $post->id]]) }}
-            {{ Form::button('<span class="glyphicon glyphicon-remove"></span>&nbsp;Delete',
-            ['class' => 'btn btn-danger btn-sm'])}}
-            {{ Form::close() }}
-            --}}
-            <a href="{{URL::route('feed.edit', ['feed' => $post->id])}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a>
-            <a href="{{URL::route('feed.destroy', ['feed' => $post->id])}}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span>&nbsp;Delete</a>
-
+            <a href="{{URL::route('feed.edit', ['feed' => $post->id])}}"
+               data-method="get"
+               class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+            </a>
+            <a href="{{URL::route('feed.destroy', ['feed' => $post->id])}}"
+               data-method="delete"
+               class="btn btn-danger btn-sm please-work-http-delete-button">
+                <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
+            </a>
         </div>
         @endif
     </div>
@@ -28,7 +25,6 @@
         @endforeach
         @foreach($post->playlists as $list)
              @include('playlist', ['playlist' => $list])
-
         @endforeach
     </div>
 </div>

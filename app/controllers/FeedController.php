@@ -2,9 +2,14 @@
 
 namespace Karma\Controllers;
 
+use Input;
 use \Karma\Auth;
 use \Karma\API;
 use Karma\Entities\Post;
+use \KAuth;
+use \Redirect;
+use \Request;
+use \Response;
 use \View;
 
 
@@ -19,53 +24,69 @@ class FeedController extends BaseController
 
     public function create()
     {
-        $friends = \KAuth::user()->friends();
-        $tracks  = \KAuth::user()->tracks->map(function($t) {return $t->track;});
-        $lists   = \KAuth::user()->playlists;
+        $post = new Post;
+        $tracks = KAuth::user()->tracks->map(function($t) {return $t->track;});
+        $lists  = KAuth::user()->playlists;
         return View::make('post_form')
             ->with([
-                'friends'   => $friends,
-                'tracks'    => $tracks ,
-                'playlists' => $lists  ,
+                'post'      => $post,
+                'tracks'    => $tracks,
+                'playlists' => $lists,
             ]);
     }
 
     public function edit($id)
     {
-        return 'EDIT '.$id;
+        $post = Post::with('tracks', 'playlists', 'author')
+            ->orderBy('created_at', 'desc')->find($id);
+        $tracks = KAuth::user()->tracks
+            ->map(function($t) {return $t->track;});
+        $lists = KAuth::user()->playlists;
+        return View::make('post_form')
+            ->with([
+                'post'      => $post,
+                'tracks'    => $tracks,
+                'playlists' => $lists,
+            ]);
     }
 
     public function store()
     {
-        $input = \Input::all();
+        $input = Input::all();
         $post = new Post;
         $post->text = $input['text'];
-        $post->author()->associate(\KAuth::user());
+        $post->author()->associate(KAuth::user());
         $post->save();
         $post->tracks()->sync(explode(' ', $input['tracks']));
         $post->playlists()->sync(explode(' ', $input['playlists']));
         $post->save();
-        return \Redirect::route('library.index');
+        return Redirect::route('feed.index');
     }
 
     public function update($id)
     {
-        return 'UPDATE '.$id;
+        $input = Input::all();
+        $post = Post::find($id);
+        $post->text = $input['text'];
+        $post->save();
+        $post->tracks()->sync(explode(' ', $input['tracks']));
+        $post->playlists()->sync(explode(' ', $input['playlists']));
+        $post->push();
+        return Redirect::route('feed.index');
     }
 
-    public function show($id)
+    public function destroy($id)
     {
-        return 'SHOW '.$id;
-//        $playlist = Playlist::find($playlistId);
-//        return View::make('library.library')
-//            ->with('tracks', $playlist->tracks)
-//            ->with('playlists', OAuth::getUser()->playlists()->get())
-//            ->with('playlist', $playlist);
-    }
-
-    public function delete($id)
-    {
-        //Playlist::find($id)->delete();
-        return 'DELETE '.$id;
+        $post = Post::find($id);
+        if ($post->author_id == KAuth::getUserId())
+        {
+            $post->delete();
+            if (Request::ajax())
+                return Response::json(['url' => \URL::route('feed.index')]);
+            else
+                return Redirect::route('feed.index');
+        }
+        else
+            App::abort(403, 'You cannot delete not your posts');
     }
 }
