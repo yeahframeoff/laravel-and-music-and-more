@@ -54,6 +54,10 @@ class Chat
             $user = $this->getUserFromCookie($socket);
             $user->setSocket($socket);
             $this->users->attach($user);
+            $user->getSocket()->send(json_encode([
+                "type" => "currentUser",
+                "data" => $user
+            ]));
             $this->emitter->emit("open", [$user]);
         } catch (\Exception $e) {
             var_dump($e->getMessage());
@@ -74,14 +78,16 @@ class Chat
         ]);
 
         $functionName = $message->type;
-        if(method_exists($this, $functionName))
+        if(method_exists($this, $functionName)){
+            if(isset($message->cid))
+                $message->data->cid = $message->cid;
             $this->$functionName($user, $message->data);
-        else
+        } else {
             $this->emitter->emit("error", [
                 $user,
                 new Exception('Method ' . $functionName . ' doesnt exist')
             ]);
-
+        }
         /*
         switch($message->type){
             case 'message':
@@ -137,14 +143,18 @@ class Chat
     private function message($sender, $messageObject)
     {
         var_dump('message');
-        $receiver_id = $messageObject->user_id;
-        $message = $messageObject->data;
+        $receiver_id = $messageObject->to_user_id;
+        $message = $messageObject->message;
+        $cid = $messageObject->cid;
 
-        $privateMessage = \Karma\Entities\PrivateMessage::create(array(
-            'from_user_id' => $sender->id,
-            'to_user_id' => $receiver_id,
-            'message' => $message
-        ));
+        $messageData = array(
+            "from_user_id" => $sender->id,
+            "to_user_id" => $receiver_id,
+            "message" => $message
+        );
+
+        $privateMessage = \Karma\Entities\PrivateMessage::create($messageData);
+        $messageData['id'] = $privateMessage->id;
 
         foreach ($this->users as $next)
         {
@@ -153,13 +163,17 @@ class Chat
                 var_dump('send');
                 $next->getSocket()->send(json_encode([
                     "type" => "message",
-                    "data" => [
-                        "id" => $sender->id,
-                        "message" => $message
-                    ]
+                    "data" => $messageData
                 ]));
+                break;
             }
         }
+
+        $messageData["cid"] = $cid;
+        $sender->getSocket()->send(json_encode([
+            "type" => "message",
+            "data" => $messageData
+        ]));
         $next->notify($receiver_id, \Karma\Entities\NotifType::MESSAGES_NEW);
     }
 

@@ -11,10 +11,7 @@ class ChatController extends BaseController
 {
     public function index()
     {
-        $user = \Karma\Auth\OAuth::getUser();
-        $friends = $user->friends();
-        return View::make('chat.index')
-            ->with('friends', $friends);
+        return View::make('chat.chat');
     }
 
     public function chatWithUser($id)
@@ -27,7 +24,7 @@ class ChatController extends BaseController
     public function getHistory($user)
     {
         $connectedUser = \Karma\Auth\OAuth::getUser();
-        $messages = PrivateMessage::select('from_user_id', 'message')
+        $messages = PrivateMessage::select('id', 'from_user_id', 'message')
             ->whereRaw
                 ('from_user_id = ? and to_user_id = ?',
                 array($connectedUser->id, $user->id))
