@@ -1,6 +1,7 @@
 function SocketConnection(url)
 {
     this.connections = {};
+    this.currentUser = {};
 
     this.init = function(url)
     {
@@ -10,16 +11,14 @@ function SocketConnection(url)
             } else {
                 var socket;
                 if(url in this.connections){
-                    socket = this.connections.url;
-                    Backbone.trigger('socket:open');
-                    Backbone.trigget('socket:currentUser');
+                    socket = this.connections[url];
+                    Backbone.trigger('socket:open', {socket: socket});
+                    Backbone.trigget('socket:currentUser', {data: this.currentUser});
                 } else {
                     socket = new WebSocket("ws://" + url);
-                    this.connections.url = socket;
+                    this.connections[url] = socket;
                 }
-                $.holdReady(true)
                 socket.addEventListener("open", function (e) {
-                    $.holdReady(false);
                     Backbone.trigger("socket:open", {socket: e});
                 });
                 socket.addEventListener("error", function (e) {
@@ -29,7 +28,11 @@ function SocketConnection(url)
                 socket.addEventListener("message", function (e) {
                     var type = JSON.parse(e.data).type;
                     var data = JSON.parse(e.data).data;
-                    Backbone.trigger("socket:" + type, {data: data});
+                    var id = JSON.parse(e.data).id;
+                    if (type == "currentUser"){
+                        this.currentUser = data;
+                    }
+                    Backbone.trigger("socket:" + type, {data: data, id: id});
                 });
                 window.socket = socket; // debug
             }
@@ -40,7 +43,12 @@ function SocketConnection(url)
 
     this.getSocket = function(url)
     {
-        return this.connections.url;
+        return this.connections[url];
+    }
+
+    this.getCurrentUser = function()
+    {
+        return this.currentUser;
     }
 
     this.init(url);

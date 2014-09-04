@@ -58,6 +58,14 @@ class Chat
                 "type" => "currentUser",
                 "data" => $user
             ]));
+            $onlineFriends = $this->getOnlineFriends($user);
+            foreach($onlineFriends as $onlineFriend){
+                $onlineFriend->getSocket()->send(json_encode([
+                    "type" => "onlineNow",
+                    "data" => '',
+                    "id" => $user->id
+                ]));
+            }
             $this->emitter->emit("open", [$user]);
         } catch (\Exception $e) {
             var_dump($e->getMessage());
@@ -79,9 +87,11 @@ class Chat
 
         $functionName = $message->type;
         if(method_exists($this, $functionName)){
-            if(isset($message->cid))
-                $message->data->cid = $message->cid;
-            $this->$functionName($user, $message->data);
+            if(isset($message->id))
+                $id = $message->id;
+            else
+                $id = NULL;
+            $this->$functionName($user, $message->data, $id);
         } else {
             $this->emitter->emit("error", [
                 $user,
@@ -106,11 +116,16 @@ class Chat
     {
         $user = $this->getUserBySocket($socket);
 
-        if ($user)
-        {
-            $this->users->detach($user);
-            $this->emitter->emit("close", [$user]);
+        $onlineFriends = $this->getOnlineFriends($user);
+        foreach($onlineFriends as $onlineFriend){
+            $onlineFriend->getSocket()->send(json_encode([
+                "type" => "offlineNow",
+                "data" => '',
+                "id" => $user->id
+            ]));
         }
+        $this->users->detach($user);
+        $this->emitter->emit("close", [$user]);
     }
 
     public function onError(
@@ -140,12 +155,12 @@ class Chat
         return $user;
     }
 
-    private function message($sender, $messageObject)
+    private function message($sender, $messageObject, $id)
     {
         var_dump('message');
         $receiver_id = $messageObject->to_user_id;
         $message = $messageObject->message;
-        $cid = $messageObject->cid;
+        $cid = $id;
 
         $messageData = array(
             "from_user_id" => $sender->id,
@@ -169,33 +184,23 @@ class Chat
             }
         }
 
-        $messageData["cid"] = $cid;
         $sender->getSocket()->send(json_encode([
             "type" => "message",
-            "data" => $messageData
+            "data" => $messageData,
+            "id" => $cid
         ]));
         $next->notify($receiver_id, \Karma\Entities\NotifType::MESSAGES_NEW);
     }
 
-    private function getFriends($user, $messageArray)
+    private function getFriends($user, $messageArray, $id)
     {
         var_dump('friends');
-        $online = array();
-        foreach ($this->users as $next)
-        {
-            var_dump('foreach');
-            if($next->isFriend($user->id)){
-                $online[] = $next;
-                var_dump('is friend');
-            }
-        }
+        $result = $this->getOnlineFriends($user);
 
-        var_dump(count($online));
-        $result = array();
-        $result['online'] = $online;
         foreach($user->friends() as $friend){
-            if(!$this->userInArray($friend, $online)){
-                $result['offline'][] = $friend;
+            if(!$this->userInArray($friend, $result)){
+                $friend->isOnline = false;
+                $result[] = $friend;
             }
         }
         var_dump(json_encode(["result" => $result]));
@@ -213,5 +218,18 @@ class Chat
             if($user->id == $_user->id)
                 return true;
         return false;
+    }
+
+    private function getOnlineFriends($user)
+    {
+        $result = array();
+        foreach($this->users as $next)
+        {
+            if($next->isFriend($user->id)){
+                $next->isOnline = true;
+                $result[] = $next;
+            }
+        }
+        return $result;
     }
 }

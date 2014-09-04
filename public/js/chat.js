@@ -15,7 +15,7 @@ function Chat(socket, mainContainer)
     };
 
     this.MessageModel = Backbone.Model.extend({
-        idAttribute: '_id'
+        idAttribute: 'id'
     });
 
     this.MessagesCollection = Backbone.Collection.extend({
@@ -56,6 +56,10 @@ function Chat(socket, mainContainer)
     this.UserItemView = Backbone.View.extend({
         events: {
             "click": "userSelect"
+        },
+
+        initialize: function(){
+            this.model.on('change', this.render, this);
         },
 
         render: function() {
@@ -107,7 +111,8 @@ function Chat(socket, mainContainer)
             var source = $('#message-template').html();
             var html = _.template(source, {
                 model: this.model.toJSON(),
-                author: author.toJSON()
+                author: author.toJSON(),
+                thisUser: app.thisUser.toJSON()
             });
             this.$el.html(html);
             return this;
@@ -145,7 +150,7 @@ function Chat(socket, mainContainer)
                 socket.send(JSON.stringify({
                     type: 'message',
                     data: message.toJSON(),
-                    cid: message.cid
+                    id: message.cid
                 }));
             }
         },
@@ -161,31 +166,22 @@ function Chat(socket, mainContainer)
     this.init = function(socket, mainContainer){
         app = this;
 
-        var usersCollection = new this.UsersCollection();
-        var messages = new this.MessagesCollection();
-
-        app.socket = socket;
-        app.collections.users = usersCollection;
-        app.collections.messages = messages;
-
-        usersCollection.getUsers();
-
         Backbone.on('socket:currentUser', function(e){
             var data = e.data;
             app.thisUser = new app.UserModel(data);
         });
 
         Backbone.on('socket:friends', function(e){
+            console.log('friends');
             var data = e.data;
-            var online = data.result.online;
-            var offline = data.result.offline;
-            var friends = online.concat(offline);
+            console.log(data);
+            var friends = data.result;
             friends.forEach( function(friend){
                 var friendModel = new app.UserModel(friend);
-                usersCollection.add(friendModel);
+                app.collections.users.add(friendModel);
             });
             var usersView = new app.UsersView({
-                collection: usersCollection,
+                collection: app.collections.users,
                 el: app.ui.usersContainer
             });
             usersView.render();
@@ -193,22 +189,43 @@ function Chat(socket, mainContainer)
 
         Backbone.on('socket:message', function(e){
             var data = e.data;
-            if(data.cid != undefined){
-                var message = app.collections.messages.get(data.cid);
+            var id = e.id;
+            if(id != undefined){
+                var message = app.collections.messages.get(id);
                 message.set('id', data.id);
             } else {
                 var message = new app.MessageModel(data);
                 app.collections.messages.add(message);
             }
         });
+
+        Backbone.on('socket:onlineNow', function(e){
+            var id = e.id;
+            var user = app.collections.users.get(id);
+            user.set('isOnline', true);
+        });
+
+        Backbone.on('socket:offlineNow', function(e){
+            var id = e.id;
+            var user = app.collections.users.get(id);
+            user.set('isOnline', false);
+        });
+
+        Backbone.on('socket:open', function(e){
+            app.socket = socket;
+            app.collections.users = new app.UsersCollection();
+            app.collections.messages = new app.MessagesCollection();
+
+            app.collections.users.getUsers();
+        });
     }
 
     this.init(socket, mainContainer);
 }
 
-var socket = new SocketConnection('localhost:7778');
 $(function() {
 
+    var socket = new SocketConnection('localhost:7778');
     var chat = new Chat(socket.getSocket('localhost:7778'), '');
 
     $('.nav-tabs a').click(function (e) {

@@ -34,7 +34,7 @@
 <script type="text/template" id="user-template">
     <li>
             <%= model.first_name %> <%= model.last_name %>
-            <%= model.online %>
+            <%= model.isOnline %>
     </li>
     <br/>
 </script>
