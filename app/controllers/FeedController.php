@@ -57,8 +57,10 @@ class FeedController extends BaseController
         $post->text = $input['text'];
         $post->author()->associate(KAuth::user());
         $post->save();
-        $post->tracks()->sync(explode(' ', $input['tracks']));
-        $post->playlists()->sync(explode(' ', $input['playlists']));
+        if (isset($input['tracks']))
+            $post->tracks()->sync($input['tracks']);
+        if (isset($input['playlists']))
+            $post->playlists()->sync($input['playlists']);
         $post->save();
         return Redirect::route('feed.index');
     }
@@ -69,8 +71,10 @@ class FeedController extends BaseController
         $post = Post::find($id);
         $post->text = $input['text'];
         $post->save();
-        $post->tracks()->sync(explode(' ', $input['tracks']));
-        $post->playlists()->sync(explode(' ', $input['playlists']));
+        if (isset($input['tracks']))
+            $post->tracks()->sync($input['tracks']);
+        if (isset($input['playlists']))
+            $post->playlists()->sync($input['playlists']);
         $post->push();
         return Redirect::route('feed.index');
     }

@@ -8,10 +8,14 @@
             {{ HTML::style('public/css/own.css') }}
             {{ HTML::style('public/css/bootstrap.css') }}
             {{ HTML::style('public/css/bootstrap-theme.css') }}
+            {{ HTML::style('public/selectize/css/selectize.css') }}
+            {{ HTML::style('public/selectize/css/selectize.default.css') }}
+            {{ HTML::style('public/selectize/css/selectize.bootstrap3.css') }}
         @show
 
         @section('scripts')
             {{ HTML::script('http://code.jquery.com/jquery-2.1.1.js') }}
+            {{ HTML::script('public/selectize/js/selectize.min.js') }}
             {{-- HTML::script('public/js/jquery-2.1.1.js') --}}
             {{ HTML::script('public/js/bootstrap.js') }}
             {{ HTML::script('public/audiojs/audio.min.js') }}
