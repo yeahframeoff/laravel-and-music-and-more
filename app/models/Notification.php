@@ -49,6 +49,7 @@ class NotifType
     const FRIENDS_REQUEST_DENIED    = 'friends-request-denied';
     const FRIENDS_DELETED           = 'friends-deleted';
     const FEED_POST                 = 'feed-post';
+    const MESSAGES_NEW              = 'messages-new';
 
     private static $messages = array(
         /*
@@ -89,7 +90,13 @@ class NotifType
                 'popup' => 'Someone shared music with you',
                 'msg'   => 'User %author% shared some music with you',
                 'route' => 'feed.show',
-            ]
+            ],
+        self::MESSAGES_NEW =>
+            [
+                'popup' => 'New message',
+                'msg'   => 'New message from %user%',
+                'route' => 'chat.chat'
+            ],
     );
 
     public static function message($type, array $params)

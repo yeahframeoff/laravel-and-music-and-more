@@ -38,8 +38,8 @@ class CreatePostsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('posts');
         Schema::drop('posts_postitems');
+		Schema::drop('posts');
 	}
 
 }

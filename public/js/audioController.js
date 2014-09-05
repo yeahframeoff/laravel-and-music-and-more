@@ -1,4 +1,4 @@
-registerAudio = function()
+function initPlayers()
 {
     var ui = '.musicPlayer';
 
@@ -105,10 +105,12 @@ registerAudio = function()
     });
 
     $('.next').on('click', function(){
+        console.log('next');
         playNext();
     });
 
     $('.prev').on('click', function(){
+        console.log('prev');
         var prev = $('li.playing' + ui).prev();
         if (!prev.length)
             prev = $('ol li' + ui).last();
@@ -122,8 +124,9 @@ registerAudio = function()
             next = $('ol li' + ui).first();
         next.click();
     }
+}
 
-    var first = $('.musicList').children().first();
-    $(ui + ' h1').html(first.text());
 
-};
+$(function() {
+    initPlayers();
+});

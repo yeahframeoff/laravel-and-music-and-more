@@ -3,6 +3,7 @@
 namespace Karma\Util;
 
 use Dandelionmood\LastFm\LastFm;
+use Guzzle\Tests\Common\Cache\NullCacheAdapterTest;
 use Karma\Entities\Artist;
 use Karma\Entities\Track;
 use Karma\Entities\Genre;
@@ -28,9 +29,10 @@ class MusicInfo
     /**
      * @param string $artist
      * @param string $title
+     * @param mixed $albumParam
      * @return array
      */
-    public static function getTrackByArtistAndTitle($artist, $title)
+    public static function getTrackByArtistAndTitle($artist, $title, $albumParam = NULL)
     {
         $_artist = Artist::where('name', $artist);
         
@@ -94,16 +96,31 @@ class MusicInfo
                 $_track->save();
 
                 //album processing
-                if(isset($info->album->title)){
-                    $lastFmAlbum = self::getAlbumInfo($info->album->title, $_artist->name);
-                    $album = new Album;
-                    $album->artist_id = $_artist->id;
-                    $album->name = $lastFmAlbum->album->name;
-                    $album->artwork = array_values((Array)end($lastFmAlbum->album->image))[0];
-                    $dt = new \DateTime($lastFmAlbum->album->releasedate);
-                    $album->release_date = $dt;
+                $album = NULL;
+                if($albumParam != NULL){
+                    $album = Album::firstOrNew([
+                        'artist_id' => $_artist->id,
+                        'name' => $albumParam->title,
+                        'artwork' => $albumParam->cover
+                    ]);
+                    if($albumParam->release_date != "0000-00-00"){
+                        $dt = new \DateTime($albumParam->release_date);
+                        $album->release_date = $dt;
+                    }
                     $album->save();
-
+                } else {
+                    if(isset($info->album->title)){
+                        $lastFmAlbum = self::getAlbumInfo($info->album->title, $_artist->name);
+                        $album = Album::firstOrNew(['name' => $lastFmAlbum->album->name]);
+                        $album->artist_id = $_artist->id;
+                        $album->name = $lastFmAlbum->album->name;
+                        $album->artwork = array_values((Array)end($lastFmAlbum->album->image))[0];
+                        $dt = new \DateTime($lastFmAlbum->album->releasedate);
+                        $album->release_date = $dt;
+                        $album->save();
+                    }
+                }
+                if($album != NULL){
                     $albumsTrack = new AlbumsTrack;
                     $albumsTrack->album_id = $album->id;
                     $albumsTrack->track_id = $_track->id;

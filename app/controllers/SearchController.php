@@ -41,4 +41,20 @@ class SearchController extends BaseController
     {
         
     }
+
+    protected function searchDeezer()
+    {
+        $what = \Input::has('q') ? \Input::get('q') : '';
+        if(\Input::has('q')){
+            $results = \Karma\Util\Search::searchDeezer($what);
+            $resultArray = array();
+            foreach($results as $result){
+                $resultArray[$result->type][] = $result;
+            }
+            return \View::make('search.deezer')
+                ->with('resultArray', $resultArray);
+        }
+        else
+            return \View::make('search.index');
+    }
 }

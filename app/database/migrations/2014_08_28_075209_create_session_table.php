@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSessionTable extends Migration {
 
+
 	/**
 	 * Run the migrations.
 	 *

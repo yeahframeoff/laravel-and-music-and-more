@@ -5,7 +5,7 @@ $friends = $user->friends();
 $friends = ($friends->count() > 6 ? $friends->random(6) : $friends);
 ?>
 @foreach ($friends as $i => $friend)
-    @if($i % 3 == 0)
+    @if($i % 3 == 0 && $i != 0)
         <span class="terminator"></span>
     @endif
 
