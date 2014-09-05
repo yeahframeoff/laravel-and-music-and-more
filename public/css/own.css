@@ -5,6 +5,11 @@
          url('../fonts/Beech.eot') format('embedded-opentype');
 }
 
+.fill {
+    min-height: 100%;
+    height: 100%;
+}
+
 img {
     height: 100%;
 }
@@ -295,4 +300,9 @@ a#notify-check.new-notifications
 li img.icon
 {
     width: 40px;
+}
+
+p
+{
+    margin-bottom: 0px!important;
 }
