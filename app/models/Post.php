@@ -15,7 +15,7 @@ class Post extends \Eloquent
 
     public function scopeCommon($query)
     {
-        return $query->where('receiver_id', 'is', 'null');
+        return $query->whereNull('receiver_id');
     }
 
     public function playlists()

@@ -17,7 +17,7 @@ class FeedController extends BaseController
 {
     public function index()
     {
-        $posts = Post::with('tracks', 'playlists', 'author')
+        $posts = Post::common()->with('tracks', 'playlists', 'author')
             ->orderBy('created_at', 'desc')->get();
         return View::make('feed')->with('posts', $posts);
     }
@@ -56,6 +56,8 @@ class FeedController extends BaseController
         $post = new Post;
         $post->text = $input['text'];
         $post->author()->associate(KAuth::user());
+        if (!empty($input['receiver']))
+            $post->receiver_id = $input['receiver'];
         $post->save();
         if (isset($input['tracks']))
             $post->tracks()->sync($input['tracks']);

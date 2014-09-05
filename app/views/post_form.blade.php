@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-<div class="col-lg-12">
+<div class="col-lg-8">
     @if ($post->id !== null)
     {{ Form::open(['route' => ['feed.update', $post->id], 'method' => 'PUT']) }}
     @else
@@ -36,15 +36,17 @@
                 @endforeach
             </select>
         </label>
+        @if ($post->id === null)
         <label class="col-lg-12">
             To whom:
-            <select id="receiver" name="receiver_id" class="form-control">
-                <option value="null">Public</option>
+            <select id="receiver" name="receiver" class="form-control">
+                <option value="0">Public</option>
                 @foreach (KAuth::user()->friends() as $fr)
                     <option value="{{$fr->id}}">{{$fr}}</option>
                 @endforeach
             </select>
         </label>
+        @endif
     </div>
     <hr>
     <input type="submit" value="Post" class="btn btn-default btn-block"/>
