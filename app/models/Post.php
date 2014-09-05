@@ -11,6 +11,8 @@ namespace Karma\Entities;
 
 class Post extends \Eloquent
 {
+    use NotifyingTrait;
+
     protected $table = 'posts';
 
     public function scopeCommon($query)
@@ -30,6 +32,28 @@ class Post extends \Eloquent
 
     public function author()
     {
-        return $this->belongsTo('Karma\Entities\User');
+        return $this->belongsTo('Karma\Entities\User', 'author_id');
     }
-} 
+
+    public function getMessageParams($type)
+    {
+        switch($type)
+        {
+            case NotifType::FEED_POST:
+                return ['author' => strval($this->author)];
+            default:
+                return [];
+        }
+    }
+
+    public function getUrlParams($type)
+    {
+        switch($type)
+        {
+            case NotifType::FEED_POST:
+                return ['feed' => $this->id];
+            default:
+                return [];
+        }
+    }
+}

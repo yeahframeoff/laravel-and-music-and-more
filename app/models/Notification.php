@@ -48,6 +48,7 @@ class NotifType
     const FRIENDS_REQUEST_REMOVED   = 'friends-request-removed';
     const FRIENDS_REQUEST_DENIED    = 'friends-request-denied';
     const FRIENDS_DELETED           = 'friends-deleted';
+    const FEED_POST                 = 'feed-post';
 
     private static $messages = array(
         /*
@@ -83,6 +84,12 @@ class NotifType
                 'msg'   => 'User %user% deleted you from friends list',
                 'route' => 'profile',
             ],
+        self::FEED_POST =>
+            [
+                'popup' => 'Someone shared music with you',
+                'msg'   => 'User %author% shared some music with you',
+                'route' => 'feed.show',
+            ]
     );
 
     public static function message($type, array $params)

@@ -6,6 +6,7 @@ use Input;
 use \Karma\Auth;
 use \Karma\API;
 use Karma\Entities\Post;
+use Karma\Entities\NotifType;
 use \KAuth;
 use \Redirect;
 use \Request;
@@ -64,6 +65,8 @@ class FeedController extends BaseController
         if (isset($input['playlists']))
             $post->playlists()->sync($input['playlists']);
         $post->save();
+        if ($post->receiver_id !== null)
+            $post->notify($post->receiver_id, NotifType::FEED_POST);
         return Redirect::route('feed.index');
     }
 
@@ -86,6 +89,7 @@ class FeedController extends BaseController
         $post = Post::find($id);
         if ($post->author_id == KAuth::getUserId())
         {
+            $post->unnotify($post->receiver_id, NotifType::FEED_POST);
             $post->delete();
             if (Request::ajax())
                 return Response::json(['url' => \URL::route('feed.index')]);
