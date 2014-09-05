@@ -104,11 +104,13 @@ function initPlayers()
         }
     });
 
-    $(ui + '.next').on('click', function(){
+    $('.next').on('click', function(){
+        console.log('next');
         playNext();
     });
 
-    $(ui + '.prev').on('click', function(){
+    $('.prev').on('click', function(){
+        console.log('prev');
         var prev = $('li.playing' + ui).prev();
         if (!prev.length)
             prev = $('ol li' + ui).last();
