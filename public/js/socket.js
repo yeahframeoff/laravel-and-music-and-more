@@ -9,10 +9,12 @@ try {
             Backbone.trigger("socket:open", {socket: e});
         });
         socket.addEventListener("error", function (e) {
+            console.log(e);
             Backbone.trigger("socket:error", {socket: e});
         });
         socket.addEventListener("message", function (e) {
-            Backbone.trigger("socket:message", {data: e});
+            var type = JSON.parse(e.data).type;
+            Backbone.trigger("socket:" + type, {data: e});
         });
         window.socket = socket; // debug
     }

@@ -7,6 +7,9 @@ use \Karma\Util\MusicInfo;
 use \Karma\Entities\User;
 use \Karma\Entities\Social;
 use \Karma\Entities\ImportedTrack;
+use \Karma\Entities\Playlist;
+use \Karma\Entities\PlaylistsTrack;
+use \Karma\Entities\Track;
 use \Session;
 use \View;
 use \Redirect;
@@ -117,5 +120,59 @@ class ImportController extends BaseController
         $importTrack = ImportedTrack::find($id);
         $importTrack->connectWithUser(Session::get('user_id'));
         return Response::json(array('result' => 1));
+    }
+
+    public function importTrackFromDeezer($id)
+    {
+        $importTrack = ImportedTrack::firstOrNew(array('track_url' => $id));
+        if($importTrack->exist == false){
+            $deezerTrack = new \DeezerAPI\Models\Track($id);
+            $track = MusicInfo::getTrackByArtistAndTitle($deezerTrack->artist->name, $deezerTrack->title, $deezerTrack->album);
+            $importTrack = ImportedTrack::firstOrNew(array(
+                'track_id' => $track->id,
+                'social_id' => Social::byName('fb')->id,
+                'track_url' => $id
+            ));
+            $importTrack->save();
+            $importTrack->connectWithUser(Session::get('user_id'));
+        }
+    }
+
+    public function importFromDeezerAlbum($id)
+    {
+        $album = new \DeezerAPI\Models\Album($id);
+        $playlist = new Playlist;
+        $playlist->name = $album->title;
+        $playlist->user_id = Session::get('user_id');
+        $playlist->save();
+
+        $trackNumber = 1;
+
+        $tracks = $album->tracks->data;
+        foreach($tracks as $deezerTrack){
+            //dd($deezerTrack);
+            //dd($deezerTrack->title);
+            //dd($album);
+            $track = MusicInfo::getTrackByArtistAndTitle($deezerTrack->artist->name, $deezerTrack->title, $album);
+
+            $importTrack = ImportedTrack::firstOrNew(array(
+                'track_id' => $track->id,
+                'social_id' => Social::byName('fb')->id,
+                'track_url' => $deezerTrack->id
+            ));
+            $importTrack->save();
+            $importTrack->connectWithUser(Session::get('user_id'));
+
+            $params = array(
+                'playlist_id' => $playlist->id,
+                'imported_track_id' => $importTrack->id,
+                'track_number' => $trackNumber
+            );
+            $playlistTrack = new PlaylistsTrack($params);
+            $playlistTrack->save();
+            $trackNumber++;
+        }
+
+        return Redirect::route('library.show', array('id' => $playlist->id));
     }
 }

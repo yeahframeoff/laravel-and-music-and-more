@@ -8,7 +8,14 @@ registerPlayer = function() {
 
         var id = $(this).attr('data-id');
         var a = $(this);
-        $.get('/importTrack/' + id)
+
+        if ($(this).attr('deezer') !== undefined) {
+            var link = '/importTrackFromDeezer/' + id;
+        } else {
+            var link = '/importTrack/' + id;
+        }
+
+        $.get(link)
             .success(function(data){
                 $(a).find('span:first').attr('class', 'glyphicon glyphicon-ok');
                 $(a).removeClass('addTrack');

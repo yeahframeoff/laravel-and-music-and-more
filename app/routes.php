@@ -101,12 +101,28 @@ Route::group(['before' => 'auth'], function()
               ['as'   => 'search.music',
                'uses' => 'Karma\Controllers\SearchController@searchForMusic']);
 
+    Route::get('search/deezer',
+              ['as'   => 'search.deezer',
+              'uses' => 'Karma\Controllers\SearchController@searchDeezer']);
+
+    Route::get('search',
+              ['as' => 'search.index',
+              'uses' => 'Karma\Controllers\SearchController@index']);
+
     /*
      * Music import
      */
     Route::get('importTrack/{id}',
               ['as'  => 'import.track',
                'uses' => 'Karma\Controllers\ImportController@importTrack']);
+
+    Route::get('importFromDeezerAlbum/{id}',
+              ['as' => 'import.albumFromDeezer',
+              'uses' => 'Karma\Controllers\ImportController@importFromDeezerAlbum']);
+
+    Route::get('importTrackFromDeezer/{id}',
+            ['as'  => 'import.trackFromDeezer',
+            'uses' => 'Karma\Controllers\ImportController@importTrackFromDeezer']);
 
     Route::get('import/{provider}', 
               ['as'   => 'import.provider',

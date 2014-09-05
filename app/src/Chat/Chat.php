@@ -51,14 +51,7 @@ class Chat
     public function onOpen(ConnectionInterface $socket)
     {
         try{
-            $cookie = $socket->WebSocket->request->getCookie('laravel_session');
-            $cookie = str_replace('%3D', '', $cookie);
-            $key = \Config::get('app.key');
-            $encryptor = new \Illuminate\Encryption\Encrypter($key);
-            $id = $encryptor->decrypt($cookie);
-            $payload = base64_decode(\DB::table('sessions')->where('id', $id)->first()->payload);
-            $payload = unserialize($payload);
-            $user = User::find($payload['user_id']);
+            $user = $this->getUserFromCookie($socket);
             $user->setSocket($socket);
             $this->users->attach($user);
             $this->emitter->emit("open", [$user]);
@@ -77,9 +70,14 @@ class Chat
 
         $this->emitter->emit("message", [
             $user,
-            $message->data
+            $message->type
         ]);
 
+        $functionName = $message->type;
+        var_dump($functionName);
+        $this->$functionName($user, $message);
+
+        /*
         switch($message->type){
             case 'message':
                 $privateMessage = \Karma\Entities\PrivateMessage::create(array(
@@ -90,6 +88,7 @@ class Chat
                 $this->sendMessageToIdFromId($message->user, $message->data, $user->id);
                 break;
         }
+        */
     }
 
     public function onClose(ConnectionInterface $socket)
@@ -117,18 +116,78 @@ class Chat
         }
     }
 
-    private function sendMessageToIdFromId($id, $message, $senderId)
+    private function getUserFromCookie($socket)
     {
+        $cookie = $socket->WebSocket->request->getCookie('laravel_session');
+        $cookie = str_replace('%3D', '', $cookie);
+        $key = \Config::get('app.key');
+        $encryptor = new \Illuminate\Encryption\Encrypter($key);
+        $id = $encryptor->decrypt($cookie);
+        $payload = base64_decode(\DB::table('sessions')->where('id', $id)->first()->payload);
+        $payload = unserialize($payload);
+        $user = User::find($payload['user_id']);
+        return $user;
+    }
+
+    private function message($sender, $messageArray)
+    {
+        var_dump('message');
+        $id = $messageArray->user;
+        $message = $messageArray->data;
+
+        $privateMessage = \Karma\Entities\PrivateMessage::create(array(
+            'from_user_id' => $sender->id,
+            'to_user_id' => $id,
+            'message' => $message
+        ));
+
         foreach ($this->users as $next)
         {
             if ($next->id == $id)
             {
                 var_dump('send');
                 $next->getSocket()->send(json_encode([
-                    "id" => $senderId,
+                    "id" => $sender->id,
+                    "type" => "message",
                     "message" => $message
                 ]));
             }
         }
+    }
+
+    private function getFriends($user, $messageArray)
+    {
+        var_dump('friends');
+        $online = array();
+        foreach ($this->users as $next)
+        {
+            var_dump('foreach');
+            if($next->isFriend($user->id)){
+                $online[] = $next;
+                var_dump('is friend');
+            }
+        }
+
+        var_dump(count($online));
+        $result = array();
+        $result['online'] = $online;
+        foreach($user->friends() as $friend){
+            if(!$this->userInArray($friend, $online)){
+                $result['offline'][] = $friend;
+            }
+        }
+        var_dump(json_encode(["result" => $result]));
+        $user->getSocket()->send(json_encode([
+            "result" => $result,
+            "type" => "friends"
+        ]));
+    }
+
+    private function userInArray($user, $array)
+    {
+        foreach($array as $_user)
+            if($user->id == $_user->id)
+                return true;
+        return false;
     }
 }
