@@ -43,7 +43,7 @@ registerNotification = function()
             if (found.length == 0)
             {
                 newData.push(d);
-                   data.push(d);
+                data.push(d);
             }
         }
         data = incomingData;
