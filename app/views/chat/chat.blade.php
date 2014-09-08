@@ -18,7 +18,8 @@
     </div>
     <div class="col-md-8">
         <div id="messages-container">
-            <did id="messages"></did>
+            <div id="active-user"></div>
+            <div id="messages"></div>
             <br/>
             <div class="input-group">
                 <input type="text" class="form-control"/>
