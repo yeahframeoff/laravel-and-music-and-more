@@ -5,7 +5,10 @@
 @if(isset($resultArray['artist']))
     Artists: <br/>
     @foreach($resultArray['artist'] as $artist)
-        {{$artist->name}}
+        {{HTML::linkAction('Karma\Controllers\SearchController@artistPage',
+            $artist->name,
+            array('id' => $artist->id))
+        }}
         <br/>
     @endforeach
     <br/>
