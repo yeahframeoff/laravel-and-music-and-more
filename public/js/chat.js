@@ -72,15 +72,21 @@ function Chat(socket, mainContainer)
         userSelect: function() {
             app.activeUser = this.model;
             app.collections.messages.getHistory();
-            var messagesView = new app.MessagesView({
-                collection: app.collections.messages,
-                el: app.ui.messagesContainer
-            });
+            $(app.ui.messagesContainer).find('#messages').html('Loading history...');
+            if (app.views.messagesView == undefined){
+                app.views.messagesView = new app.MessagesView({
+                    collection: app.collections.messages,
+                    el: app.ui.messagesContainer
+                });
+            }
+            else
+                app.views.messagesView.render();
         }
     });
 
     this.UsersView = Backbone.View.extend({
         render: function() {
+            this.$el.find('#users-container').html('');
             this.collection.each(function(user){
                 this.renderUserView(user)
             }, this);
@@ -88,6 +94,7 @@ function Chat(socket, mainContainer)
         },
 
         initialize: function(){
+            this.$el.find('#users-container').html('');
             this.listenTo(this.collection, 'add', app.renderUserView);
         },
 
@@ -126,6 +133,7 @@ function Chat(socket, mainContainer)
         },
 
         render: function() {
+            this.$el.find('#messages').html('');
             this.collection.each(function(person){
                 this.renderMessageView(person)
             }, this);
@@ -133,6 +141,8 @@ function Chat(socket, mainContainer)
         },
 
         initialize: function(){
+            this.$el.find('#messages').html('');
+            console.log('init messages view');
             this.listenTo(this.collection, 'add', this.renderMessageView);
         },
         send: function(e){
@@ -216,6 +226,7 @@ function Chat(socket, mainContainer)
             app.collections.users = new app.UsersCollection();
             app.collections.messages = new app.MessagesCollection();
 
+            $(app.ui.usersContainer).find('#users-container').html('loading friends...');
             app.collections.users.getUsers();
         });
     }
