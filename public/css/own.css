@@ -296,3 +296,9 @@ li img.icon
 {
     width: 40px;
 }
+
+.album-tile
+{
+    overflow: auto;
+    width: 100%;
+}

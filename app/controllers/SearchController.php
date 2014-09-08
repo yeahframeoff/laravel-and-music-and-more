@@ -57,4 +57,11 @@ class SearchController extends BaseController
         else
             return \View::make('search.index');
     }
+
+    protected function artistPage($id)
+    {
+        $artist = new \DeezerAPI\Models\Artist($id);
+        return \View::make('search.artist')
+            ->with('artist', $artist);
+    }
 }

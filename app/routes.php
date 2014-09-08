@@ -109,6 +109,10 @@ Route::group(['before' => 'auth'], function()
               ['as' => 'search.index',
               'uses' => 'Karma\Controllers\SearchController@index']);
 
+    Route::get('search/artist/{id}',
+              ['as' => 'search.artist',
+              'uses' => 'Karma\Controllers\SearchController@artistPage']);
+
     /*
      * Music import
      */
