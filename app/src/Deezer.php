@@ -18,9 +18,6 @@ class Deezer extends \DeezerAPI\Search
                 if($type == "total" || $type == "next" || $type == "prev")
                     continue;
 
-                //var_dump($type);
-                //echo "<BR><BR><BR>";
-
                 foreach ($typeResult->data as $result) {
                     array_push($this->_results, $result);
                 }

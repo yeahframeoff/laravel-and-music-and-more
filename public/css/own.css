@@ -306,3 +306,9 @@ p
 {
     margin-bottom: 0px!important;
 }
+
+.album-tile
+{
+    overflow: auto;
+    width: 100%;
+}
