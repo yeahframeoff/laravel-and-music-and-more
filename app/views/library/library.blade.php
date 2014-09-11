@@ -58,7 +58,10 @@
         <ol class="musicList">
             @foreach($tracks as $track)
             <li class="musicPlayer li">
+                {{--
                 <a href="#" data-src="{{$track->track_url}}" data-cover="{{$track->track->albums->first()->artwork or ''}}"> {{$track->track->title}}</a>
+                --}}
+                @include('track_tile_rated', ['track' => $track])
             </li>
             @endforeach
         </ol>

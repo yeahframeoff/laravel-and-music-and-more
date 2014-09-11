@@ -8,12 +8,15 @@
             {{ HTML::style('public/css/own.css') }}
             {{ HTML::style('public/css/bootstrap.css') }}
             {{ HTML::style('public/css/bootstrap-theme.css') }}
+            {{ HTML::style('public/css/jquery.raty.css') }}
         @show
+
+
 	</head>
-	
+
 	<body>
-		@include('navbar')		
-		
+		@include('navbar')
+
         <div class="container" id="content">
             @yield('content')
         </div>
@@ -34,6 +37,8 @@
         {{ HTML::script('public/js/underscore-min.js') }}
         {{ HTML::script('public/js/backbone-min.js') }}
         {{ HTML::script('public/js/socket.js') }}
+        {{ HTML::script('public/js/jquery.raty.js') }}
         @show
+
 	</body>
 </html>

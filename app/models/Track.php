@@ -21,4 +21,9 @@ class Track extends \Eloquent
     {
         return $this->belongsTo('Karma\Entities\Genre');
     }
+
+    public function rates()
+    {
+        return $this->morhpMany('Karma\Entities\Rate', 'rated_object');
+    }
 }
