@@ -86,6 +86,8 @@ class ImportController extends BaseController
 
 
         foreach ($userTracks as $key => $userTrack){
+            if($userTrack->social_id != Social::byName('vk')->id)
+                continue;
             $found = false;
             foreach ($serviceTracks as $serviceTrack){
                 if ($userTrack->track_social_id == $serviceTrack['aid'])

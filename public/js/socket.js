@@ -32,6 +32,7 @@ function SocketConnection(url)
                     if (type == "currentUser"){
                         this.currentUser = data;
                     }
+                    console.log("type: ", type);
                     Backbone.trigger("socket:" + type, {data: data, id: id});
                 });
                 window.socket = socket; // debug

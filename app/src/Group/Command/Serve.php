@@ -30,6 +30,51 @@ class Serve
         parent::__construct();
 
         $this->group = $group;
+
+        $open = function(UserInterface $user)
+        {
+            $name = $this->getUserName($user);
+            $this->line("
+                <info>" . $name . " connected.</info>
+            ");
+        };
+
+        $this->group->getEmitter()->on("open", $open);
+
+        $close = function(UserInterface $user)
+        {
+            $name = $this->getUserName($user);
+            $this->line("
+                <info>" . $name . " disconnected.</info>
+            ");
+        };
+
+        $this->group->getEmitter()->on("close", $close);
+
+        $message = function(UserInterface $user, $message)
+        {
+            $name = $this->getUserName($user);
+            $this->line("
+                <info>New message from " . $name . ":</info>
+                <comment>" . $message . "</comment>
+                <info>.</info>
+            ");
+        };
+
+        $this->group->getEmitter()->on("message", $message);
+
+        $error = function(UserInterface $user, $exception)
+        {
+            $message = $exception->getMessage();
+
+            $this->line("
+                <info>User encountered an exception:</info>
+                <comment>" . $message . "</comment>
+                <info>.</info>
+            ");
+        };
+
+        $this->group->getEmitter()->on("error", $error);
     }
 
     public function fire()
@@ -44,9 +89,7 @@ class Serve
         $server = IoServer::factory(
             new HttpServer(
                 new WsServer(
-                    new WampServer(
-                        $this->group
-                    )
+                    $this->group
                 )
             ),
             $port

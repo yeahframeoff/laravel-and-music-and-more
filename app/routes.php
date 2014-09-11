@@ -176,10 +176,9 @@ Route::group(['before' => 'auth'], function()
     /*
      * Groups
      */
+    Route::resource('groups', 'Karma\Controllers\GroupController');
+    Route::get('genreGroup/{genreId}', 'Karma\Controllers\GroupController@selectedGenre');
 
-    Route::get('groups/',
-              ['as' => 'group.index',
-              'uses' => 'Karma\Controllers\GroupController@index']);
 });
 
 /*

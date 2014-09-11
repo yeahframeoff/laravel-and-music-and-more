@@ -312,3 +312,14 @@ p
     overflow: auto;
     width: 100%;
 }
+
+#group-container .group .group-name
+{
+    font-size: 20px;
+}
+
+#group-container .group img
+{
+    width: 300px;
+    height: 300px;
+}

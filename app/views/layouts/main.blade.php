@@ -5,9 +5,11 @@
         <meta charset="UTF-8">
         <meta lang="ru">
         @section('stylesheets')
+            {{ HTML::style('public/css/player.css') }}
             {{ HTML::style('public/css/own.css') }}
             {{ HTML::style('public/css/bootstrap.css') }}
             {{ HTML::style('public/css/bootstrap-theme.css') }}
+
         @show
 	</head>
 	
@@ -34,6 +36,7 @@
         {{ HTML::script('public/js/underscore-min.js') }}
         {{ HTML::script('public/js/backbone-min.js') }}
         {{ HTML::script('public/js/socket.js') }}
+        {{ HTML::script('public/js/audioController.js') }}
         @show
 	</body>
 </html>
