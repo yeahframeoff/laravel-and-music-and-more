@@ -138,7 +138,8 @@ return array(
         /** Custom providers here **/
         
         'Karma\API\APIServiceProvider',
-        'Karma\Chat\ChatServiceProvider'
+        'Karma\Chat\ChatServiceProvider',
+        'Karma\Group\GroupServiceProvider'
  	),
 	/*
 	|--------------------------------------------------------------------------
