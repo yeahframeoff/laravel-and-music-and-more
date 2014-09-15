@@ -2,14 +2,16 @@
 
 namespace Karma\Auth;
 
+use \Config;
+
 class VkontakteOAuth extends OAuth
 {
     public function __construct(\Karma\API\InterfaceAPI $interfaceAPI)
     {
         $this->dataArray = array(
             'APIUrl' => 'https://oauth.vk.com/access_token',
-            'client_id' => \Config::get('app.VKClientId'),
-            'client_secret' => \Config::get('app.VKClientSecret'),
+            'client_id' => Config::get('app.VKClientId'),
+            'client_secret' => Config::get('app.VKClientSecret'),
             'social_id' => \Karma\Entities\Social::byName('vk')->id,
             'redirect' =>'vk',
             'token_key' => 'access_token',
@@ -21,7 +23,7 @@ class VkontakteOAuth extends OAuth
 
     public static function getAuthLink($connect = false)
     {
-        $cliendId = \Config::get('app.VKClientId');
+        $cliendId = Config::get('app.VKClientId');
         
         $full_link = "https://oauth.vk.com/authorize?client_id={$cliendId}&scope=audio"
             . '&response_type=code&v=5.23'

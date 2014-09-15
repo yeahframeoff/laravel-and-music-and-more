@@ -3,17 +3,29 @@
 return array(
 
     /*
-     * OAuth data
+     |-------------------------------------------------------------------------
+     | OAuth data
+     |-------------------------------------------------------------------------
      */
     
-    'VKClientId' => '4484087',
+    'VKClientId'     => '4484087',
     'VKClientSecret' => 'Q8sHnIlcnvF13GK2ptEx',
-    'OKClientId' => 'CBALOCGCEBABABABA',
+    'OKClientId'     => 'CBALOCGCEBABABABA',
     'OKClientSecret' => '93D9DB4E54B94F8A8F76DDFD',
-    'OKAppId' => '1096935936',
-    'FBClientId' => '1444665462474233',
+    'OKAppId'        => '1096935936',
+    'FBClientId'     => '1444665462474233',
     'FBClientSecret' => '2d7e47d3a689dc70369973c5d8bb1da2',
-    'FBClientToken' => '1444665462474233|h3vsWb2Lb5ZORtco985LFfX6yqo',
+    'FBClientToken'  => '1444665462474233|h3vsWb2Lb5ZORtco985LFfX6yqo',
+
+    /*
+     |-------------------------------------------------------------------------
+     |
+     |-------------------------------------------------------------------------
+     */
+
+    'avatarDirectory' => 'public/media/images',
+    'avatarWidth'     => 300,
+    'avatarHeight'    => 300,
     
 	/*
 	|--------------------------------------------------------------------------
@@ -139,7 +151,9 @@ return array(
         
         'Karma\API\APIServiceProvider',
         'Karma\Chat\ChatServiceProvider',
-        'Karma\Group\GroupServiceProvider'
+        'Karma\Group\GroupServiceProvider',
+
+        'Intervention\Image\ImageServiceProvider',
  	),
 	/*
 	|--------------------------------------------------------------------------
@@ -207,6 +221,7 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 
         'KAuth'           => 'Karma\Auth\OAuth',
+        'Image'           => 'Intervention\Image\Facades\Image',
 	),
 
 );
