@@ -52,14 +52,17 @@
     <input type="submit" value="Post" class="btn btn-default btn-block"/>
     {{ Form::close() }}
 </div>
+@stop
+@section('scripts')
+@parent
 <script>
-    console.log($('#receiver'));
-    var selectizeParams = {
-        sortField: 'text'
-    };
-    $('#receiver').selectize(selectizeParams);
-    $('#tracks').selectize(selectizeParams);
-    $('#playlists').selectize(selectizeParams);
-
+    $(function(){
+        var selectizeParams = {
+            sortField: 'text'
+        };
+        $('#receiver').selectize(selectizeParams);
+        $('#tracks').selectize(selectizeParams);
+        $('#playlists').selectize(selectizeParams);
+    });
 </script>
 @stop
