@@ -2,14 +2,16 @@
 
 namespace Karma\Auth;
 
+use \Config;
+
 class OdnoklassnikiOAuth extends OAuth
 {
     public function __construct(\Karma\API\InterfaceAPI $interfaceAPI)
     {
         $this->dataArray = array(
             'APIUrl' => 'http://api.odnoklassniki.ru/oauth/token.do',
-            'client_id' => \Config::get('app.OKAppId'),
-            'client_secret' => \Config::get('app.OKClientSecret'),
+            'client_id' => Config::get('app.OKAppId'),
+            'client_secret' => Config::get('app.OKClientSecret'),
             'token_key' => 'refresh_token',
             'social_id' => \Karma\Entities\Social::byName('ok')->id,
             'redirect' => 'ok',
@@ -21,7 +23,7 @@ class OdnoklassnikiOAuth extends OAuth
 
     public static function getAuthLink($connect = false)
     {
-        $appId = \Config::get('app.OKAppId');
+        $appId = Config::get('app.OKAppId');
         
         $full_link = 'http://www.odnoklassniki.ru/oauth/authorize?'
             . "client_id={$appId}&response_type=code"

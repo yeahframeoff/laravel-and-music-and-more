@@ -2,6 +2,7 @@
 
 namespace Karma\Entities;
 
+use Config;
 use \DB;
 use \Session;
 use \Karma\Entities\ImportedTrack;
@@ -189,6 +190,23 @@ class User extends \Eloquent
             default:
                 return [];
         }
+    }
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function(User $user) {
+            $time = date('Ymd_His');
+            $name = $user->id . '_' . $time . '.jpg';
+            \Queue::push('Karma\Util\UrlImageProcess', [
+                'source_image_url' => $user->photo,
+                'user_id'          => $user->id,
+                'resize_to_width'  => Config::get('app.avatarWidth'),
+                'resize_to_height' => Config::get('app.avatarHeight'),
+                'save_path'        => Config::get('app.avatarDirectory'),
+                'save_name'        => $name,
+            ]);
+        });
     }
 }
