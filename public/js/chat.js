@@ -28,8 +28,18 @@ function Chat(socket, mainContainer)
         getHistory: function(){
             app.collections.messages.reset();
             this.fetch({
+                success: this.fetchSuccess,
                 error: this.fetchError
             })
+        },
+
+        fetchSuccess: function(collection, response) {
+            console.log('fetch success');
+            console.log(collection.length);
+            if(collection.length == 0){
+                console.log('in if');
+                $(app.ui.messagesContainer).find('#messages').html('History is empty');
+            }
         },
 
         fetchError: function (collection, response) {

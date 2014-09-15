@@ -62,7 +62,6 @@ class VkontakteAPI extends API implements InterfaceAPI
         $params = array(
             'owner_id' => $credential->external_id,
             'need_user' => 0,
-            'count' => 10,
             'access_token' => $this->getToken()
         );
         
