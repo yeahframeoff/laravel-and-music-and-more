@@ -15,7 +15,9 @@
         "rmccue/requests": "dev-master",
         "dandelionmood/lastfm": "dev-master",
         "deezer/deezer-php-sdk": "dev-master",
-        "cboden/ratchet": "0.3.*"
+        "cboden/ratchet": "0.3.*",
+        "pda/pheanstalk": "~2.0",
+        "intervention/image": "2.0.*"
     },
     "autoload": {
         "classmap": [
