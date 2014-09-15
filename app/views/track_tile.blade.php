@@ -1,4 +1,4 @@
-<h3><strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}&nbsp;
+<h5><strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}&nbsp;
     <a href="#" class="addTrack" data-id="{{$track->id}}" deezer="{{isset($deezer)}}">
         <span class="glyphicon glyphicon-plus"></span>
     </a>
@@ -12,5 +12,4 @@
     }
     ?>
     @if (!empty($albums))({{ implode (', ', $albums) }}) @endif
-</h3>
-<hr>
+</h5>

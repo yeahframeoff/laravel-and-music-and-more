@@ -62,7 +62,8 @@ div.musicPlayer {
 }
 
 .musicPlayer .play button,
-.musicPlayer .pause button {
+.musicPlayer .pause button,
+.musicPlayer .play-broadcast button {
     width: 21px;
     height: 21px;
     top: 35px;

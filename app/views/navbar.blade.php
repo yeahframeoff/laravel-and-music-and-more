@@ -19,6 +19,8 @@
 
             <ul class="nav navbar-nav navbar-right">
                 @if(Karma\Controllers\AuthController::logged())
+                    <li><a href="{{ URL::route('feed.create') }}" class="glyphicon glyphicon-pencil"></a></li>
+                    <li @if(Request::is('/feed')) class="active" @endif><a href="{{ URL::to('feed') }}">Лента</a></li>
                 	<li class="dropdown @if (Request::is('search/*')) active @endif">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Поиск
@@ -55,10 +57,10 @@
 
                     </li>
 
-                	<li @if(Request::is('/user/groups'))class="active"@endif><a href="{{ URL::to('groups') }}">Группы</a></li>
-                	<li @if(Request::is('/user/messages'))class="active"@endif><a href="{{ URL::to('messages') }}">Диалоги</a></li>
-                	<li @if(Request::is('/user/library'))class="active"@endif><a href="{{ URL::to('library') }}">Библиотека</a></li>
-                	<li @if(Request::is('/user/profile'))class="active"@endif><a href="{{ URL::to('profile') }}">Профиль</a></li>
+                	<li @if(Request::is('/groups'))class="active"@endif><a href="{{ URL::to('groups') }}">Группы</a></li>
+                	<li @if(Request::is('/messages'))class="active"@endif><a href="{{ URL::to('messages') }}">Диалоги</a></li>
+                	<li @if(Request::is('/library'))class="active"@endif><a href="{{ URL::to('library') }}">Библиотека</a></li>
+                	<li @if(Request::is('/profile'))class="active"@endif><a href="{{ URL::to('profile') }}">Профиль</a></li>
                     <li><a href="{{ URL::to('/logout') }}">Выйти</a></li>
                 @else
                 <li class="dropdown">

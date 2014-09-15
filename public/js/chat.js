@@ -72,6 +72,8 @@ function Chat(socket, mainContainer)
         userSelect: function() {
             app.activeUser = this.model;
             app.collections.messages.getHistory();
+            var user_name = app.activeUser.get('first_name') + ' ' + app.activeUser.get('last_name');
+            $(app.ui.messagesContainer).find('#active-user').html("<h3>Chat with user " + user_name + "</h3>");
             $(app.ui.messagesContainer).find('#messages').html('Loading history...');
             if (app.views.messagesView == undefined){
                 app.views.messagesView = new app.MessagesView({
@@ -195,6 +197,28 @@ function Chat(socket, mainContainer)
                 el: app.ui.usersContainer
             });
             usersView.render();
+
+            var AppRouter = Backbone.Router.extend({
+                routes: {
+                    "user/:id": "selectUser"
+                }
+            });
+
+            var appRouter = new AppRouter;
+            appRouter.on('route:selectUser', function(id){
+                app.activeUser = app.collections.users.get(id);
+                app.collections.messages.getHistory();
+                var user_name = app.activeUser.get('first_name') + ' ' + app.activeUser.get('last_name');
+                $(app.ui.messagesContainer).find('#active-user').html("<h3>Chat with user " + user_name + "</h3>");
+                $(app.ui.messagesContainer).find('#messages').html('Loading history...');
+                app.views.messagesView = new app.MessagesView({
+                    collection: app.collections.messages,
+                    el: app.ui.messagesContainer
+                });
+            });
+
+            Backbone.history.start();
+
         })
 
         Backbone.on('socket:message', function(e){
@@ -236,8 +260,8 @@ function Chat(socket, mainContainer)
 
 $(function() {
 
-    var socket = new SocketConnection('localhost:7778');
-    var chat = new Chat(socket.getSocket('localhost:7778'), '');
+    var socket = new SocketConnection('karma.local:7778');
+    var chat = new Chat(socket.getSocket('karma.local:7778'), '');
 
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();

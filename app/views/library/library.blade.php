@@ -1,15 +1,5 @@
 @extends('layouts.main')
 
-@section('stylesheets')
-    {{ HTML::style('public/css/player.css') }}
-    @parent
-@stop
-
-@section('scripts')
-    @parent
-    {{ HTML::script('public/js/audioController.js') }}
-@stop
-
 @section('content')
 <ul class="nav nav-pills">
     <li class="active"><a href="#all" data-toggle="pill">Все треки</a></li>
@@ -28,33 +18,11 @@
         </div>
 
         @if(count($tracks) > 0)
-        <div class="musicPlayer">
-            <h1>Demo - Preview Song</h1>
-            <img class="cover" src="/public/images/empty.png">
-            <div class="play">
-                <button title="play/pause"></button>
-            </div>
-            <div class="mute">
-                <button title="mute/unmute"></button>
-            </div>
-            <div class="volume-slider">
-                <div class="volume-total"></div>
-                <div class="volume-current"></div>
-            </div>
-            <div class="time-rail">
-                <span class="time-total">
-                    <span class="time-loaded"></span>
-                    <span class="time-current"></span>
-                </span>
-            </div>
-        </div>
-        <input type="button" class="prev" value="prev"/>
-        <input type="button" class="next" value="next"/>
+            @include ('layouts.player', ['playClass' => 'play'])
         @endif
 
 
         <br/>
-        <div id="dz-root"></div>
         <ol class="musicList">
             @foreach($tracks as $track)
             <li class="musicPlayer li">

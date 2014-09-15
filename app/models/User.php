@@ -49,6 +49,16 @@ class User extends \Eloquent
         return $this->belongsToMany('Karma\Entities\Group');
     }
 
+    public function receivedPosts()
+    {
+        return $this->hasMany('Karma\Entities\Post', 'receiver_id');
+    }
+
+    public function myGroups()
+    {
+        return $this->hasMany('Karma\Entities\Group', 'founder_id');
+    }
+
     public function friendships()
     {
         return $this->hasMany('Karma\Entities\Friend', 'user_id');
@@ -74,6 +84,11 @@ class User extends \Eloquent
     {
         return $this->belongsToMany('Karma\Entities\User', 'friends', 'friend_id', 'user_id')
             ->withPivot('confirmed')->where('confirmed', '=', true);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany('Karma\Entities\Post', 'author_id');
     }
 
     public function getProfileUrlAttribute()
@@ -138,6 +153,11 @@ class User extends \Eloquent
         return $this->hasMany('\Karma\Entities\Notification', 'reffered_user_id');
     }
 
+    public function __toString()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
     public function getMessageParams($type)
     {
         switch ($type)
@@ -148,7 +168,7 @@ class User extends \Eloquent
             case NotifType::FRIENDS_REQUEST_DENIED:
             case NotifType::FRIENDS_DELETED:
             case NotifType::MESSAGES_NEW:
-                return ['user' => $this->first_name . ' ' . $this->last_name];
+                return ['user' => strval($this)];
             default:
                 return [];
         }

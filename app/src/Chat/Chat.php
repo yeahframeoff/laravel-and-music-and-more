@@ -144,13 +144,18 @@ class Chat
 
     private function getUserFromCookie($socket)
     {
+        var_dump($socket->WebSocket->request);
         $cookie = $socket->WebSocket->request->getCookie('laravel_session');
+        var_dump($cookie);
         $cookie = str_replace('%3D', '', $cookie);
         $key = \Config::get('app.key');
+        var_dump($key);
         $encryptor = new \Illuminate\Encryption\Encrypter($key);
         $id = $encryptor->decrypt($cookie);
+        var_dump($id);
         $payload = base64_decode(\DB::table('sessions')->where('id', $id)->first()->payload);
         $payload = unserialize($payload);
+        var_dump($payload);
         $user = User::find($payload['user_id']);
         return $user;
     }

@@ -26,4 +26,9 @@ class Track extends \Eloquent
     {
         return $this->morhpMany('Karma\Entities\Rate', 'rated_object');
     }
+
+    public function posts()
+    {
+        return $this->morphToMany('Karma\Entities\Post', 'post_item', 'posts_postitems');
+    }
 }

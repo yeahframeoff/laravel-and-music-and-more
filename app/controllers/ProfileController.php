@@ -20,8 +20,7 @@ class ProfileController extends BaseController
 
     public function show(User $user)
     {
-        return View::make('profile')
-            ->with('user', $user)
-            ->with('tracks', $user->tracks);
+        return View::make('profile.profile')
+            ->with('user', $user);
     }
 }
