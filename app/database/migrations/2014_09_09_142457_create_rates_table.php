@@ -16,11 +16,11 @@ class CreateRatesTable extends Migration {
 		{
 			$table->increments('id');
             $table->morphs('rated_object');
-            $table->tinyInteger('rate');
-            $table->integer('rating_user_id')->unsigned();
+            $table->tinyInteger('value');
+            $table->integer('rater_id')->unsigned();
 			$table->timestamps();
 
-            $table->foreign('rating_user_id')->references('id')->on('users');
+            $table->foreign('rater_id')->references('id')->on('users');
 		});
 	}
 

@@ -34,6 +34,7 @@
         {{ HTML::script('public/js/libs/backbone-min.js') }}
         {{ HTML::script('public/js/libs/selectize.min.js') }}
         {{ HTML::script('public/js/libs/jquery.raty.js') }}
+        {{ HTML::script('public/js/libs/sprintf.min.js') }}
         {{ HTML::script('public/audiojs/audio.min.js') }}
         {{ HTML::script('public/js/friends.js') }}
         {{ HTML::script('public/js/importController.js') }}
@@ -44,6 +45,7 @@
         {{ HTML::script('public/js/httpdelete.js') }}
         {{ HTML::script('public/js/socket.js') }}
         {{ HTML::script('public/js/audioController.js') }}
+        {{ HTML::script('public/js/rating.js') }}
         {{ HTML::script('public/js/main.js') }}
         @show
 

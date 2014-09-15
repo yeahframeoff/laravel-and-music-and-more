@@ -63,15 +63,14 @@ function initPlayers()
     // Load in a track on click
     $(ui + '.li').on('click', function(e) {
         e.preventDefault();
-        $(ui + ' > .play').addClass('pause');
-        $(ui + ' > .play').removeClass('play');
+        $(ui + ' > .play').addClass('pause').removeClass('play');
 
         $(this).addClass('playing').siblings().removeClass('playing');
         var link = $('a', this).attr('data-src');
         var cover_link = $('a', this).attr('data-cover');
         if (!cover_link.length)
             cover_link = '/public/images/empty.png';
-        $(ui).find('img').attr('src', cover_link);
+        $(ui).find('img.cover').attr('src', cover_link);
         $(ui + ' h1').html($(this).text());
 
         if (/^-?[\d.]+(?:e-?\d+)?$/.test(link)){
@@ -163,7 +162,7 @@ function initPlayers()
         var cover_link = data.cover;
         if (!cover_link.length)
             cover_link = '/public/images/empty.png';
-        $(ui).find('img').attr('src', cover_link);
+        $(ui).find('img.cover').attr('src', cover_link);
         $(ui + ' h1').html(data.name);
 
         if (/^-?[\d.]+(?:e-?\d+)?$/.test(link)){

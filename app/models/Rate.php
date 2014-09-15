@@ -11,7 +11,7 @@ namespace Karma\Entities;
 
 class Rate extends \Eloquent
 {
-    public function ratingUser()
+    public function rater()
     {
         return $this->belongsTo('Karma\Entities\User', 'rating_user_id');
     }

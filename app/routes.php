@@ -117,16 +117,16 @@ Route::group(['before' => 'auth'], function()
      * Music import
      */
     Route::get('importTrack/{id}',
-              ['as'  => 'import.track',
+              ['as'   => 'import.track',
                'uses' => 'Karma\Controllers\ImportController@importTrack']);
 
     Route::get('importFromDeezerAlbum/{id}',
-              ['as' => 'import.albumFromDeezer',
-              'uses' => 'Karma\Controllers\ImportController@importFromDeezerAlbum']);
+              ['as'   => 'import.albumFromDeezer',
+               'uses' => 'Karma\Controllers\ImportController@importFromDeezerAlbum']);
 
     Route::get('importTrackFromDeezer/{id}',
-            ['as'  => 'import.trackFromDeezer',
-            'uses' => 'Karma\Controllers\ImportController@importTrackFromDeezer']);
+              ['as'   => 'import.trackFromDeezer',
+               'uses' => 'Karma\Controllers\ImportController@importTrackFromDeezer']);
 
     Route::get('import/{provider}', 
               ['as'   => 'import.provider',
@@ -186,6 +186,19 @@ Route::group(['before' => 'auth'], function()
     Route::resource('groups', 'Karma\Controllers\GroupController');
     Route::get('genreGroup/{genreId}', 'Karma\Controllers\GroupController@selectedGenre');
 
+    /*
+     * Rating
+     */
+    Route::match(['post'. 'put', 'patch'],
+                 'rate',
+                ['as'   => 'rate.rate',
+                 'uses' => 'Karma\Controllers\RatingController@rate']
+    );
+
+    Route::get('rate',
+              ['as'   => 'rate.all',
+               'uses' => 'Karma\Controllers\RatingController@loadRates']
+    );
 });
 
 /*

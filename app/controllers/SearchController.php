@@ -2,6 +2,10 @@
 
 namespace Karma\Controllers;
 
+use \Input;
+use Karma\Util\Search;
+use \View;
+
 class SearchController extends BaseController
 {
     public function search($for, $what)
@@ -16,17 +20,17 @@ class SearchController extends BaseController
     
     protected function searchForPeople()
     {
-        $whom = \Input::has('q') ? \Input::get('q') : '';
-        $people = \Karma\Util\Search::search(
+        $whom = Input::get('q', '');
+        $people = Search::search(
             $whom, '\Karma\Entities\User', ['first_name', 'last_name']
         );
-        return \View::make('search', ['page' => 'people', 'result' => $people]);
+        return View::make('search', ['page' => 'people', 'result' => $people]);
     }
     
     protected function searchForMusic()
     {
-        $what = \Input::has('q') ? \Input::get('q') : '';
-        $tracks = \Karma\Util\Search::search(
+        $what = Input::get('q', '');
+        $tracks = Search::search(
             $what, '\Karma\Entities\Track', ['title', 'lyrics'],
             [
                 'artist' => ['name', 'bio'],
@@ -34,7 +38,7 @@ class SearchController extends BaseController
                 'genre'  => 'name'
             ]
         );
-        return \View::make('search', ['page' => 'music', 'result' => $tracks]);
+        return View::make('search', ['page' => 'music', 'result' => $tracks]);
     }
     
     protected function searchForGroups($what)
@@ -44,24 +48,24 @@ class SearchController extends BaseController
 
     protected function searchDeezer()
     {
-        $what = \Input::has('q') ? \Input::get('q') : '';
-        if(\Input::has('q')){
-            $results = \Karma\Util\Search::searchDeezer($what);
+        $what = Input::get('q', '');
+        if(Input::has('q')){
+            $results = Search::searchDeezer($what);
             $resultArray = array();
             foreach($results as $result){
                 $resultArray[$result->type][] = $result;
             }
-            return \View::make('search.deezer')
+            return View::make('search.deezer')
                 ->with('resultArray', $resultArray);
         }
         else
-            return \View::make('search.index');
+            return View::make('search.index');
     }
 
     protected function artistPage($id)
     {
         $artist = new \DeezerAPI\Models\Artist($id);
-        return \View::make('search.artist')
+        return View::make('search.artist')
             ->with('artist', $artist);
     }
 }
