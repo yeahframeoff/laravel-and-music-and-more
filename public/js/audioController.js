@@ -1,6 +1,10 @@
+var app = {};
+
 function initPlayers()
 {
     var ui = '.musicPlayer';
+
+    app.volume = 1;
 
     //init DZ
     DZ.init({
@@ -51,6 +55,7 @@ function initPlayers()
             DZ.player.setVolume((posX/$(this).width()) * 100);
         if(currentPlayer == 1)
             sound.volume(posX/$(this).width());
+        app.volume = posX/$(this).width();
         $('.volume-slider .volume-current').css('width', (posX/$(this).width()) * 100 + '%');
     });
 
@@ -72,6 +77,7 @@ function initPlayers()
         if (/^-?[\d.]+(?:e-?\d+)?$/.test(link)){
             currentPlayer = 0;
             DZ.player.playTracks([link]);
+            DZ.player.setVolume(app.volume * 100);
             if(sound.playing)
                 sound.pause();
         }
@@ -81,26 +87,23 @@ function initPlayers()
             if(sound.playing)
                 sound.pause();
             sound.load(($('a', this).attr('data-src')));
+            sound.volume(app.volume);
         }
+        var data = getCurrentAudioInfo();
+        Backbone.trigger('audio:playingNow', data);
+        console.log('volume', app.volume);
     });
 
 
     //TODO in 1 method?
     //button process
     $(ui + ' > .play').on('click', function(){
-        $(this).toggleClass('play');
-        $(this).toggleClass('pause');
+        playPause.call(this);
+    });
 
-        if($(this).hasClass('pause')){
-            if (currentPlayer == 0)
-                DZ.player.play();
-            if (currentPlayer == 1)
-                sound.play();
-        } else {
-            if (currentPlayer == 0)
-                DZ.player.pause();
-            if (currentPlayer == 1)
-                sound.pause();
+    $(ui + ' > .play-broadcast').on('click', function(){
+        if(confirm('Start broadcast?')){
+            playPause().call(this);
         }
     });
 
@@ -117,6 +120,16 @@ function initPlayers()
         prev.click();
     });
 
+    var getCurrentAudioInfo = function(){
+        var currentAudio = $('a', 'li.playing' + ui);
+        var data = {
+            name: currentAudio.html(),
+            cover: currentAudio.attr('data-cover'),
+            src: currentAudio.attr('data-src')
+        }
+        return data;
+    }
+
     var playNext = function(){
         var next = $('li.playing' + ui).next();
         $(ui + ' h1').html(next.text());
@@ -124,9 +137,52 @@ function initPlayers()
             next = $('ol li' + ui).first();
         next.click();
     }
+
+    var playPause = function(){
+        console.log('playPause');
+        $(this).toggleClass('play');
+        $(this).toggleClass('pause');
+
+        if($(this).hasClass('pause')){
+            if (currentPlayer == 0)
+                DZ.player.play();
+            if (currentPlayer == 1)
+                sound.play();
+        } else {
+            if (currentPlayer == 0)
+                DZ.player.pause();
+            if (currentPlayer == 1)
+                sound.pause();
+        }
+    }
+
+    this.playFromData = function(data){
+        console.log('play from data');
+        console.log(data);
+        var link = data.src;
+        var cover_link = data.cover;
+        if (!cover_link.length)
+            cover_link = '/public/images/empty.png';
+        $(ui).find('img').attr('src', cover_link);
+        $(ui + ' h1').html(data.name);
+
+        if (/^-?[\d.]+(?:e-?\d+)?$/.test(link)){
+            currentPlayer = 0;
+            DZ.player.playTracks([link]);
+            if(sound.playing)
+                sound.pause();
+        }
+        else{
+            currentPlayer = 1;
+            DZ.player.pause();
+            if(sound.playing)
+                sound.pause();
+            sound.load(link);
+        }
+    }
 }
 
 
 $(function() {
-    initPlayers();
+    player = new initPlayers();
 });

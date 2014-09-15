@@ -54,6 +54,11 @@ class User extends \Eloquent
         return $this->hasMany('Karma\Entities\Post', 'receiver_id');
     }
 
+    public function myGroups()
+    {
+        return $this->hasMany('Karma\Entities\Group', 'founder_id');
+    }
+
     public function friendships()
     {
         return $this->hasMany('Karma\Entities\Friend', 'user_id');
