@@ -13,7 +13,7 @@ class User extends \Eloquent
 
     protected $fillable = array('id', 'first_name', 'last_name', 'photo');
 
-    protected $appends = array('profileUrl');
+    protected $appends = array('profileUrl', 'photoUrl');
 
     public function credentials()
     {
@@ -208,5 +208,10 @@ class User extends \Eloquent
                 'save_name'        => $name,
             ]);
         });
+    }
+
+    public function getPhotoUrlAttribute()
+    {
+        return '/' . \Config::get('app.avatarDirectory') . '/' . $this->photo;
     }
 }

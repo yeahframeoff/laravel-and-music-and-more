@@ -1,6 +1,5 @@
-{{
-HTML::image(
-    $user->photo,
+{{ HTML::image(
+    $user->photoUrl,
     $user->first_name . ' ' . $user->last_name,
     [
         'title' => $user->first_name . ' ' . $user->last_name,

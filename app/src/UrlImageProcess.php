@@ -14,11 +14,10 @@ class UrlImageProcess
         try {
         	$img = \Image::make($url);
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
-            echo $e->getMessage();
-            echo 'Couldn\'t resolve file from URL '.$url;
-            App::abort(418);
+            $url = '/public/images/icon-user-default.jpg';
+            $img = \Image::make($url);
         }
 
         $requiredWidth  = $data['resize_to_width'];
@@ -46,7 +45,7 @@ class UrlImageProcess
             }
         }
 
-        $dirToSave = base_path() .'/' . $data['save_path'];
+        $dirToSave = $data['save_path'];
         $path = $dirToSave.'/'.$name;
 
         $img->save($path);
@@ -55,29 +54,15 @@ class UrlImageProcess
 
         $id = $data['user_id'];
 
-        \Queue::push(function($job) use ($id, $path){
+        \Queue::push(function($job) use ($id, $name){
             $user = \Karma\Entities\User::find($id);
-            $user->update(['photo' => $path]);
+            $user->update(['photo' => $name]);
             $job->delete();
         });
     }
 
     public function prepareDir($path)
     {
-//        $path = explode('/', $path);
-//        $fs = new Filesystem;
-//        $dir = base_path();
-//        foreach ($path as $child)
-//        {
-//            $dirs = $fs->directories($dir);
-//            \Log::info('here');
-//            \Log::info($dirs);
-//            \Log::info('here');
-//            if (! in_array($dir . '/' . $child, $dirs))
-//                $fs->makeDirectory($dir . '/' . $child);
-//            $dir .= '/' . $dir;
-//        }
-
         if (! \File::exists($path))
             \File::makeDirectory($path);
     }
