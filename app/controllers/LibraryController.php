@@ -17,6 +17,10 @@ class LibraryController extends BaseController
         return View::make('library.library')
             ->with('tracks', OAuth::getUser()->tracks)
             ->with('playlists',OAuth::getUser()->playlists()->get());
+
+//        return View::make('library.library')
+//            ->with('tracks', \Karma\Entities\ImportedTrack::all())
+//            ->with('playlists', \Karma\Entities\Playlist::all());
     }
 
     public function userAudio($user)

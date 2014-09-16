@@ -27,6 +27,7 @@
 
         @section('scripts')
         {{ HTML::script('http://code.jquery.com/jquery-2.1.1.js') }}
+        {{-- HTML::script('public/js/libs/jquery.js') --}}
         {{ HTML::script('public/js/libs/bootstrap.min.js') }}
         {{ HTML::script('public/js/libs/dz.js') }}
         {{ HTML::script('public/js/libs/audio5.js') }}

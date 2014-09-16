@@ -1,11 +1,12 @@
 registerRating = function ()
 {
-    var data = [];
+    var tracks = [], lists = [];
+
     $('.raty-rated').each(function(){
-        data.push({
-            'type' : $(this).data('rated-type'),
-            'id' : $(this).data('id')
-        });
+        if ($(this).data('rated-type') == 'track')
+            tracks.push($(this).data('id'));
+        else
+            lists.push($(this).data('id'));
     });
 
     function onClick(score, event)
@@ -29,9 +30,8 @@ registerRating = function ()
         if (failed)
             return false;
     }
-    console.log({'objects[]' : data});
 
-    $.get('rate', {'objects[]' : data}, function(data) {
+    $.get('/rates', {tracks : tracks, playlists : lists}, function(data) {
         console.log(data);
         data.each(function(){
             var d = $(this);

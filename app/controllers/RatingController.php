@@ -25,37 +25,17 @@ class RatingController extends BaseController
 
     public function loadRates()
     {
-        $objs = Input::get('objects', '');
-//        $tracks = Input::get('tracks');
-//        $playlists = Input::get('playlists');
+        $tracks = Input::get('tracks', array());
+        $playlists = Input::get('playlists', array());
 
-//        \Log::info($tracks);
-//        \Log::info($playlists);
-
-        $data = [
-            'track'    => [],
-            'playlist' => []
-        ];
-//        \Log::info("\n");
-        foreach($objs as $object)
-        {
-//            \Log::info($object);
-//            json_decode($object, true);
-            if ($object['type'] == 'track')
-                $data['track'][] = $object['id'];
-            else
-                $data['playlist'][] = $object['id'];
-        }
-//        \Log::info("\n");
-//        die();
-        $tracks = Karma\Entities\Track::whereIn('id', $data['track'])
-                                      ->with('rates')->get();
-        $playlists = Karma\Entities\Playlists::whereIn('id', $data['playlist'])
-                                             ->with('rates')->get();
+        if (! empty ($tracks))
+            $tracks = \Karma\Entities\Track::whereIn('id', $tracks)->with('rates')->get();
+        if (! empty ($playlists))
+            $playlists = \Karma\Entities\Playlist::whereIn('id', $playlists)->with('rates')->get();
 
         $response = [
-            'track' => [],
-            'playlist' => []
+            'track' => array(),
+            'playlist' => array()
         ];
         foreach (['track' => $tracks, 'playlist' => $playlists] as $type => $list)
             foreach ($list as $entry)

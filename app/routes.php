@@ -8,7 +8,7 @@ Route::model('user', 'Karma\Entities\User');
 /*
  * Auth stuff
  */
-Route::get('login/{provider}', 
+Route::get('login/{provider}',
           ['as'   => 'auth.login',
            'uses' => 'Karma\Controllers\AuthController@login']);
 
@@ -22,18 +22,17 @@ Route::get('logout',
 
 Route::group(['before' => 'auth'], function()
 {
-    
     /*
      * Profile
      */
     Route::get('profile',
               ['as'   => 'profileIndex',
                'uses' => 'Karma\Controllers\ProfileController@index']);
-    
+
     Route::get('profile/{user}',
               ['as'   => 'profile',
                'uses' => 'Karma\Controllers\ProfileController@show']);
-    
+
     Route::get('import',
               ['as'   => 'import',
                'uses' => 'Karma\Controllers\ImportController@index']);
@@ -128,7 +127,7 @@ Route::group(['before' => 'auth'], function()
               ['as'   => 'import.trackFromDeezer',
                'uses' => 'Karma\Controllers\ImportController@importTrackFromDeezer']);
 
-    Route::get('import/{provider}', 
+    Route::get('import/{provider}',
               ['as'   => 'import.provider',
                'uses' => 'Karma\Controllers\ImportController@import']);
 
@@ -189,16 +188,17 @@ Route::group(['before' => 'auth'], function()
     /*
      * Rating
      */
-    Route::match(['post'. 'put', 'patch'],
-                 'rate',
-                ['as'   => 'rate.rate',
-                 'uses' => 'Karma\Controllers\RatingController@rate']
+    Route::match(['post', 'put', 'patch'],
+                  'rate',
+                 ['as'   => 'rate.rate',
+                  'uses' => 'Karma\Controllers\RatingController@rate']
     );
 
-    Route::get('rate',
+    Route::get('rates/',
               ['as'   => 'rate.all',
                'uses' => 'Karma\Controllers\RatingController@loadRates']
     );
+
 });
 
 /*
