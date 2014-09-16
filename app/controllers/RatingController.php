@@ -14,13 +14,10 @@ class RatingController extends BaseController
         if (! Input::has('type') || ! Input::has('id'))
             return Response::json(['error' => 'invalid request']);
         $objtype = Input::get('type');
-        $class = 'Karma\Entities\\' . ($objtype == 'track' ? 'Track' : 'Playlist');
         $id = Input::get('id');
-        $obj = $class::with('rates')->find($id);
-        if ($rate = $obj->rates()->where('rater_id', '=', KAuth::getUserId())->first() === null)
-            $rate = new Rate;
-        $rate->value = Input::get('value', 5);
-        $obj->rates()->save($rate);
+        $value = Input::get('value', 5);
+
+        KAuth::user()->rate(['type' => $objtype, 'id' => $id], $value);
     }
 
     public function loadRates()
