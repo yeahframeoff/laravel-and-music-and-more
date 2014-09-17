@@ -270,8 +270,8 @@ function Chat(socket, mainContainer)
 
 $(function() {
 
-    var socket = new SocketConnection('karma.local:7778');
-    var chat = new Chat(socket.getSocket('karma.local:7778'), '');
+    var socket = new SocketConnection('localhost:7778');
+    var chat = new Chat(socket.getSocket('localhost:7778'), '');
 
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
