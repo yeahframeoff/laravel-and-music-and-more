@@ -13,7 +13,7 @@ $friends = ($friends->count() > 6 ? $friends->random(6) : $friends);
         <a href="{{ URL::route('profile', array('user' => $friend->id)) }}">
             {{
             HTML::image(
-                $friend->photo,
+                $friend->photoUrl,
                 $friend->first_name . ' ' . $friend->last_name,
                 [
                     'title' => $friend->first_name . ' ' . $friend->last_name,

@@ -58,23 +58,6 @@ trait WhatUserCanDoTrait
             $this->unnotify($id, NotifType::FRIENDS_DELETED);
     }
 
-    public function getMessageParams($type)
-    {
-        switch ($type)
-        {
-            case NotifType::FRIENDS_REQUEST_NEW:
-            case NotifType::FRIENDS_REQUEST_REMOVED:
-            case NotifType::FRIENDS_REQUEST_CONFIFMED:
-            case NotifType::FRIENDS_REQUEST_DENIED:
-            case NotifType::FRIENDS_DELETED:
-            case NotifType::MESSAGES_NEW:
-                return ['user' => strval($this)];
-            default:
-                return [];
-        }
-
-    }
-
     public function getUrlParams($type)
     {
         switch ($type)
@@ -89,8 +72,13 @@ trait WhatUserCanDoTrait
             default:
                 return [];
         }
-
     }
+
+    public function getPhotoUrlAttribute()
+    {
+        return '/' . \Config::get('app.avatarDirectory') . '/' . $this->photo;
+    }
+
 
     public function rate($object, $value)
     {
