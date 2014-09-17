@@ -1,4 +1,4 @@
-registerPlayer = function() {
+ function registerPlayer() {
 
     $('.addTrack').on('click', function(e)
     {
@@ -24,5 +24,4 @@ registerPlayer = function() {
                 console.log(data);
             });
     });
-
-};
+}

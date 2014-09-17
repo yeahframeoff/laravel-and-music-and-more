@@ -4,7 +4,7 @@
             <div class="col-md-5">
                 <div class="user-tile-pic-big">
                     <a href="{{ $user->profileUrl }}">
-                        <img src="{{$user->photo}}"
+                        <img src="{{$user->photoUrl}}"
                              alt="{{$user->first_name . ' ' . $user->last_name }}"
                              class="img-thumbnail">
                     </a>
@@ -29,7 +29,7 @@
                     <span class="glyphicon glyphicon-user"></span>
                     <span class="title"><strong>Watch friends</strong></span>
                 </a>
-                <a href="/messages?{{$user->id}}"
+                <a href="/messages#user/{{$user->id}}"
                    class="btn btn-default btn-block send-message" >
                     <span class="glyphicon glyphicon-envelope"></span>
                     <span class="title"><strong>Send message</strong></span>

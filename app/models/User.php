@@ -2,6 +2,7 @@
 
 namespace Karma\Entities;
 
+use Config;
 use \DB;
 use \Session;
 use \Karma\Entities\ImportedTrack;
@@ -12,7 +13,7 @@ class User extends \Eloquent
 
     protected $fillable = array('id', 'first_name', 'last_name', 'photo');
 
-    protected $appends = array('profileUrl');
+    protected $appends = array('profileUrl', 'photoUrl');
 
     public function credentials()
     {
@@ -49,6 +50,11 @@ class User extends \Eloquent
         return $this->belongsToMany('Karma\Entities\Group');
     }
 
+    public function receivedPosts()
+    {
+        return $this->hasMany('Karma\Entities\Post', 'receiver_id');
+    }
+
     public function myGroups()
     {
         return $this->hasMany('Karma\Entities\Group', 'founder_id');
@@ -79,6 +85,11 @@ class User extends \Eloquent
     {
         return $this->belongsToMany('Karma\Entities\User', 'friends', 'friend_id', 'user_id')
             ->withPivot('confirmed')->where('confirmed', '=', true);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany('Karma\Entities\Post', 'author_id');
     }
 
     public function getProfileUrlAttribute()
@@ -143,6 +154,11 @@ class User extends \Eloquent
         return $this->hasMany('\Karma\Entities\Notification', 'reffered_user_id');
     }
 
+    public function __toString()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
     public function getMessageParams($type)
     {
         switch ($type)
@@ -153,7 +169,7 @@ class User extends \Eloquent
             case NotifType::FRIENDS_REQUEST_DENIED:
             case NotifType::FRIENDS_DELETED:
             case NotifType::MESSAGES_NEW:
-                return ['user' => $this->first_name . ' ' . $this->last_name];
+                return ['user' => strval($this)];
             default:
                 return [];
         }
@@ -174,6 +190,28 @@ class User extends \Eloquent
             default:
                 return [];
         }
+    }
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function(User $user) {
+            $time = date('Ymd_His');
+            $name = $user->id . '_' . $time . '.jpg';
+            \Queue::push('Karma\Util\UrlImageProcess', [
+                'source_image_url' => $user->photo,
+                'user_id'          => $user->id,
+                'resize_to_width'  => Config::get('app.avatarWidth'),
+                'resize_to_height' => Config::get('app.avatarHeight'),
+                'save_path'        => Config::get('app.avatarDirectory'),
+                'save_name'        => $name,
+            ]);
+        });
+    }
+
+    public function getPhotoUrlAttribute()
+    {
+        return '/' . \Config::get('app.avatarDirectory') . '/' . $this->photo;
     }
 }
