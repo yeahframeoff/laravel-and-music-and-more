@@ -113,7 +113,8 @@ class CreateTestUserCommand extends Command {
         if ($count === null)
             $this->make();
         else
-            $this->makePackage($count);
+            for (; $count > 0; --$count)
+                $this->make();
 	}
     
     private function make()
