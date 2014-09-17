@@ -31,23 +31,23 @@
     @endif
 @endif
 
+<h3>Active users</h3>
 @foreach($group->activeUsers as $activeUser)
     {{$activeUser->first_name . ' ' . $activeUser->last_name}}
     <br/>
 @endforeach
 
-@if(count($group->tracks) > 0)
-    @include ('layouts.player', ['playClass' => 'play-broadcast'])
+@include ('layouts.player', ['playClass' => 'play-broadcast'])
+
+@if($group->founder_id == KAuth::getUserId())
+    <br/>
+    <ol class="musicList">
+        @foreach($group->tracks as $track)
+            <li class="musicPlayer li">
+                <a href="#" data-src="{{$track->track_url}}" data-cover="{{$track->track->albums->first()->artwork or ''}}"> {{$track->track->title}}</a>
+            </li>
+        @endforeach
+    </ol>
 @endif
-
-
-<br/>
-<ol class="musicList">
-    @foreach($group->tracks as $track)
-        <li class="musicPlayer li">
-            <a href="#" data-src="{{$track->track_url}}" data-cover="{{$track->track->albums->first()->artwork or ''}}"> {{$track->track->title}}</a>
-        </li>
-    @endforeach
-</ol>
 
 @stop

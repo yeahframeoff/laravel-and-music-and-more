@@ -30,7 +30,7 @@
         {{-- HTML::script('public/js/libs/jquery.js') --}}
         {{ HTML::script('public/js/libs/bootstrap.min.js') }}
         {{ HTML::script('public/js/libs/dz.js') }}
-        {{ HTML::script('public/js/libs/audio5.js') }}
+        {{ HTML::script('public/js/audio5.js') }}
         {{ HTML::script('public/js/libs/underscore-min.js') }}
         {{ HTML::script('public/js/libs/backbone-min.js') }}
         {{ HTML::script('public/js/libs/selectize.min.js') }}

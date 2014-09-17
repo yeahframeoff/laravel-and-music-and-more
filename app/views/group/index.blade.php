@@ -38,6 +38,13 @@
                     {{HTML::linkAction('Karma\Controllers\GroupController@show', $group->name, array('id' => $group->id))}}
                 </span>
                 <span class="group-genre">({{$group->genre->name}})</span>
+                <span class="group-active">
+                    @if($group->active)
+                        Online
+                    @else
+                        Offline
+                    @endif
+                </span>
                 <br/>
                 @if($group->avatar != NULL)
                     <img src="{{$group->avatar}}"/>
