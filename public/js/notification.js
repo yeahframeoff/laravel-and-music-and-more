@@ -77,7 +77,7 @@ registerNotification = function()
                 toAppend += ' href="' + e.objectUrl +'" ';
             toAppend += '>';
             if (e.object_type.indexOf('\\User') != -1)
-                toAppend += '<img class="icon" src="' + e.object.photo + '">';
+                toAppend += '<img class="icon" src="' + e.object.photoUrl + '">';
             toAppend += '' + e.message + '</a></li>';
             $dropdown.append(toAppend);
         });

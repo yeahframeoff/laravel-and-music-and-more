@@ -3,7 +3,11 @@
     <div id="dz-root"></div>
     <br/>
     <ol class="musicList">
-        @foreach($user->tracks as $track)
+        <?php
+        $tracks = $user->tracks;
+        $tracks = ($tracks->count() > 6 ? $tracks->random(6) : $tracks);
+        ?>
+        @foreach($tracks as $track)
         <li>
             <a href="#" data-src="{{$track->track_url}}"> {{$track->track->title}}</a>
             @if($user->id != KAuth::getUserId())
