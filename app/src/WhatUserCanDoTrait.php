@@ -102,9 +102,9 @@ trait WhatUserCanDoTrait
         else
             $object->load('rates');
 
-        if ($rate = $object->rates()->where('rater_id', '=', KAuth::getUserId())->first() === null)
+        if ($rate = $object->rates()->where('rater_id', '=', $this->id)->first() === null)
         {
-            $rate = new Rate;
+            $rate = new \Karma\Entities\Rate;
             $rate->rater()->associate($this);
         }
         $rate->value = $value;

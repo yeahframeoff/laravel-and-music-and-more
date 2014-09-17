@@ -13,7 +13,7 @@ class Rate extends \Eloquent
 {
     public function rater()
     {
-        return $this->belongsTo('Karma\Entities\User', 'rating_user_id');
+        return $this->belongsTo('Karma\Entities\User', 'rater_id');
     }
 
     public function ratedObject()

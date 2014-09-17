@@ -101,6 +101,11 @@ class User extends \Eloquent
         return $this->hasMany('\Karma\Entities\Notification', 'reffered_user_id');
     }
 
+    public function rates()
+    {
+        return $this->hasMany('\Karma\Entities\Rate', 'rater_id');
+    }
+
     public function __toString()
     {
         return $this->first_name . ' ' . $this->last_name;

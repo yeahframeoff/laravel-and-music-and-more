@@ -13,3 +13,5 @@
 
 Artisan::add(new MakeFriendshipCommand);
 Artisan::add(new CreateTestUserCommand);
+Artisan::add(new RateTrackCommand);
+Artisan::add(new RatePlaylistCommand);

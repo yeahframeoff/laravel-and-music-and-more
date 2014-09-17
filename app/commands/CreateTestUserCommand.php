@@ -113,18 +113,24 @@ class CreateTestUserCommand extends Command {
         if ($count === null)
             $this->make();
         else
-            for (; $count > 0; --$count)
-            $this->make();
+            $this->makePackage($count);
 	}
     
     private function make()
     {
-        $user = \Karma\Entities\User::create([
-            'first_name' => $this->ar_rand($this->first_names),
-            'last_name'  => $this->ar_rand($this->last_names),
-            'photo'      => $this->ar_rand($this->photos),
-        ]);
-        $this->info("User $user->first_name $user->last_name successfully created!");
+        $user = \Karma\Entities\User::create($this->getRandomAttrs());
+        $this->info($this->getCreatedMessage($user));
+    }
+
+    private function makePackage($count)
+    {
+        $data = [];
+        for (; $count > 0; --$count)
+            $data[] = $this->getRandomAttrs();
+        $users = \Karma\Entities\User::hydrate($data);
+        //$users->save();
+        foreach ($users as $user)
+            $this->info($this->getCreatedMessage($user));
     }
 
 	/**
@@ -149,5 +155,26 @@ class CreateTestUserCommand extends Command {
 		return array(
 		);
 	}
+
+    /**
+     * @return array
+     */
+    private function getRandomAttrs()
+    {
+        return [
+            'first_name' => $this->ar_rand($this->first_names),
+            'last_name'  => $this->ar_rand($this->last_names),
+            'photo'      => $this->ar_rand($this->photos),
+        ];
+    }
+
+    /**
+     * @param $user
+     * @return string
+     */
+    private function getCreatedMessage($user)
+    {
+        return "User $user->first_name $user->last_name successfully created!";
+    }
 
 }
