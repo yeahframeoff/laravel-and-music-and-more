@@ -37,12 +37,9 @@
     <br/>
 @endforeach
 
+@include ('layouts.player', ['playClass' => 'play-broadcast'])
+
 @if($group->founder_id == KAuth::getUserId())
-    @if(count($group->tracks) > 0)
-        @include ('layouts.player', ['playClass' => 'play-broadcast'])
-    @endif
-
-
     <br/>
     <ol class="musicList">
         @foreach($group->tracks as $track)
