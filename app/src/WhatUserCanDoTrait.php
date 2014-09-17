@@ -96,8 +96,8 @@ trait WhatUserCanDoTrait
     {
         if (is_array($object))
         {
-            $class = 'Karma\Entities\\' . ($object[0] == 'track' ? 'Track' : 'Playlist');
-            $object = $class::with('rates')->find($object[1]);
+            $class = 'Karma\Entities\\' . ($object['type'] == 'track' ? 'Track' : 'Playlist');
+            $object = $class::with('rates')->find($object['id']);
         }
         else
             $object->load('rates');

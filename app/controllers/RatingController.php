@@ -17,7 +17,7 @@ class RatingController extends BaseController
         $id = Input::get('id');
         $value = Input::get('value', 5);
 
-        KAuth::user()->rate(['type' => $objtype, 'id' => $id], $value);
+        KAuth::user()->rate(['type' => $objtype, 'id' => $idi], $value);
     }
 
     public function loadRates()

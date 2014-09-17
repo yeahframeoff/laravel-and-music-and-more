@@ -19,7 +19,7 @@ registerRating = function ()
         };
         var failed = false;
 
-        $.post('rate', params)
+        $.post('/rate', params)
             .done(function(d){
                 if (d.hasOwnProperty('error')) failed = true;
             })
@@ -33,8 +33,7 @@ registerRating = function ()
 
     $.get('/rates', {tracks : tracks, playlists : lists}, function(data) {
         console.log(data);
-        data.each(function(){
-            var d = $(this);
+        data.track.forEach(function(d){
             var selector = sprintf('.raty-rated[data-id=%d][data-rated-type=%s]',
                 d.id, d.type
             );
@@ -47,4 +46,4 @@ registerRating = function ()
 
         });
     }, 'json');
-}
+};
