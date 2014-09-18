@@ -2,6 +2,8 @@
 
 namespace Karma\Util;
 
+function log($data) {\Log::info($data);}
+
 trait WhatUserCanDoTrait
 {
     use \Karma\Entities\NotifyingTrait;
@@ -110,11 +112,17 @@ trait WhatUserCanDoTrait
         else
             $object->load('rates');
 
-        if ($rate = $object->rates()->where('rater_id', '=', $this->id)->first() === null)
+        $rate = $object->rates()->where('rater_id', '=', $this->id)->first();
+        if ($rate === null)
         {
+            log('Equals null!!!');
             $rate = new \Karma\Entities\Rate;
             $rate->rater()->associate($this);
         }
+        else
+            log('Equals not null!!!');
+        log($rate);
+        log($value);
         $rate->value = $value;
         $object->rates()->save($rate);
     }
