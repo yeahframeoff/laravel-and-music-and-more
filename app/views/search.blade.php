@@ -1,5 +1,10 @@
 @extends('layouts.main')
 
+@section('scripts')
+@parent
+{{ HTML::script('public/js/search.js') }}
+@stop
+
 @section('content')
 <?php
 \HTML::macro('active', function($p, $w) { return $p == $w ? 'active' : ''; });
@@ -12,22 +17,17 @@
 </ul>
 @endif
 
-
 <div class="tab-content">
     <div class="tab-pane {{ \HTML::active($page, 'people') }}" id="people">
-        <form class="input-group" action="{{ \URL::route('search.people') }}">
-            <input type="text" class="form-control" name="q">
+        <form class="input-group" action="{{ \URL::route('search.people') }}" id="form-people-search">
+            <input type="text" class="form-control" name="q" id="query-text">
             <span class="input-group-btn">
                 <input class="btn btn-primary" type="submit" value="Search">
             </span>
         </form><!-- /input-group -->
-        @if ($page == 'people')
-            @forelse($result as $user)
-            @include ('user_tile_big', ['user' => $user])
-            @empty
-            <h2>Ничего не найдено:(</h2>
-            @endforelse
-        @endif
+        <div id="people-fetched">
+
+        </div>
     </div>
 
     <div class="tab-pane {{ \HTML::active($page, 'music') }}" id="music">
@@ -46,4 +46,9 @@
         @endif
     </div>
 </div>
+
+<div id="search-user-template" hidden>
+    @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::template())
+</div>
+<h2 id="nothing-found" hidden>Ничего не найдено:(</h2>
 @stop

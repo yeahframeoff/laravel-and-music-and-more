@@ -23,18 +23,19 @@
             @if ($user->id == \KAuth::getUserId())
             <h1>Ваши друзья</h1>
             @else
-            <h1>Друзья пользователя {{ $user->first_name . ' ' . $user->last_name }}</h1>
+            <h1>Друзья пользователя {{ $user }}</h1>
             @endif
         </div>
         @forelse($friends as $friend)
-            @include ('user_tile_big', ['user' => $friend])
+            @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::wrap($user))
         @empty
             @if ($user->id == \KAuth::getUserId())
             <h2>У вас пока что нет друзей :(</h2>
             @else
             <h2>У пользователя
                 <a href="{{ URL::route('profile', ['user' => $user->id])}}">
-                    {{ $user->first_name . ' ' . $user->last_name }}</a>
+                    {{ $user }}
+                </a>
                 пока что нет ни одного друга :(
             </h2>
             @endif
@@ -47,11 +48,7 @@
                 <h1>Заявки в друзья</h1>
             </div>
         @forelse($requests as $request)
-            @include ('user_tile_big', [
-                'user'    => $request->user,
-                'current' => $current_user,
-            ])
-
+            @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::wrap($user))
         @empty
             <h2>К сожалению, нет новых заявок в друзья.</h2>
         @endforelse

@@ -4,6 +4,7 @@ namespace Karma\Controllers;
 
 use \Input;
 use Karma\Util\Search;
+use Karma\Wrappers\UserTileWrapper;
 use \View;
 
 class SearchController extends BaseController
@@ -18,16 +19,19 @@ class SearchController extends BaseController
             return $this->$method(urldecode($what));
     }
     
-    protected function searchForPeople()
+    public function searchForPeople()
     {
         $whom = Input::get('q', '');
         $people = Search::search(
             $whom, '\Karma\Entities\User', ['first_name', 'last_name']
         );
-        return View::make('search', ['page' => 'people', 'result' => $people]);
+        return $this->resolveResponse('search', [
+            'page' => 'people',
+            'result' => UserTileWrapper::wrapMany($people),
+        ]);
     }
     
-    protected function searchForMusic()
+    public function searchForMusic()
     {
         $what = Input::get('q', '');
         $tracks = Search::search(
@@ -38,7 +42,18 @@ class SearchController extends BaseController
                 'genre'  => 'name'
             ]
         );
-        return View::make('search', ['page' => 'music', 'result' => $tracks]);
+        return $this->resolveResponse('search', [
+            'page' => 'music',
+            'result' => $tracks
+        ]);
+    }
+
+    protected function resolveResponse($view, array $responseData)
+    {
+        if (\Request::ajax())
+            return \Response::json($responseData);
+        else
+            return View::make($view, $responseData);
     }
     
     protected function searchForGroups($what)

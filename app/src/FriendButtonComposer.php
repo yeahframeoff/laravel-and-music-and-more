@@ -6,7 +6,7 @@
  * Time: 17:56
  */
 
-namespace Karma;
+namespace Karma\Util;
 
 use Karma\Entities\User;
 
@@ -26,22 +26,35 @@ class FriendButtonComposer
         switch($method)
         {
             case 'compose':
-                return self::instance()->$method($args[0]);
             case 'add':
             case 'received':
             case 'remove':
             case 'restore':
             case 'sent':
-                \Log::info($args);
                 return self::instance()->$method($args[0]);
+            case 'template':
+                return self::instance()->template();
             default:
                 die('Call to undefined singleton method');
         }
     }
 
+    private function template()
+    {
+        return array(
+            'userid' => '<% userid %>',
+            'btnClass' => '<% btnClass %>',
+            'route' => '<% route %>',
+            'glyphicon' => '<% glyphicon %>',
+            'title' => '<% title %>',
+            'btncolor' => '<% btnColor %>',
+        );
+    }
+
     private function wrap(User $user, array $data)
     {
         $data['route'] = \URL::route($data['route'], ['user' => $user->id]);
+        $data['userid'] = $user->id;
         return $data;
     }
 
@@ -79,7 +92,7 @@ class FriendButtonComposer
     private function dataAdd()
     {
         return array(
-            'class' => 'friendship-add',
+            'btnClass' => 'friendship-add',
             'route' => 'friends.add',
             'glyphicon' => 'glyphicon-plus',
             'title' => 'Add to my friends',
@@ -90,7 +103,7 @@ class FriendButtonComposer
     private function dataReceived()
     {
         return array(
-            'class' => 'friendship-accept',
+            'btnClass' => 'friendship-accept',
             'route' => 'friends.confirm',
             'glyphicon' => 'glyphicon-ok',
             'title' => 'Accept request',
@@ -101,7 +114,7 @@ class FriendButtonComposer
     private function dataRemove()
     {
         return array(
-            'class' => 'friendship-remove',
+            'btnClass' => 'friendship-remove',
             'route' => 'friends.delete',
             'glyphicon' => 'glyphicon-remove',
             'title' => 'Delete from my friends',
@@ -112,7 +125,7 @@ class FriendButtonComposer
     private function dataRestore()
     {
         return array(
-            'class' => 'friendship-restore',
+            'btnClass' => 'friendship-restore',
             'route' => 'friends.restore',
             'glyphicon' => 'glyphicon-repeat',
             'title' => 'Restore friend',
@@ -123,7 +136,7 @@ class FriendButtonComposer
     private function dataSent()
     {
         return array(
-            'class' => 'friendship-cancel',
+            'btnClass' => 'friendship-cancel',
             'route' => 'friends.cancel',
             'glyphicon' => 'glyphicon-minus',
             'title' => 'Cancel request',
