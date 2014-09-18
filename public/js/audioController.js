@@ -68,6 +68,8 @@ function initPlayers()
         $(this).addClass('playing').siblings().removeClass('playing');
         var link = $('a', this).attr('data-src');
         var cover_link = $('a', this).attr('data-cover');
+        console.log(this);
+        console.log($('a', this));
         if (!cover_link.length)
             cover_link = '/public/images/empty.png';
         $(ui).find('img.cover').attr('src', cover_link);

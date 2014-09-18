@@ -23,6 +23,7 @@
 
         <div class="container" id="content">
             @yield('content')
+            @yield('player')
         </div>
 
         @section('scripts')

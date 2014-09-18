@@ -5,11 +5,6 @@
     @parent
 @stop
 
-@section('scripts')
-    @parent
-    {{ HTML::script('public/js/audioController.js') }}
-@stop
-
 @section('content')
 <div style="margin: auto 0;">
     <span class="glyphicon glyphicon-user"></span>&nbsp;
@@ -33,4 +28,10 @@
     </div>
 </div>
 
+@stop
+
+@section('player')
+<div id="player-box">
+    @include ('layouts.player', ['playClass' => 'play'])
+</div>
 @stop

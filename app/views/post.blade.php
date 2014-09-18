@@ -20,11 +20,15 @@
     </div>
     <div class="panel-body">
         <h4>{{$post->text}}</h4>
-        @foreach($post->tracks as $track)
-            <a href="#">@include('track_tile', ['track' => $track]) </a>
-        @endforeach
-        @foreach($post->playlists as $list)
-             @include('playlist', ['playlist' => $list])
-        @endforeach
+        <ol class="musicList">
+            @foreach($post->tracks as $track)
+                <li class="musicPlayer li">
+                   @include('track_tile', ['track' => $track])
+                </li>
+            @endforeach
+            @foreach($post->playlists as $list)
+                 @include('playlist', ['playlist' => $list])
+            @endforeach
+        </ol>
     </div>
 </div>
