@@ -18,7 +18,7 @@
     <div class="row">
         Albums: <br/>
         @foreach($resultArray['album'] as $key=>$album)
-            <div class="col-md-5">
+            <div class="col-md-6">
                 @include ('album_tile', ['album' => $album])
             </div>
         @endforeach
@@ -28,9 +28,27 @@
 
 @if(isset($resultArray['track']))
     Tracks: <br/>
-    @foreach($resultArray['track'] as $track)
-        @include ('track_tile', ['track' => $track, 'deezer' => true])
-    @endforeach
+    <ol class="musicList">
+        @foreach($resultArray['track'] as $track)
+            <li class="musicPlayer li">
+                <a href="#"
+                   data-src="{{$track->id}}"
+                   data-cover="">
+                    <strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}
+                </a>
+                &nbsp;
+                <a href="#" class="addTrack" data-id="{{$track->id}}" deezer="1">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </li>
+        @endforeach
+    </ol>
 @endif
 
+@stop
+
+@section('player')
+<div id="player-box">
+    @include ('layouts.player', ['playClass' => 'play'])
+</div>
 @stop

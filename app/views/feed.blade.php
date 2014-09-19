@@ -9,3 +9,9 @@
         <a class="btn btn-primary" href="{{ URL::route('feed.create') }}"><strong>Create new</strong></a>
     @endforelse
 @stop
+
+@section('player')
+<div id="player-box">
+    @include ('layouts.player', ['playClass' => 'play'])
+</div>
+@stop

@@ -41,11 +41,15 @@
             </span>
         </form><!-- /input-group -->
         @if ($page == 'music')
-            @forelse($result as $track)
-                @include ('track_tile', ['track' => $track])
-            @empty
-            <h2>Ничего не найдено:(</h2>
-            @endforelse
+            <ol class="musicList">
+                @forelse($result as $track)
+                    <li class="musicPlayer li">
+                        @include ('track_tile', ['track' => $track])
+                    </li>
+                @empty
+                    <h2>Ничего не найдено:(</h2>
+                @endforelse
+            </ol>
         @endif
     </div>
 </div>
@@ -54,4 +58,12 @@
     @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::template())
 </script>
 <h2 id="nothing-found" hidden>Ничего не найдено:(</h2>
+
+@stop
+
+@section('player')
+<div id="player-box">
+    @include ('layouts.player', ['playClass' => 'play'])
+</div>
+
 @stop
