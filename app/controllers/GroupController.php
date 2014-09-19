@@ -86,12 +86,24 @@ class GroupController extends BaseController
 
     public function destroy($id)
     {
-        Group::find($id)->delete();
+        $group = Group::find($id);
+        if ($group->founder_id == \KAuth::getUserId())
+        {
+            $group->delete();
+            if (\Request::ajax())
+                return \Response::json(['url' => \URL::route('groups.index')]);
+            else
+                return \Redirect::route('groups.index');
+        }
+        else
+            \App::abort(403, 'You cannot delete not your posts');
+
     }
 
     public function selectedGenre($genreId)
     {
+        $myGroups = \KAuth::user()->myGroups()->where('genre_id', $genreId)->get();
         return View::make('group.index')
-            ->with('groups', Group::where('genre_id', $genreId)->get());
+              ->with('groups', $myGroups->merge(Group::where('genre_id', $genreId)->get()));
     }
 }

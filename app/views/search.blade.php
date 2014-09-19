@@ -23,7 +23,7 @@
         </form><!-- /input-group -->
         @if ($page == 'people')
             @forelse($result as $user)
-            @include ('user_tile_big', ['user' => $user])
+              @include ('user_tile_big', ['user' => $user])
             @empty
             <h2>Ничего не найдено:(</h2>
             @endforelse
@@ -38,12 +38,22 @@
             </span>
         </form><!-- /input-group -->
         @if ($page == 'music')
-            @forelse($result as $track)
-                @include ('track_tile', ['track' => $track])
-            @empty
-            <h2>Ничего не найдено:(</h2>
-            @endforelse
+            <ol class="musicList">
+                @forelse($result as $track)
+                    <li class="musicPlayer li">
+                        @include ('track_tile', ['track' => $track])
+                    </li>
+                @empty
+                    <h2>Ничего не найдено:(</h2>
+                @endforelse
+            </ol>
         @endif
     </div>
+</div>
+@stop
+
+@section('player')
+<div id="player-box">
+    @include ('layouts.player', ['playClass' => 'play'])
 </div>
 @stop

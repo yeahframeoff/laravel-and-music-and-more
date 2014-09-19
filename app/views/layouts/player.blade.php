@@ -8,6 +8,12 @@
     <div class="mute">
         <button title="mute/unmute"></button>
     </div>
+    <div class="prev">
+        <button title="prev"></button>
+    </div>
+    <div class="next">
+        <button title="prev"></button>
+    </div>
     <div class="volume-slider">
         <div class="volume-total"></div>
         <div class="volume-current"></div>
@@ -19,5 +25,3 @@
         </span>
     </div>
 </div>
-<input type="button" class="prev" value="prev"/>
-<input type="button" class="next" value="next"/>

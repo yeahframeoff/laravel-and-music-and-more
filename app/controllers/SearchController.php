@@ -56,7 +56,8 @@ class SearchController extends BaseController
                 $resultArray[$result->type][] = $result;
             }
             return View::make('search.deezer')
-                ->with('resultArray', $resultArray);
+                ->with('resultArray', $resultArray)
+                ->with('q', $what);
         }
         else
             return View::make('search.index');
