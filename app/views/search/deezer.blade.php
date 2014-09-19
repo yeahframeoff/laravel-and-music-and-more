@@ -2,17 +2,7 @@
 
 @section('content')
 
-@if(isset($resultArray['artist']))
-    Artists: <br/>
-    @foreach(array_slice($resultArray['artist'], 0, 10) as $artist)
-        {{HTML::linkAction('Karma\Controllers\SearchController@artistPage',
-            $artist->name,
-            array('id' => $artist->id))
-        }}
-        <br/>
-    @endforeach
-    <br/>
-@endif
+<h2>Result of search {{$q}}: </h2>
 
 @if(isset($resultArray['album']))
     <div class="row">
