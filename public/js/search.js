@@ -23,9 +23,9 @@ Search.UserCollectionView = Backbone.View.extend({
         this.collection.on('add', this.addOne, this);
         this.collection.on('reset', this.render, this);
 
-        this.searchEngine.on('loadingAll', this.showloadingAll, this);
-        this.searchEngine.on('loadingPending', this.showLoadingPending, this);
-        this.searchEngine.on('loaded', this.hideLoading, this);
+        this.options.searchForm.on('loadingAll', this.showloadingAll, this);
+        this.options.searchForm.on('loadingPending', this.showLoadingPending, this);
+        this.options.searchForm.on('loaded', this.hideLoading, this);
 
         this.render();
     },
@@ -58,7 +58,11 @@ Search.UserCollectionView = Backbone.View.extend({
     }
 });
 
-Search.PeopleSearch = Backbone.Model.extend({
+Search.PeopleSearch = Backbone.View.extend({
+    el: '#form-people-search',
+    events: {
+        'submit' : 'submit'
+    },
     initialize: function() {
         var instance = this;
         this.onScroll = function() {
@@ -72,50 +76,48 @@ Search.PeopleSearch = Backbone.Model.extend({
         $(window).on('scroll', this.onScroll);
 
         this.onLoaded = function() {
-            $(window).on('scroll', onScroll);
+            $(window).on('scroll', this.onScroll);
         }
 
         this.on('loaded', this.onLoaded);
-
-        $('#form-people-search').submit(this.submit);
     },
     submit: function(e) {
         e.preventDefault();
 
-        var q = $('#form-people-search').find('input#query-text').val();
+        var q = this.$el.find('input#query-text').val();
         this.lastQuery = q;
         this.fetch();
     },
     page: 1,
     loadedFirstTime: true,
     fetch: function() {
+        var This = this;
         this.trigger('loadingAll');
-        $.get(this.route, {q: this.lastQuery}).done(this.loaded);
-    },
-    loaded: function(data) {
-        if (this.loadedFirstTime) {
-            Search.users.set(data.result);
-            this.loadedFirstTime = false;
-        }
-        else
-            Search.users.reset(data.result);
-        this.trigger('loaded');
+        $.get(this.route, {q: this.lastQuery}).done(function(data) {
+            if (This.loadedFirstTime) {
+                This.collection.set(data.result);
+                This.loadedFirstTime = false;
+            }
+            else
+                This.collection.reset(data.result);
+            This.trigger('loaded');
+        });
     },
     fetchMore: function() {
+        var This = this;
         this.trigger('loadingPending');
-        $.get(this.route, {q: this.lastQuery, page: this.page + 1}).done(this.loadedMore);
+        $.get(this.route, {q: this.lastQuery, page: this.page + 1}).done(function(data) {
+            This.page++;
+            This.collection.add(data.result);
+            This.trigger('loaded');
+        });
     },
-    loadedMore: function(data) {
-        this.page++;
-        this.collection.add(data.result);
-        this.trigger('loaded');
-    }
 });
 
 Search.users = new Search.UserCollection();
-Search.peopleSearch = new Search.PeopleSearch({collection: Search.users});
+Search.peopleSearchForm = new Search.PeopleSearch({collection: Search.users});
 Search.usersView = new Search.UserCollectionView({
     collection: Search.users,
-    searchEngine: Search.peopleSearch
+    searchForm: Search.peopleSearchForm
 });
 
