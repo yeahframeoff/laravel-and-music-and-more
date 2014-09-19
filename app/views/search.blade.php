@@ -47,8 +47,8 @@
     </div>
 </div>
 
-<div id="search-user-template" hidden>
+<script id="search-user-template" type="text/template">
     @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::template())
-</div>
+</script>
 <h2 id="nothing-found" hidden>Ничего не найдено:(</h2>
 @stop

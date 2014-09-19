@@ -27,7 +27,9 @@
             @endif
         </div>
         @forelse($friends as $friend)
-            @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::wrap($user))
+            <div class="user-tile-big">
+                @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::wrap($user))
+            </div>
         @empty
             @if ($user->id == \KAuth::getUserId())
             <h2>У вас пока что нет друзей :(</h2>

@@ -25,19 +25,20 @@ class UserTileWrapper extends AbstractWrapper
             'messagesUrl' => '/messages#user/' . $user->id,
             'friendshipBtnData' => FriendButtonComposer::compose($user),
             'isTemplate' => false,
+            'isAnotherUser' => $user->id != \Karma\Auth\OAuth::getUserId()
         );
     }
 
     public function template_single()
     {
         return array(
-            'id' => '<% id %>',
-            'profileUrl' => '<% profileUrl %>',
-            'photoUrl' => '<% photoUrl %>',
-            'username' => '<% username %>',
-            'audioUrl' => '<% audioUrl %>',
-            'friendsUrl' => '<% friendsUrl %>',
-            'messagesUrl' => '<% messagesUrl %>',
+            'id' => '<%= id %>',
+            'profileUrl' => '<%= profileUrl %>',
+            'photoUrl' => '<%= photoUrl %>',
+            'username' => '<%= username %>',
+            'audioUrl' => '<%= audioUrl %>',
+            'friendsUrl' => '<%= friendsUrl %>',
+            'messagesUrl' => '<%= messagesUrl %>',
             'friendshipBtnData' => FriendButtonComposer::template(),
             'isTemplate' => true,
         );

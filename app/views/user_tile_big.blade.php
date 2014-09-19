@@ -1,4 +1,3 @@
-<div class="user-tile-big">
     <div class="container-fluid" id="{{ $id }}">
         <div class="row">
             <div class="col-md-5">
@@ -11,7 +10,7 @@
                 </div>
             </div>
             <div class="col-md-7">
-                <a class="h3" href="{{ $profileUrl }}">
+                <a class="h4" href="{{ $profileUrl }}">
                     {{ $username }}
                 </a>
 
@@ -19,7 +18,7 @@
                     <% if (isAnotherUser) { %>
                     @include ('friendship_button', $friendshipBtnData)
                     <% } %>
-                @elsif ($user->id != \Karma\Auth\OAuth::getUserId())
+                @elseif ($isAnotherUser)
                     @include ('friendship_button', $friendshipBtnData)
                 @endif
 
@@ -41,4 +40,3 @@
             </div>
         </div>
     </div>
-</div>

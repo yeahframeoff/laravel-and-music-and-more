@@ -6,6 +6,7 @@ var SearchUser = Backbone.Model.extend({
 
 var SearchUserView = Backbone.View.extend({
     tagName: 'div',
+    className: 'user-tile-big',
     template: _.template($('#search-user-template').html()),
     render: function() {
         this.$el.html(this.template(this.model.toJSON()));
@@ -18,10 +19,10 @@ var SearchUserCollection = Backbone.Collection.extend({
 });
 
 var SearchUserCollectionView = Backbone.View.extend({
-    el: $('#people-fetched'),
+    el: '#people-fetched',
     initialize: function() {
         this.collection.on('add', this.addOne, this);
-        console.log(this.$el);
+        this.render();
     },
     render: function() {
         console.log('Render!');
@@ -56,11 +57,11 @@ var PeopleSearch = Backbone.Model.extend({
     done: function(data)
     {
         console.log(data);
-        searchUserCollection.reset(data.result);
+        searchUserCollection.set(data.result);
     }
 });
 
-var searchUserCollection = new SearchUserCollection;
+var searchUserCollection = new SearchUserCollection();
 var peopleSearch = new PeopleSearch({collection: searchUserCollection});
 var peopleSearchForm = new PeopleSearchForm({model: peopleSearch});
 var searchUserCollectionView = new SearchUserCollectionView({

@@ -42,12 +42,12 @@ class FriendButtonComposer
     private function template()
     {
         return array(
-            'userid' => '<% userid %>',
-            'btnClass' => '<% btnClass %>',
-            'route' => '<% route %>',
-            'glyphicon' => '<% glyphicon %>',
-            'title' => '<% title %>',
-            'btncolor' => '<% btnColor %>',
+            'userid' => '<%= friendshipBtnData.userid %>',
+            'btnClass' => '<%= friendshipBtnData.btnClass %>',
+            'route' => '<%= friendshipBtnData.route %>',
+            'glyphicon' => '<%= friendshipBtnData.glyphicon %>',
+            'title' => '<%= friendshipBtnData.title %>',
+            'btncolor' => '<%= friendshipBtnData.btncolor %>',
         );
     }
 
