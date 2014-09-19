@@ -34,8 +34,8 @@
     </div>
 
     <div class="tab-pane {{ \HTML::active($page, 'music') }}" id="music">
-        <form class="input-group" action="{{ \URL::route('search.music') }}">
-            <input type="text" class="form-control" name="q">
+        <form class="input-group" action="{{ \URL::route('search.music') }}" id="form-audio-search">
+            <input type="text" class="form-control" name="q" id="query-text">
             <span class="input-group-btn">
                 <input class="btn btn-primary" type="submit" value="Search">
             </span>
@@ -57,6 +57,11 @@
 <script id="search-user-template" type="text/template">
     @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::template())
 </script>
+
+<script id="search-audio-template" type="text/template">
+    @include ('track_tile', \Karma\Wrappers\TrackTileWrapper::template())
+</script>
+
 <h2 id="nothing-found" hidden>Ничего не найдено:(</h2>
 
 @stop

@@ -1,35 +1,61 @@
+<?php
+
+
+?>
+
 <h5>
-    <?php if(!isset($importedTrack)) $importedTrack = false; ?>
+    @if ($isTemplate)
+        <% if (importedTrack == true) { %>
+            <a href="#"
+               data-src="{{ $trackUrl }}"
+               data-cover="{{ $trackCover }}">
+                <strong>{{ $trackArtistName }}</strong>&nbsp;-&nbsp;{{ $trackTitle }}
+            </a>
+            &nbsp;
+            <a href="#" class="addTrack" data-id="{{ $trackId }}" deezer="{{ $isSetDeezer }}">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        <% } else { %>
+            <a href="#"
+               data-src="{{ $importedTrackUrl }}"
+               data-cover="{{ $importedTrackCover }}">
+                <strong>{{ $trackArtistName }}</strong>&nbsp;-&nbsp;{{ $trackTitle }}
+            </a>
+            &nbsp;
+            <a href="#" class="addTrack" data-id="{{ $importedTrackId }}" deezer="{{ $isSetDeezer }}">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        <% } %>
+    @endif
+    @else
     @if($importedTrack == true)
         <a href="#"
-           data-src="{{$track->track_url}}"
-           data-cover="{{$track->track->albums->first()->artwork or ''}}">
-            <strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}
+           data-src="{{ $trackUrl }}"
+           data-cover="{{ $trackCover }}">
+            <strong>{{ $trackArtistName }}</strong>&nbsp;-&nbsp;{{ $trackTitle }}
         </a>
         &nbsp;
-        <a href="#" class="addTrack" data-id="{{$track->id}}" deezer="{{isset($deezer)}}">
+        <a href="#" class="addTrack" data-id="{{ $trackId }}" deezer="{{ $isSetDeezer }}">
             <span class="glyphicon glyphicon-plus"></span>
         </a>
     @else
         <a href="#"
-           data-src="{{$track->importedTrack->track_url}}"
-           data-cover="{{$track->albums->first()->artwork or ''}}">
-            <strong>{{ $track->artist->name }}</strong>&nbsp;-&nbsp;{{ $track->title }}
+           data-src="{{ $importedTrackUrl }}"
+           data-cover="{{ $importedTrackCover }}">
+            <strong>{{ $trackArtistName }}</strong>&nbsp;-&nbsp;{{ $trackTitle }}
         </a>
         &nbsp;
-        <a href="#" class="addTrack" data-id="{{$track->importedTrack->id}}" deezer="{{isset($deezer)}}">
+        <a href="#" class="addTrack" data-id="{{ $importedTrackId }}" deezer="{{ $isSetDeezer }}">
             <span class="glyphicon glyphicon-plus"></span>
         </a>
     @endif
+    @endif
 
-    <?php
-    if(isset($deezer))
-        $albums = array($track->album->title);
-    else{
-        $albums = array();
-        foreach ($track->albums as $album)
-            $albums[] = $album->name;
-    }
-    ?>
-    @if (!empty($albums))({{ implode (', ', $albums) }}) @endif
+    @if ($isTemplate)
+        <% if (isNotEmptyAlbums) { %>
+            ({{ $albumss }})
+        <% } %>
+    @elseif ($isNotEmptyAlbums)
+        ({{ $albumss }})
+    @endif
 </h5>
