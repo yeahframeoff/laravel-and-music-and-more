@@ -28,8 +28,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li @if(Request::is('/search/music'))class="active"@endif><a href="{{ URL::to('search/music') }}">Музыка</a></li>
-                            <li @if(Request::is('/search/people'))class="active"@endif><a href="{{ URL::to('search/people') }}">Люди</a></li>
+                            <li @if(Request::is('/search'))class="active"@endif><a href="{{ URL::to('search') }}">Люди/Музыка</a></li>
                             <li @if(Request::is('/search/groups'))class="active"@endif><a href="{{ URL::to('search/deezer') }}">Deezer</a>
                         </ul>
                 	</li>

@@ -2,8 +2,6 @@
 
 namespace Karma\Wrappers;
 
-use Karma\Util\FriendButtonComposer;
-
 class TrackTileWrapper extends AbstractWrapper
 {
     public function wrap_single($track)

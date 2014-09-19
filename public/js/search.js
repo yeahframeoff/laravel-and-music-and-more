@@ -2,6 +2,8 @@ var Search = {};
 
 Search.User = Backbone.Model.extend({});
 
+Search.Audio = Backbone.Model.extend({});
+
 Search.UserView = Backbone.View.extend({
     tagName: 'div',
     className: 'user-tile-big',
@@ -12,13 +14,25 @@ Search.UserView = Backbone.View.extend({
     }
 });
 
-Search.UserCollection = Backbone.Collection.extend({
-    model: Search.User,
-    page: 1
+Search.AudioView = Backbone.View.extend({
+    tagName: 'li',
+    className: 'musicPlayer li',
+    template: _.template($('#search-audio-template').html()),
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
 });
 
-Search.UserCollectionView = Backbone.View.extend({
-    el: '#people-fetched',
+Search.UserCollection = Backbone.Collection.extend({
+    model: Search.User
+});
+
+Search.AudioCollection = Backbone.Collection.extend({
+    model: Search.Audio
+});
+
+Search.CollectionView = Backbone.View.extend({
     initialize: function() {
         this.collection.on('add', this.addOne, this);
         this.collection.on('reset', this.render, this);
@@ -34,31 +48,28 @@ Search.UserCollectionView = Backbone.View.extend({
         this.collection.each(this.addOne, this);
         return this;
     },
-    addOne: function (user) {
-        var userView = new Search.UserView({model: user});
-        this.$el.append(userView.render().el);
+    addOne: function (model) {
+        var modelView = new this.options.ItemView({model: model});
+        this.$el.append(modelView.render().el);
     },
     clear: function() {
         this.$el.html('');
     },
 
     showloadingAll: function() {
-        console.log('loading all');
         this.$el.hide();
         $('#loading-span').show();
     },
     showLoadingPending: function() {
-        console.log('loading pending');
         $('#loading-span').show();
     },
     hideLoading: function() {
-        console.log('loaded');
         this.$el.show();
         $('#loading-span').hide();
     }
 });
 
-Search.PeopleSearch = Backbone.View.extend({
+Search.SearchEngine = Backbone.View.extend({
     el: '#form-people-search',
     events: {
         'submit' : 'submit'
@@ -111,13 +122,24 @@ Search.PeopleSearch = Backbone.View.extend({
             This.collection.add(data.result);
             This.trigger('loaded');
         });
-    },
+    }
 });
 
 Search.users = new Search.UserCollection();
-Search.peopleSearchForm = new Search.PeopleSearch({collection: Search.users});
-Search.usersView = new Search.UserCollectionView({
+Search.peopleSearchForm = new Search.SearchEngine({collection: Search.users});
+Search.usersView = new Search.CollectionView({
+    el: '#people-fetched',
     collection: Search.users,
-    searchForm: Search.peopleSearchForm
+    searchForm: Search.peopleSearchForm,
+    ItemView: Search.UserView
+});
+
+Search.audios = new Search.AudioCollection();
+Search.audioSearchForm = new Search.SearchEngine({collection: Search.audios});
+Search.audiosView = new Search.CollectionView({
+    el: '#audio-fetched',
+    collection: Search.audios,
+    searchForm: Search.audioSearchForm,
+    ItemView: Search.AudioView
 });
 

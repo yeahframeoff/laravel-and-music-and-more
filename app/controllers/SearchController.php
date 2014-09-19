@@ -4,26 +4,22 @@ namespace Karma\Controllers;
 
 use \Input;
 use Karma\Util\Search;
+use Karma\Wrappers\TrackTileWrapper;
 use Karma\Wrappers\UserTileWrapper;
 use \View;
 
 class SearchController extends BaseController
 {
-    public function search($for, $what)
+    public function index()
     {
-        $method = 'searchFor'.ucfirst($for);
-        
-        if(!method_exists($this, $method))
-            return App::abort(404);
-        else
-            return $this->$method(urldecode($what));
+        return View::make('search');
     }
     
     public function searchForPeople()
     {
         $whom = Input::get('q', '');
         $people = Search::search($whom, '\Karma\Entities\User', ['first_name', 'last_name'], array(), ['count' => 12]);
-        return $this->resolveResponse('search', [
+        return \Response::json([
             'page' => 'people',
             'result' => UserTileWrapper::wrapMany($people),
         ]);
@@ -38,22 +34,15 @@ class SearchController extends BaseController
                 'artist' => ['name', 'bio'],
                 'albums' => 'name',
                 'genre'  => 'name'
-            ]
+            ],
+            ['count' => 20]
         );
-        return $this->resolveResponse('search', [
+        return \Response::json([
             'page' => 'music',
-            'result' => $tracks
+            'result' => TrackTileWrapper::wrapMany($tracks),
         ]);
     }
 
-    protected function resolveResponse($view, array $responseData)
-    {
-        if (\Request::ajax())
-            return \Response::json($responseData);
-        else
-            return View::make($view, $responseData);
-    }
-    
     protected function searchForGroups($what)
     {
         
