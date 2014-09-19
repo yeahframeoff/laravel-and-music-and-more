@@ -1,8 +1,3 @@
-<?php
-
-
-?>
-
 <h5>
     @if ($isTemplate)
         <% if (importedTrack == true) { %>
@@ -26,7 +21,6 @@
                 <span class="glyphicon glyphicon-plus"></span>
             </a>
         <% } %>
-    @endif
     @else
     @if($importedTrack == true)
         <a href="#"

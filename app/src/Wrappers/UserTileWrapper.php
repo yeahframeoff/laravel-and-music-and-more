@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Антон
- * Date: 19.09.14
- * Time: 1:39
- */
 
 namespace Karma\Wrappers;
-
 
 use Karma\Util\FriendButtonComposer;
 
