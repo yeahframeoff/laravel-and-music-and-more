@@ -28,6 +28,9 @@
         <div id="people-fetched">
 
         </div>
+        <div id="loading-span" hidden>
+            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;Loading...
+        </div>
     </div>
 
     <div class="tab-pane {{ \HTML::active($page, 'music') }}" id="music">

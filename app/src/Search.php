@@ -11,7 +11,7 @@ class Search
         return $result;
     }
 
-    public static function search($string, $className, $fields, array $related = array())
+    public static function search($string, $className, $fields, array $related = array(), array $paginate = array())
     {
         $attrs = self::resolveSearchString($string);
         $result = $className::getModel();
@@ -35,7 +35,12 @@ class Search
         }
         if (!empty ($withArray))
             $result = $result->with($withArray);
-        $result = $result->get();
+
+        if (isset($paginate['count']))
+            $result = $result->paginate($paginate['count']);
+        else
+            $result = $result->get();
+
         return $result;
     }
 

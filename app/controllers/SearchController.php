@@ -22,9 +22,7 @@ class SearchController extends BaseController
     public function searchForPeople()
     {
         $whom = Input::get('q', '');
-        $people = Search::search(
-            $whom, '\Karma\Entities\User', ['first_name', 'last_name']
-        );
+        $people = Search::search($whom, '\Karma\Entities\User', ['first_name', 'last_name'], array(), ['count' => 12]);
         return $this->resolveResponse('search', [
             'page' => 'people',
             'result' => UserTileWrapper::wrapMany($people),
