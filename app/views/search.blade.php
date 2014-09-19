@@ -1,5 +1,6 @@
 @extends('layouts.main')
 
+
 @section('scripts')
 @parent
 {{ HTML::script('public/js/search.js') }}
@@ -35,19 +36,7 @@
                 <input class="btn btn-primary" type="submit" value="Search">
             </span>
         </form><!-- /input-group -->
-        {{--
-        @if ($page == 'music')
-            <ol class="musicList">
-                @forelse($result as $track)
-                    <li class="musicPlayer li">
-                        @include ('track_tile', ['track' => $track])
-                    </li>
-                @empty
-                    <h2>Ничего не найдено:(</h2>
-                @endforelse
-            </ol>
-        @endif
-        --}}
+
         <div id="audio-fetched">
 
         </div>
@@ -56,6 +45,7 @@
         </div>
     </div>
 </div>
+
 
 <script id="search-user-template" type="text/template">
     @include ('user_tile_big', \Karma\Wrappers\UserTileWrapper::template())
