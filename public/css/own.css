@@ -313,6 +313,11 @@ p
     width: 100%;
 }
 
+.group
+{
+    width: 300px;
+}
+
 #group-container .group .group-name
 {
     font-size: 20px;
@@ -322,4 +327,11 @@ p
 {
     width: 300px;
     height: 300px;
+}
+
+#player-box
+{
+    position: fixed;
+    right: 0px;
+    top: 50px;
 }

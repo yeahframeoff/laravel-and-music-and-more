@@ -31,4 +31,9 @@ class Track extends \Eloquent
     {
         return $this->morphToMany('Karma\Entities\Post', 'post_item', 'posts_postitems');
     }
+
+    public function importedTrack()
+    {
+        return $this->hasOne('Karma\Entities\ImportedTrack');
+    }
 }

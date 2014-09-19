@@ -227,6 +227,12 @@ class Group implements GroupInterface{
             $group->active = false;
             $group->save();
         }
+
+        var_dump('detach');
+        foreach($this->users[$group->id]['subscribers'] as $user){
+            var_dump($user->id);
+            $group->activeUsers()->detach($user->id);
+        }
         unset($this->users[$group->id]);
         /*
          * TODO: detach all users
