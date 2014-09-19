@@ -37,12 +37,12 @@ class CreatePrivateMessagesTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('chat_messages', function(Blueprint $table) {
+        Schema::table('private_messages', function(Blueprint $table) {
             $table->dropForeign('from_user_id');
             $table->dropForeign('to_user_id');
         });
 
-        Schema::drop('chat_messages');
+        Schema::drop('private_messages');
 	}
 
 }
