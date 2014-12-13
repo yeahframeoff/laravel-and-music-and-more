@@ -12,9 +12,9 @@ class MainController extends BaseController
     {
         if(AuthController::logged())
         {
-            $mostRatedTracks = \Karma\Entities\Track::has('rates')->select
+            //$mostRatedTracks = \Karma\Entities\Track::has('rates')->select
 
-            return View::make('welcome')->with('socials', \KAuth::user()->socials->keyBy('name'));
+            return View::make('import')->with('socials', \KAuth::user()->socials->keyBy('name'));
         }
         else
         {
